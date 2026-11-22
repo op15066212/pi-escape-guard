@@ -7,7 +7,9 @@
   "scripts": {
     "test": "node --experimental-strip-types --test test/*.test.ts",
     "measure": "node bin/measure.mjs",
-    "all": "node bin/all.mjs"
+    "all": "node bin/all.mjs",
+    "mutate": "node bin/mutate.mjs",
+    "mutate:unique": "node bin/mutate.mjs --unique"
   },
   "pi": {
     "extensions": [
