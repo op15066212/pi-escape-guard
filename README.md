@@ -39,20 +39,14 @@
 
 ## 开关
 
-配置文件 `pi-escape-guard.json`（首次运行自动生成）：
+配置文件 `pi-escape-guard.json`（首次运行自动生成）。只有两个键：
 
 | 键 | 默认 | 作用 |
 | --- | --- | --- |
-| `on` | true | 总开关 |
-| `threshold` | 3 | C4：几个转义起算成段 |
-| `strict` | true | C2 用「全是 CJK」。关掉改用 `ratio` 比例判定 |
-| `ratio` | 0.6 | 比例判定的下限 |
-| `skipFixtures` | true | 跳过 `test/fixtures/`（那里是判据自己的坏样本） |
-| `toolResult` `assistant` `provider` `report` | true | 四个槽位/记账开关 |
+| `on` | true | 总开关。关掉后 `settle()` 直接返回原文本 |
+| `threshold` | 3 | 一段里几个转义算「成段」。写 0 或非数字会回落成 3 |
 
-## 怎么验
-
-```
+别照着旧版填九个键——`strict` / `ratio` / `skipFixtures` / `toolResult` / `assistant` / `provider` / `report` 都不读，填了不报错也不生效。判据：`node scripts/check-doc-accuracy.mjs` → rc=0。
 npm test                      # 判据、位置、记账、接线、钩子五组；条数以它的输出为准，这里不抄数
 node bin/mutate.mjs           # 变异巡检：15 个变异，全部抓住，0 存活、0 锚点失效
 node bin/all.mjs              # 88 个 jsonl 全量：points ≈55, ratio 1, failFiles 9
@@ -61,13 +55,13 @@ node bin/all.mjs              # 88 个 jsonl 全量：points ≈55, ratio 1, fai
 `failFiles 9` 不是失败，是**交还清单**：那 9 个文件里有 175 段「看着像污染但解出不是纯汉字」，
 判据拒绝，需要人看一眼。它红着才说明判据没被拆。
 
-上一版这里活着一处（`assistant.ts` 的 role 检查）。加了一条测试之后它也红了：
+角色检查（role）由 `verdict.ts` 的 `validMessage` 判。这一条曾经没有测试，`bin/mutate.mjs --unique` 一跑就现形——删掉 role 校验，全套测试照样绿。
 role 检查守的不是还原动作，是**记账**——`note()` 在 `validMessage` 兜底之前跑，所以 user 消息也会被写进 stats 与 seen。
 这就是「判等价必须构造出可区分输入」：我第一眼读代码，以为它被第二道检查完全覆盖。
 
 ## 实现里删掉的两样
 
-- `layers.ts`（多层 JSON 解包）：实测内容层没有第二层，写了也没有样本能验，等于未测试的代码。
+- **多层 JSON 解包**：88 个文件里 12655 段 double-escaped 全是文件层的，内容层没有第二层。多层解包没有样本能验，等于未验证的代码，不写。
 - 判据 `unit-mismatch`：`JSON.parse` 保证每个 `\uXXXX` 产出一个码元，这条判据恒真——恒真的判据不给信息。
 
 两条都记在 DESIGN §10。

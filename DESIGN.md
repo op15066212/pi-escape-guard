@@ -130,7 +130,7 @@ layers(s, max = 3):   // 2026-11-21 实现时删掉：见本节末的「单层�
 | 文档举例（2 个转义） | 写 `\u4f60\u53ef` 作为示例 | **C4**：短段 |
 | 文档举例（≥3 个、不在代码上下文） | 正文里写 `\u4f60\u53ef\u4ee5` | **交还**：见 §5 第二行 |
 
-**最阴的一条**（R4 复核指出的）：插件自己的 `test/` 里必然放 `\u4f60\u53ef\u4ee5` 当样本。模型 `cat` 那个测试文件时，若 S1 把样本还原了，它看到的夹具已经变了，照抄去写新测试 → 「应当还原」的测试恒绿。C3a 只挡围栏，挡不住 `test/foo.ts` 里裸的字符串 → 这类要 C3c（`const x = "..."` 赋值行）。**判据自己会把自己的坏样本洗掉**，这条写进 §8。
+**最阴的一条**（R4 复核指出的）：插件自己的 `test/` 里必然放 `\u4f60\u53ef\u4ee5` 当样本。模型 `cat` 那个测试文件时，若 S1 把样本还原了，它看到的夹具已经变了，照抄去写新测试 → 「应当还原」的测试恒绿。C3a 只挡围栏，挡不住 `test/scan.test.ts` 里裸的字符串 → 这类要 C3c（`const x = "..."` 赋值行）。**判据自己会把自己的坏样本洗掉**，这条写进 §8。
 
 ## 5 交还给人（v2 从 1 条拆成 3 条，其中 2 条已有判据）
 
@@ -187,42 +187,26 @@ node bin/all.mjs
 - 盘在增长时 points 会变（v1 352 → v2 394），所以**points 不能当验收值**，只能当「这次扫到多少」。不变量是 ratio。
 - 若某处还原正确但替换文本里含引号，delta 必须按替换文本算（v1 在这里差过 50 字节，见 §10 第 5 条）。
 
-## 7 结构（沿用 pi-think-sentry 的分法）
+## 7 结构
 
 ```
 pi-escape-guard/
-  src/index.ts      只做事件分发：事件 → {slot, text}，调 slots.ts
-  src/config.ts     配置读写（ensureConfig/readConfig/writeConfig/readProblem 同构）
-  src/slots.ts      §1 那张表：slot → 动作，唯一一处
-  src/judges.ts     §2 的 C1/C2/C4：一段字符串 → 解出的文本或拒绝原因
-  src/scan.ts       按行扫描：C3 的四个形状 + 位置（at 含行首偏移）
-  src/guard.ts      一段文本进、一段文本出。三个槽位共用的唯一入口
-  src/seen.ts       firstSeen / repeat 两个记账标签（不是判据；按会话分键，随 state.json 落盘）
-  src/ledger.ts     §3 的按批记账与回滚
-  src/verdict.ts    输出形状校验（手写，不用 zod）
-  src/features/     五个开关
-    toolResult.ts   S1 还原（默认开）
-    assistant.ts    S2 还原（默认开）
-    provider.ts     S3 只标记（默认开）
-    report.ts       skipped 四类汇总与 stats（默认开）
-    strict.ts       C2 用「全是 CJK」（默认开；关掉回到比例判定，会误伤正则）
-    skipFixtures.ts 跳过 test/fixtures/ 下的文件（默认开，理由见 §8 风险第三条）
-  bin/measure.mjs   §6 验收器
+  src/index.ts      只做事件分发：事件 → 槽位，调用 scan.settle
+  src/config.ts     配置读写（只有两个键：on / threshold）
+  src/scan.ts       §2 的 C1–C4：一段文本进，解出的文本或原样出
+  src/verdict.ts    输出形状校验（validContent / validMessage / isTextBlock）
+  src/meta.ts       元理论：RULES 四条 + audit()
+  bin/mutate.mjs    消去：变异巡检（唯一防线 / 冗余防线分开报）
   bin/all.mjs       全量汇总
-  test/             单测 + test/rpc*.mjs 起真 pi 子进程验钩子
-  README.md SETTINGS.md PR.md HISTORY.md DESIGN.md
+  scripts/check-doc-accuracy.mjs  文档里的键与路径必须真实存在
+  test/             meta / scan / verdict 三组
 ```
 
-**实现时合并的两处**（2026-11-21）：C3 从 `context.ts` 并进 `scan.ts`，C1/C2/C4 从 `unescape.ts` 并进 `judges.ts`。
-理由是判据只有三条，拆成两个文件只是把「一段字符串怎么判」拆成两半，读的人要在两个文件之间拼。
-`layers.ts` 写好又删掉：实测 88 个文件里 12655 段 double-escaped 全是**文件层**的，内容层没有第二层，
-多层解包没有样本，等于没被验证的代码。
-
-## 8 风险
+C1–C4 全在 `scan.ts` 一个文件里。判据只有四条，把「一段字符串怎么判」拆成两半，读的人就得在两个文件之间拼。
 
 | 风险 | 怎么发现 |
 | --- | --- |
-| 改坏工具返回结构：content 与 structuredContent 不一致 | 替换 content 必须同时丢 structuredContent（pi 文档明写）。判据：`test/rpc-tool.mjs` 起真 pi 跑一次 read，断言结果仍能解析 |
+| 改坏工具返回结构：content 与 structuredContent 不一致 | 替换 content 必须同时丢 structuredContent（pi 文档明写）。判据：`test/verdict.test.ts` 的 `validContent` 用例，断言 text 块的 text 必须是字符串 |
 | **判据洗掉自己的坏样本**：`test/` 里放的转义样本被 S1 还原，导致「应当还原」的测试恒绿 | 判据：`test/fixtures/` 下的样本文件在 CI 里断言 `git diff --exit-code`；样本一律用 C3a 的围栏包住，或写在 `.escaped` 后缀的文件里（C3 不认识后缀，所以另加一条 `skipFixtures` 开关） |
 | 缓存与可复现性：`message_end` 改正文会让上一轮上下文缓存失效 | 已知代价。判据：`stats` 输出 `changedTurns / turns`，> 0.3 说明治不住源头 |
 | 记账标签 firstSeen/repeat 的「更早」在会话被 fork/compaction 后失效 | 判据：`seen` 按 sessionKey 分键，fork 后新会话从空集开始（宁可漏判复制，不可误判） |

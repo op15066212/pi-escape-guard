@@ -9,7 +9,8 @@
     "measure": "node bin/measure.mjs",
     "all": "node bin/all.mjs",
     "mutate": "node bin/mutate.mjs",
-    "mutate:unique": "node bin/mutate.mjs --unique"
+    "mutate:unique": "node bin/mutate.mjs --unique",
+    "check:docs": "node scripts/check-doc-accuracy.mjs"
   },
   "pi": {
     "extensions": [
