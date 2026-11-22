@@ -1,0 +1,54 @@
+{
+  "schemaVersion": 1,
+  "type": "doc-bridge-capabilities",
+  "package": "@agentskit/doc-bridge",
+  "version": "2.6.0",
+  "project": {
+    "name": "pi-escape-guard",
+    "root": "."
+  },
+  "contentHash": "7eb2f67f1af397b8ad3be4e67e9e9801aeeeb96b76af9db6d3052f94f4451586",
+  "artifacts": {
+    "index": ".doc-bridge/index.json",
+    "llmsTxt": "llms.txt"
+  },
+  "capabilities": [
+    "index",
+    "query",
+    "search",
+    "agent-handoff",
+    "gates",
+    "mcp"
+  ],
+  "surfaces": {
+    "cli": {
+      "bin": "ak-docs",
+      "defaultFormat": "json"
+    },
+    "mcp": {
+      "enabled": true,
+      "tools": [
+        "handoff.resolve",
+        "doc.search",
+        "doc.get",
+        "gate.status",
+        "retriever.query",
+        "memory.classify",
+        "memory.promoteDraft",
+        "registry.topology",
+        "docbridge.snapshot",
+        "docbridge.report",
+        "docbridge.diagnostics",
+        "docbridge.relations",
+        "docbridge.run",
+        "docbridge.proposals",
+        "knowledge.search",
+        "knowledge.lookup",
+        "knowledge.decision",
+        "knowledge.concept",
+        "knowledge.whyChanged"
+      ],
+      "transport": "stdio"
+    }
+  }
+}

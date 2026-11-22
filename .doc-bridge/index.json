@@ -1,0 +1,2174 @@
+{
+  "schemaVersion": 1,
+  "contentHash": "7eb2f67f1af397b8ad3be4e67e9e9801aeeeb96b76af9db6d3052f94f4451586",
+  "contentHashAlgo": "sha256-semantic-v1",
+  "generatedAt": "2026-11-22T15:06:32.913Z",
+  "project": {
+    "name": "pi-escape-guard",
+    "root": "."
+  },
+  "knowledge": [
+    {
+      "id": "escape-guard",
+      "type": "agent-doc",
+      "title": "escape-guard",
+      "path": "docs/for-agents/escape-guard.md",
+      "description": "覆盖：本仓根"
+    },
+    {
+      "id": "document:DESIGN.md",
+      "type": "document",
+      "title": "pi-escape-guard · 设计 v2",
+      "path": "DESIGN.md",
+      "description": "v2 相对 v1 的改动全部来自 R4 复核（reviews/review-r4-b711ced1.md 的四条不认可），逐条对应写在 §11。",
+      "tags": [
+        "document",
+        "unclassified"
+      ],
+      "contentHash": "72c64c0226e66154b4d84c266186756f94c8f95dfe6400d42aa28439a7c841ac"
+    },
+    {
+      "id": "document:HISTORY.md",
+      "type": "document",
+      "title": "历史",
+      "path": "HISTORY.md",
+      "description": "签核第六轮 6e8dd769：Seen 类接参三处都对，但 export const seen = new Seen() 无参， 配置的 maxPerSession 在运行时仍然无效——测试绿、线上不生效。",
+      "tags": [
+        "document",
+        "unclassified"
+      ],
+      "contentHash": "d1a7c21256d863053dd625aebe9979d278bdcdfeedd65baf91f6ea8e01299ca3"
+    },
+    {
+      "id": "document:README.md",
+      "type": "document",
+      "title": "pi-escape-guard",
+      "path": "README.md",
+      "description": "对话记录里出现字面 \\u4f60\\u53ef\\u4ee5 这种东西（本该是「你可以」）。一旦落盘，模型每轮都读到它， 就学着照抄，越滚越多。这个扩展在两个源头槽位上把它还原成它代表的字，然后在代码上下文里一律不碰。",
+      "tags": [
+        "document",
+        "project"
+      ],
+      "contentHash": "25e05d3f90cf28404ae84d24136653633d304992e8641cdbec9e2a4ae37d353a"
+    },
+    {
+      "id": "document:reviews/review-impl-6e8dd769.md",
+      "type": "document",
+      "title": "实现复核：pi-escape-guard 0.1.0",
+      "path": "reviews/review-impl-6e8dd769.md",
+      "description": "复核者：窗口 6e8dd769（设计阶段签过 DESIGN 5ac4530）。时间：2026-11-20T17:53:49+08:00。 对象：commit ae4fcf3，package.json version 0.1.0，工作区干净（git status --short . 空）。",
+      "tags": [
+        "document",
+        "unclassified"
+      ],
+      "contentHash": "cd8ec17a66fbb6128b4bf2f548d976aa0ed9a0a711874ec0d6e9b2a305fb7486"
+    },
+    {
+      "id": "document:reviews/review-impl-b711ced1.md",
+      "type": "document",
+      "title": "实现复核：pi-escape-guard 0.1.0（commit ae4fcf3）",
+      "path": "reviews/review-impl-b711ced1.md",
+      "description": "复核者 b711ced1 · 2026-11-20T09:55:12Z",
+      "tags": [
+        "document",
+        "unclassified"
+      ],
+      "contentHash": "56f4e81c11e50b6afef0312c38da5a754663cd2f322b9eb4a6be900eb8ef806b"
+    },
+    {
+      "id": "document:reviews/review-impl2-6e8dd769.md",
+      "type": "document",
+      "title": "实现复核（第二轮）：pi-escape-guard 0.1.2",
+      "path": "reviews/review-impl2-6e8dd769.md",
+      "description": "复核者：窗口 6e8dd769。采样时刻 2026-11-20T18:04:52+08:00。对象：commit 1fd60b4，package.json version 0.1.2，git status --short . 空（这一刻是干净的；我第一次采样时它还列着 6 个 staged 文件，是提交进行中）。",
+      "tags": [
+        "document",
+        "unclassified"
+      ],
+      "contentHash": "713f5bc4d9dab67fb4c8914f53337a0ddfcb61a557077455059c931ef98c4287"
+    },
+    {
+      "id": "document:reviews/review-impl2-b711ced1.md",
+      "type": "document",
+      "title": "实现复核 2：pi-escape-guard 0.1.2",
+      "path": "reviews/review-impl2-b711ced1.md",
+      "description": "复核者 b711ced1 · 2026-11-20T10:04:37Z",
+      "tags": [
+        "document",
+        "unclassified"
+      ],
+      "contentHash": "b41229492fcd559b8af940fa3bb3d2ea66727c7bddc556a60b38253ec286a177"
+    },
+    {
+      "id": "document:reviews/review-impl3-6e8dd769.md",
+      "type": "document",
+      "title": "实现复核（第三轮 / 定稿）：pi-escape-guard 0.1.3",
+      "path": "reviews/review-impl3-6e8dd769.md",
+      "description": "复核者：窗口 6e8dd769。采样 2026-11-20T18:13:49+08:00。对象：commit a1ff468，version 0.1.3，git status --short . 空。",
+      "tags": [
+        "document",
+        "unclassified"
+      ],
+      "contentHash": "61b8a2c641d1460602ee0f4665e146ef77a10f1883238b7a65355581f56460e5"
+    },
+    {
+      "id": "document:reviews/review-impl3-b711ced1.md",
+      "type": "document",
+      "title": "实现复核 3：pi-escape-guard 0.1.3（commit a1ff468）",
+      "path": "reviews/review-impl3-b711ced1.md",
+      "description": "复核者 b711ced1 · 2026-11-20T10:12:13Z",
+      "tags": [
+        "document",
+        "unclassified"
+      ],
+      "contentHash": "78592ba570051424ae12d538d4777acb13d96a62971583f3988d77becb91a2c8"
+    },
+    {
+      "id": "document:reviews/review-impl4-6e8dd769.md",
+      "type": "document",
+      "title": "实现复核（第四轮）：pi-escape-guard 0.1.4",
+      "path": "reviews/review-impl4-6e8dd769.md",
+      "description": "复核者：窗口 6e8dd769。采样 2026-11-20T18:17:45+08:00。对象：commit faaf09f，version 0.1.4，git status --short . 空。",
+      "tags": [
+        "document",
+        "unclassified"
+      ],
+      "contentHash": "a77a47bf4292122fae11f379594c640859bf040643ee114e29c4e4604bff5c23"
+    },
+    {
+      "id": "document:reviews/review-impl4-b711ced1.md",
+      "type": "document",
+      "title": "实现复核 4：pi-escape-guard 0.1.4（commit faaf09f）",
+      "path": "reviews/review-impl4-b711ced1.md",
+      "description": "复核者 b711ced1 · 2026-11-20T10:17:56Z",
+      "tags": [
+        "document",
+        "unclassified"
+      ],
+      "contentHash": "a6fb992564c8a428d46612fd4493de58e53ec87256faf5d4ed0b64b1a5ba82b4"
+    },
+    {
+      "id": "document:reviews/review-impl5-6e8dd769.md",
+      "type": "document",
+      "title": "实现复核（第五轮 / 定稿）：pi-escape-guard 0.1.5",
+      "path": "reviews/review-impl5-6e8dd769.md",
+      "description": "复核者：窗口 6e8dd769。采样 2026-11-20T18:22:44+08:00。对象：commit c6d2b16，version 0.1.5，git status --short . 空。",
+      "tags": [
+        "document",
+        "unclassified"
+      ],
+      "contentHash": "80ebfd365feda704bbce59140e56106e97f73321908d91a65ecf3703cbe25e92"
+    },
+    {
+      "id": "document:reviews/review-impl5-b711ced1.md",
+      "type": "document",
+      "title": "实现复核 5：pi-escape-guard 0.1.5（commit c6d2b16）",
+      "path": "reviews/review-impl5-b711ced1.md",
+      "description": "复核者 b711ced1 · 2026-11-20T10:23:26Z",
+      "tags": [
+        "document",
+        "unclassified"
+      ],
+      "contentHash": "34d3a29fbda19d6635b62c9031bc6381835cbbb5f0934a36adff87688f1d225f"
+    },
+    {
+      "id": "document:reviews/review-r4-6e8dd769.md",
+      "type": "document",
+      "title": "review-r4-6e8dd769.md",
+      "path": "reviews/review-r4-6e8dd769.md",
+      "description": "轮次: R4 提出者: 会话 9d80afea-e93e-4328-8106-7f2aebe20d8d 发现者: 01a1f77b-005d-7421-88b7-5bf1e6599d1b（投递给本窗口的消息头标签：6e8dd769） 修改者: 未改 复核者: 01a1f77b-005d-7421-88b7-5bf1e6599d1b 交付: 2026-11-20T17:02:48+08:00",
+      "tags": [
+        "document",
+        "unclassified"
+      ],
+      "contentHash": "8b5a1bff1709f143d1100ef29d3de1444cec85af7e964f7bc01773ea25b8a69e"
+    },
+    {
+      "id": "document:reviews/review-r4-b711ced1.md",
+      "type": "document",
+      "title": "review-r4-b711ced1.md",
+      "path": "reviews/review-r4-b711ced1.md",
+      "description": "轮次: R4 提出者: 会话 9d80afea-e93e-4328-8106-7f2aebe20d8d 发现者: b711ced1 修改者: 未改 复核者: b711ced1 交付: 2026-11-20T09:00:42Z",
+      "tags": [
+        "document",
+        "unclassified"
+      ],
+      "contentHash": "09720f4898b69249b4cacb66e027d8b0c61245d3fff499d3addc5b494e910db4"
+    },
+    {
+      "id": "document:reviews/signoff-impl.md",
+      "type": "document",
+      "title": "实现签核 · 0.1.5",
+      "path": "reviews/signoff-impl.md",
+      "description": "对象: pi-escape-guard 0.1.5（commit 16c22fd 之前的代码提交） 提出者: 会话 9d80afea-e93e-4328-8106-7f2aebe20d8d 复核方: b711ced1-8bb9-465f-83a3-1ab8fb57f197 / 6e8dd769-9d5c-4a3b-b0cd-f982a3f40c27 日期: 2026-11-21",
+      "tags": [
+        "document",
+        "unclassified"
+      ],
+      "contentHash": "b57c2f59eb6a178cf1b7a191448319daa5e1d805272000567da9d02f9d3108d5"
+    },
+    {
+      "id": "document:reviews/signoff-r4.md",
+      "type": "document",
+      "title": "轮次 R4 · 三方签核",
+      "path": "reviews/signoff-r4.md",
+      "description": "轮次: R4 提出者: 会话 9d80afea-e93e-4328-8106-7f2aebe20d8d 发现者: b711ced1-8bb9-465f-83a3-1ab8fb57f197 / 6e8dd769-9d5c-4a3b-b0cd-f982a3f40c27 修改者: 会话 9d80afea-e93e-4328-8106-7f2aebe20d8d（设计 v1 → v2） 复核者: b711ced1-8bb9-465f-83a3-1ab8fb57f197 / 6e8dd769-9d5c-4a3b-b0cd-f982a3f40c27 交付: 2026-11-20T10:20Z",
+      "tags": [
+        "document",
+        "unclassified"
+      ],
+      "contentHash": "a98512c0c3dfed25ae95f725d033621573892f18c14a66eb0d9df83feed82b62"
+    },
+    {
+      "id": "document:SETTINGS.md",
+      "type": "document",
+      "title": "配置",
+      "path": "SETTINGS.md",
+      "description": "配置文件位置：<扩展目录>/pi-escape-guard.json（首次启动自动写入默认值）。 用环境变量 ESC_GUARD_CONFIG 指向别处；ESC_GUARD_STATE 指定标签存档（默认 state.json）。",
+      "tags": [
+        "document",
+        "unclassified"
+      ],
+      "contentHash": "1d7e5ede27aaaef6452f64ed9a778311008018fad523282d59037b27faa22a85"
+    },
+    {
+      "id": "document:SIGN-OFF-DTT.md",
+      "type": "document",
+      "title": "SIGN-OFF · 依赖类型理论作为唯一元理论",
+      "path": "SIGN-OFF-DTT.md",
+      "description": "本文件钉住三件事：元理论写在 README.md、判据能跑、指纹对得上。指纹一变，签名作废。",
+      "tags": [
+        "document",
+        "unclassified"
+      ],
+      "contentHash": "493cccd781f03f3f6e7a63a832e833725c8c567efe01641cc1419fdbdb3b8bb6"
+    },
+    {
+      "id": "module:bin/all.mjs",
+      "type": "module",
+      "title": "all.mjs",
+      "path": "bin/all.mjs",
+      "tags": [
+        "module",
+        "mjs",
+        "bin"
+      ],
+      "contentHash": "640d2608878f59491d256aea1d4829cfb05b35c76f5e8841e41b195348443bf4"
+    },
+    {
+      "id": "module:bin/mutate.mjs",
+      "type": "module",
+      "title": "mutate.mjs",
+      "path": "bin/mutate.mjs",
+      "tags": [
+        "module",
+        "mjs",
+        "bin"
+      ],
+      "contentHash": "36d35a42c5cc62c31e3154a4a5b137321773ad530509312af20cfb475574b44b"
+    },
+    {
+      "id": "module:src/config.ts",
+      "type": "module",
+      "title": "config.ts",
+      "path": "src/config.ts",
+      "symbols": [
+        "Cfg",
+        "DEFAULTS",
+        "configFile",
+        "ensureConfig",
+        "readConfig"
+      ],
+      "tags": [
+        "module",
+        "ts",
+        "src"
+      ],
+      "contentHash": "646a79134cb0c1c907f5456f321bfb6083b272fb3012699048aa667ea43490a0"
+    },
+    {
+      "id": "module:src/index.ts",
+      "type": "module",
+      "title": "index.ts",
+      "path": "src/index.ts",
+      "symbols": [
+        "installGuard"
+      ],
+      "tags": [
+        "module",
+        "ts",
+        "src"
+      ],
+      "contentHash": "561f569f536bdedf4d703708dd6f84b59c39fa12d92710324b78951edc99f8c8"
+    },
+    {
+      "id": "module:src/meta.ts",
+      "type": "module",
+      "title": "meta.ts",
+      "path": "src/meta.ts",
+      "symbols": [
+        "META",
+        "Piece",
+        "RULES",
+        "Rule",
+        "audit"
+      ],
+      "tags": [
+        "module",
+        "ts",
+        "src"
+      ],
+      "contentHash": "d0a145d9a8d93eaafc87de5f89bb398f692de3ce6f4f986cd2608d96d7fdfdb4"
+    },
+    {
+      "id": "module:src/scan.ts",
+      "type": "module",
+      "title": "scan.ts",
+      "path": "src/scan.ts",
+      "symbols": [
+        "Point",
+        "Settle",
+        "settle"
+      ],
+      "tags": [
+        "module",
+        "ts",
+        "src"
+      ],
+      "contentHash": "ed1bed03e56634e19a011559f279b4cf5ac2796b35fcb3bc336e262d315ae1bd"
+    },
+    {
+      "id": "module:src/verdict.ts",
+      "type": "module",
+      "title": "verdict.ts",
+      "path": "src/verdict.ts",
+      "symbols": [
+        "TextBlock",
+        "isTextBlock",
+        "validContent",
+        "validMessage"
+      ],
+      "tags": [
+        "module",
+        "ts",
+        "src"
+      ],
+      "contentHash": "58292a2eb4684eed8746f5e565372f93dd4222aab14cb63a228c355fdb329e29"
+    },
+    {
+      "id": "module:test/meta.test.ts",
+      "type": "module",
+      "title": "meta.test.ts",
+      "path": "test/meta.test.ts",
+      "tags": [
+        "module",
+        "ts",
+        "test"
+      ],
+      "contentHash": "1028927bf6bcf51b8aa6cdf0a79babdd1530ed5b0b9cd284460d0a935ec5ba2e"
+    },
+    {
+      "id": "module:test/scan.test.ts",
+      "type": "module",
+      "title": "scan.test.ts",
+      "path": "test/scan.test.ts",
+      "tags": [
+        "module",
+        "ts",
+        "test"
+      ],
+      "contentHash": "b4b97e31e476394e39787a3e7b3cf4b827bb1e889b8e89a025a11a3d6944581d"
+    },
+    {
+      "id": "module:test/verdict.test.ts",
+      "type": "module",
+      "title": "verdict.test.ts",
+      "path": "test/verdict.test.ts",
+      "tags": [
+        "module",
+        "ts",
+        "test"
+      ],
+      "contentHash": "f2786ff77bbed13585cbc727e8b4f85419328758e57a35bd5cfc79664ec09c83"
+    },
+    {
+      "id": "module:test/wire.test.ts",
+      "type": "module",
+      "title": "wire.test.ts",
+      "path": "test/wire.test.ts",
+      "tags": [
+        "module",
+        "ts",
+        "test"
+      ],
+      "contentHash": "7197f55c5286c6b8f4fd21cec670405d2daedc92395d526060883eff6f32be93"
+    },
+    {
+      "id": "module:verify-dtt.mjs",
+      "type": "module",
+      "title": "verify-dtt.mjs",
+      "path": "verify-dtt.mjs",
+      "symbols": [
+        "check",
+        "fingerprint"
+      ],
+      "tags": [
+        "module",
+        "mjs"
+      ],
+      "contentHash": "d072075280df92e9ab5891b244321a4d6896aafad14db77d7c17289db27a168e"
+    }
+  ],
+  "handoffs": {
+    "escape-guard": {
+      "type": "agent-handoff",
+      "schemaVersion": 1,
+      "source": ".doc-bridge/index.json",
+      "target": {
+        "type": "package",
+        "id": "escape-guard",
+        "path": "."
+      },
+      "startHere": "docs/for-agents/escape-guard.md",
+      "readBeforeEditing": [
+        "docs/for-agents/escape-guard.md",
+        "AGENTS.md"
+      ],
+      "editRoots": [
+        "."
+      ],
+      "checks": [
+        "npm test",
+        "node bin/mutate.mjs --unique"
+      ],
+      "notes": [
+        "把落进会话记录的字面 unicode 转义还原；只对 thinking 槽位动手。"
+      ]
+    }
+  },
+  "lookup": {
+    "packages": [
+      "escape-guard"
+    ],
+    "ownership": {
+      "escape-guard": {
+        "id": "escape-guard",
+        "path": ".",
+        "checks": [
+          "npm test",
+          "node bin/mutate.mjs --unique"
+        ],
+        "checksSource": "ownership",
+        "purpose": "把落进会话记录的字面 unicode 转义还原；只对 thinking 槽位动手。",
+        "agentDoc": "docs/for-agents/escape-guard.md"
+      }
+    },
+    "intents": {},
+    "changes": {}
+  },
+  "inputs": {
+    "hash": "85545144b0ba801bf2cc1ee599b6c029539b81719ee70665e5241f37e46209bf",
+    "fileCount": 36,
+    "projectionVersion": 2
+  },
+  "retrieval": {
+    "lexiconVersion": 1,
+    "weights": {
+      "title": 4,
+      "headings": 3,
+      "symbols": 3,
+      "path": 2,
+      "aliases": 2,
+      "summary": 2,
+      "body": 1
+    },
+    "params": {
+      "k1": 1.2,
+      "b": 0.75
+    }
+  },
+  "projection": {
+    "type": "retrieval-index",
+    "schemaVersion": 1,
+    "contentHash": "e0f9a96801a4e2e99d3fd18367679ee69bd5734f06a35768af9dc3756d13da59",
+    "contentHashAlgo": "sha256-semantic-v1",
+    "snapshotHash": "ad7c933b51ec63d0b3ed03b7ea6d0facbfdeb4a97b024ec5ecfba16f230b7d48",
+    "overlayHash": "f99666ff9119084dd25c2974ae64eb6935ec2aa785ff5ad478fb9d541f7a5e94",
+    "configurationHash": "9ab8bacd098d9a74efbae0480f81f232fcbf64cb99634927333fa7a03a0bb9c5",
+    "lexiconVersion": 1,
+    "graphMetricsVersion": "1.0.0",
+    "weights": {
+      "title": 4,
+      "headings": 3,
+      "symbols": 3,
+      "path": 2,
+      "aliases": 2,
+      "summary": 2,
+      "body": 1
+    },
+    "params": {
+      "k1": 1.2,
+      "b": 0.75
+    },
+    "lexical": {
+      "version": 1,
+      "documentCount": 35,
+      "fieldNames": [
+        "aliases",
+        "body",
+        "headings",
+        "path",
+        "summary",
+        "symbols",
+        "title"
+      ],
+      "averageFieldLength": {
+        "aliases": 2.5428571428571427,
+        "body": 1055.8,
+        "headings": 97.8,
+        "path": 4.371428571428571,
+        "summary": 31.285714285714285,
+        "symbols": 1.0285714285714285,
+        "title": 7.685714285714286
+      }
+    },
+    "entries": [
+      {
+        "id": "area:bin",
+        "kind": "area",
+        "path": "bin",
+        "title": "bin",
+        "aliases": [],
+        "tags": [
+          "area"
+        ],
+        "fields": {
+          "title": "bin",
+          "headings": "",
+          "path": "bin",
+          "symbols": "",
+          "summary": "",
+          "body": "",
+          "aliases": "area"
+        },
+        "graph": {
+          "pagerank": 0,
+          "inboundLinks": 0,
+          "coveredBy": [],
+          "mentionedBy": [],
+          "packageId": "package:pi-escape-guard",
+          "inbound": [],
+          "outbound": []
+        },
+        "contentHash": "e734462de30d8af6c01a71658cca4015a622bbf705bc5068e7bd6610d722ca64",
+        "provenance": "observed",
+        "confidence": "observed"
+      },
+      {
+        "id": "area:test",
+        "kind": "area",
+        "path": "test",
+        "title": "test",
+        "aliases": [],
+        "tags": [
+          "area"
+        ],
+        "fields": {
+          "title": "test",
+          "headings": "",
+          "path": "test",
+          "symbols": "",
+          "summary": "",
+          "body": "",
+          "aliases": "area"
+        },
+        "graph": {
+          "pagerank": 0,
+          "inboundLinks": 2,
+          "coveredBy": [],
+          "mentionedBy": [
+            "document:DESIGN.md",
+            "document:reviews/review-impl2-b711ced1.md"
+          ],
+          "packageId": "package:pi-escape-guard",
+          "inbound": [
+            {
+              "kind": "mentions",
+              "id": "document:DESIGN.md",
+              "confidence": "fuzzy"
+            },
+            {
+              "kind": "mentions",
+              "id": "document:reviews/review-impl2-b711ced1.md",
+              "confidence": "fuzzy"
+            }
+          ],
+          "outbound": []
+        },
+        "contentHash": "ffd5ceeff351a5637a4745f9c298b1292c2f84c117202e1b707dedd41b1113b9",
+        "provenance": "observed",
+        "confidence": "observed"
+      },
+      {
+        "id": "document:DESIGN.md",
+        "kind": "document",
+        "path": "DESIGN.md",
+        "title": "pi-escape-guard · 设计 v2",
+        "summary": "v2 相对 v1 的改动全部来自 R4 复核（reviews/review-r4-b711ced1.md 的四条不认可），逐条对应写在 §11。",
+        "aliases": [],
+        "tags": [
+          "document",
+          "unclassified"
+        ],
+        "fields": {
+          "title": "pi-escape-guard · 设计 v2",
+          "headings": "pi-escape-guard · 设计 v2 一屏 1 槽位表 2 判据（3 条判据 + 1 条前置 + 1 条策略；C5 只是记账标签，不在判据表里） P1 前置条件：能当 JSON 字符串解（不是判据） C1 合法单层转义（判形状，不判来源） C2 解出的是汉字 C3 代码上下文（v2 新增，v1 只在 §4 提过一笔却没定义） C4 成段：策略阈值，不是判据 C5 会话内已见串（降级为记账标签，不是判据） 3 可逆验证算法 4 误伤的例子（v2 补了 R4 复核给的那三类） 5 交还给人（v2 从 1 条拆成 3 条，其中 2 条已有判据） 6 验收判据 7 结构（沿用 pi-think-sentry 的分法） 8 风险 9 实测 10 设计被自己的验收器推翻了十一次（全部留痕） 11 v2 相对 v1 的修改（逐条对应 R4 复核）",
+          "path": "DESIGN.md",
+          "symbols": "",
+          "summary": "v2 相对 v1 的改动全部来自 R4 复核（reviews/review-r4-b711ced1.md 的四条不认可），逐条对应写在 §11。",
+          "body": "pi-escape-guard · 设计 v2 v2 相对 v1 的改动全部来自 R4 复核（reviews/review-r4-b711ced1.md 的四条不认可），逐条对应写在 §11。 一屏 不问「这串字符是什么」，问「它落在哪个槽位」和「它的左边是什么」。 - 槽位 4 个（§1），动作 3 种（还原 / 只标记 / 不动），挂在位置上。 - 判据 4 条 + 前置 1 条 + 策略 1 条（§2）。分类是硬的：判据要能写出「若 则不可区分」，写不出的不进判据表。 - 还原点在进记录之前改（tool result / message end），逐处记账。 - 记账总差必须等于 Σ(每处差)，不等整批回滚（§3）。 现取数据（我自己跑的，见 §6）： points 每次跑都可能不同（盘在写、半行 JSON 被跳过）， 不变量是 ratio 与 saved === expected ，不是 points。要可复现就把 88 个文件先快照再扫。 1 槽位表 槽位 pi 事件 从谁那里来 动作 --- --- --- --- S1 工具结果 tool result 工具把序列化后的文本交给 pi 还原 S2 助手正文 message end 模型抄了上下文里的污染 还原 S3 发给模型前 before provider request 历史残留 只标记 S4 已落盘记录 无钩子 旧版本会话 不动，只读 判据：一个槽位只挂一个动作。既要判又要改又要拦，说明它是两个槽位。 2 判据（3 条判据 + 1 条前置 + 1 条策略；C5 只是记账标签，不在判据表里） P1 前置条件：能当 JSON 字符串解（ 不是判据 ） JSON.parse('\"' + s + '\"') 成功只是入场券。 JSON.parse('\"abc\"') 也成功，而 abc 从来不是被序列化的文本。 C1 合法单层转义（判形状， 不判来源 ） 「若 则不可区分」 ：若两段的转义数都等于解出的字符数、且解出都不含字面转义，C1 分不出「被序列化过的文本」与「恰好这么写的原文」—— greeting=\\u4f60\\u597d\\u4e16 就是后者。所以 C1 只判形状合法，来源由 C3 判。 这条取代了 v1 的 C2 。v1 写的是「解一层 → 序列化回去 → 与原文逐字符相同」，被自己的验收器推翻： JSON.stringify(\"一\") 给 \"一\" 不是 \"\\u4e00\" ，序列化不是单射。见 §10。 C2 解出的是汉字 若 则不可区分 ： \\u0024\\u5f20 解出 $张 ，含 $ → 不动； \\uFEFF 解出零宽空格 → 不动。 v2 修掉 v1 的一处 ：v1 的字符类含 \\u2000-\\u206f ，把 U+200B 零宽空格也算 CJK，实测放行。现在去掉这一段。 C3 代码上下文（v2 新增，v1 只在 §4 提过一笔却没定义） 或 ~~~ 状态机） → 不动 C3b 段落在行内 code（同一行里前后各有一个 包住） → 不动 C3c 段所在的行是赋值形状 ^\\s (?:[^\\s=:]+\\s+) [^\\s=:]+\\s [:=] → 不动 C3d 段前后紧邻引号（双引号、单引号、反引号）且该行真汉字 < 2 → 不动 例外：该行另有 ≥2 个真汉字按正文处理（两个汉字就能洗白一行代码，这是 C3d 的洞） 一段 = 同一行内连续出现的、中间只隔 \\n \\t \\r \\\" \\\\ 的转义序列 若段内转义个数 < 3，不动 若同一串在本文件更早出现过 → 打标签 repeat；否则打标签 firstSeen 标签只影响记账，不影响动作：两种都还原（见 §5） layers(s, max = 3): // 2026-11-21 实现时删掉：见本节末的「单层的证据」 cur = s; n = 0 loop: if n = max: return { layers: n, text: cur, why: \"too-deep\" } t = try(JSON.parse('\"' + cur + '\"')) // P1 if 抛错: break if t.length !== 段内转义数: break // C1 if t 还含字面转义: break // C1 if t 不是全 CJK: break // C2 if 落进 C3 的三种上下文: return { why: \"in-code\" } cur = t; n++ return { layers: n, text: cur, why: n ? \"ok\" : \"none\" } cd C:/Users/15066212pp/.pi/agent/extensions/pi-escape-guard node bin/all.mjs → files 88, points 45, saved 1089 = expected 1089, ratio 1, failFiles 9 pi-escape-guard/ src/index.ts 只做事件分发：事件 → {slot, text}，调 slots.ts src/config.ts 配置读写（ensureConfig/readConfig/writeConfig/readProblem 同构） src/slots.ts §1 那张表：slot → 动作，唯一一处 src/judges.ts §2 的 C1/C2/C4：一段字符串 → 解出的文本或拒绝原因 src/scan.ts 按行扫描：C3 的四个形状 + 位置（at 含行首偏移） src/guard.ts 一段文本进、一段文本出。三个槽位共用的唯一入口 src/seen.ts firstSeen / repeat 两个记账标签（不是判据；按会话分键，随 state.json 落盘） src/ledger.ts §3 的按批记账与回滚 src/verdict.ts 输出形状校验（手写，不用 zod） src/features/ 五个开关 toolResult.ts S1 还原（默认开） assistant.ts S2 还原（默认开） provider.ts S3 只标记（默认开） report.ts skipped 四类汇总与 stats（默认开） strict.ts C2 用「全是 CJK」（默认开；关掉回到比例判定，会误伤正则） skipFixtures.ts 跳过 test/fixtures/ 下的文件（默认开，理由见 §8 风险第三条） bin/measure.mjs §6 验收器 bin/all.mjs 全量汇总 test/ 单测 + test/rpc .mjs 起真 pi 子进程验钩子 README.md SETTINGS.md PR.md HISTORY.md DESIGN.md node bin/all.mjs → files 88, points ≈55, saved ≈1180 = expected, ratio 1, failFiles 9 skipped ≈26360 = double-escaped ≈12655 + short ≈2989 + in-code ≈10541 + not-all-cjk 175 failFiles 13（全因 not-all-cjk，需人看） 恒等式在 88 个文件上处处成立。failFiles 9 全部因为 not-all-cjk（看着像污染但解出不是纯汉字），按 R4 复核的要求不掩盖——那是交还清单。not-all-cjk 175 是交还条目的具体数量。 10 设计被自己的验收器推翻了十一次（全部留痕） 次 我原来写的 被什么推翻 改成什么 --- --- --- --- 1 C2「解一层 → 序列化回去 → 逐字符相同」 JSON.stringify(\"一\") 是 \"一\" 不是 \"\\u4e00\" 。序列化不是单射 C1（字符数相等 + 解出不含字面转义） 2 直接扫 jsonl 原文 106/106 段判 double-escaped——文件层本身就是一次序列化 先 JSON.parse 再扫内容层 3 expected 用内容层、saved 用文件层 ratio 1.333 ：内容层 6 字节在文件里是 7 字节 两端都在内容层记账 4 pass = skipped === 0 真实数据里 33 个双重转义本就不该动 三条：恒等式 + points 0 + why 白名单 5 delta 用 byteLength(text) 替换写的是 JSON.stringify(text) ，含引号时更长 delta 按替换文本算 6 C3 按行处理后 at 当整串偏移用 ratio 变 1.45：按行处理时 m.index 是行内偏移，替换全落到字符串开头 at = 行首偏移 + m.index 7 C3c 正则只认一个词 const s = \"…\" 有两个词，源码字面量没挡住（实测 points 2 而非 1） 放宽成「一个或多个 ASCII 词 + 赋值符」 11 C1 里的 unit-mismatch （每个转义恰好产出一个字符） 实现时发现它是恒假的： JSON.parse 对每个 \\uXXXX 恰好产出一个 UTF-16 码元，长度相等由解析器保证，不是我判出来的。变异巡检改它，没有任何测试能红 删掉。同 C5：一条永远不触发的判据不该留在判据表里 11 v2 相对 v1 的修改（逐条对应 R4 复核） R4 的第几条 改了什么 --- --- ① §2 的",
+          "aliases": "document unclassified"
+        },
+        "graph": {
+          "pagerank": 0,
+          "inboundLinks": 2,
+          "coveredBy": [],
+          "mentionedBy": [
+            "document:HISTORY.md",
+            "document:reviews/review-impl2-6e8dd769.md"
+          ],
+          "inbound": [
+            {
+              "kind": "mentions",
+              "id": "document:HISTORY.md",
+              "confidence": "observed"
+            },
+            {
+              "kind": "mentions",
+              "id": "document:reviews/review-impl2-6e8dd769.md",
+              "confidence": "fuzzy"
+            }
+          ],
+          "outbound": [
+            {
+              "kind": "mentions",
+              "id": "area:test",
+              "confidence": "fuzzy"
+            }
+          ]
+        },
+        "contentHash": "72c64c0226e66154b4d84c266186756f94c8f95dfe6400d42aa28439a7c841ac",
+        "provenance": "observed",
+        "confidence": "observed"
+      },
+      {
+        "id": "document:docs/for-agents/escape-guard.md",
+        "kind": "document",
+        "path": "docs/for-agents/escape-guard.md",
+        "title": "escape-guard",
+        "summary": "覆盖：本仓根",
+        "audience": "agent",
+        "aliases": [
+          "escape-guard"
+        ],
+        "tags": [
+          "document",
+          "agent"
+        ],
+        "fields": {
+          "title": "escape-guard",
+          "headings": "escape-guard 改之前",
+          "path": "docs/for-agents/escape-guard.md",
+          "symbols": "",
+          "summary": "覆盖：本仓根",
+          "body": "escape-guard 覆盖：本仓根 - 目的：把落进会话记录的字面 unicode 转义还原；只对 thinking 槽位动手。 - 机器判据：npm test、node bin/mutate.mjs --unique - 能改哪里：这个仓内的文件；跨仓改动要先说明那是另一个 ownership。 改之前 - 先跑上面所有判据拿到当前 rc；改完同一条命令必须还是 0。 - 只跑好样本会绿的不算判据：有 selftest 的必须一起跑。",
+          "aliases": "escape-guard document agent"
+        },
+        "graph": {
+          "pagerank": 0,
+          "inboundLinks": 0,
+          "coveredBy": [],
+          "mentionedBy": [],
+          "inbound": [],
+          "outbound": []
+        },
+        "contentHash": "24554636fa83ddf61d3d236809cba52f0811df953ca0a2543c2d9db3f2448936",
+        "provenance": "observed",
+        "confidence": "observed"
+      },
+      {
+        "id": "document:HISTORY.md",
+        "kind": "document",
+        "path": "HISTORY.md",
+        "title": "历史",
+        "summary": "签核第六轮 6e8dd769：Seen 类接参三处都对，但 export const seen = new Seen() 无参， 配置的 maxPerSession 在运行时仍然无效——测试绿、线上不生效。",
+        "aliases": [],
+        "tags": [
+          "document",
+          "unclassified"
+        ],
+        "fields": {
+          "title": "历史",
+          "headings": "历史 0.1.8 · 2026-11-21 · 运行时单例接配置 0.1.7 · 2026-11-21 · 把配置项接到使用点 0.1.6 · 2026-11-21 · R6：重扫判据 + bodyCjk 配置化 0.1.5 · 2026-11-21 · 一句注释说错了口径 0.1.4 · 2026-11-21 · 一行输出 0.1.3 · 2026-11-21 · 复核三条（复核方 6e8dd769 第二轮） 0.1.2 · 2026-11-21 · 实现复核七条（复核方 b711ced1） 0.1.1 · 2026-11-21 · 实现复核三条（复核方 6e8dd769） 0.1.0 · 2026-11-21 · 实现（设计 v2 落地）",
+          "path": "HISTORY.md",
+          "symbols": "",
+          "summary": "签核第六轮 6e8dd769：Seen 类接参三处都对，但 export const seen = new Seen() 无参， 配置的 maxPerSession 在运行时仍然无效——测试绿、线上不生效。",
+          "body": "历史 0.1.8 · 2026-11-21 · 运行时单例接配置 签核第六轮 6e8dd769：Seen 类接参三处都对，但 export const seen = new Seen() 无参， 配置的 maxPerSession 在运行时仍然无效——测试绿、线上不生效。 补：max 改成可写；install 与 refresh 各一行 seen.max = cfg.maxPerSession。 端到端判据：配 2 → note 三条 → 只剩 2 条。npm test 51/51/0。 0.1.7 · 2026-11-21 · 把配置项接到使用点 签核第四轮指出的两处：maxPerSession 无人读、provider.ts 缺 bodyCjk（第四次）。 Seen 构造接 max；provider 的 scan 传 bodyCjk。 test/r6-wire.test.ts 两条：上限 2 只留 2 条、bodyCjk=0 时紧邻引号也还原。npm test 50/50/0。 0.1.6 · 2026-11-21 · R6：重扫判据 + bodyCjk 配置化 防止自我模仿的判据落在这里（R6 共识的第二节）： 插件写进上下文的每个字符串，每一处差异都要指得到一段原文区间。 这个插件天然满足——它只做解码替换，输出全部来自 settle 或原文，不新增自造文本。 但「天然满足」不是判据，所以补了一条能红的： 还原后的文本再扫一遍，必须 0 点。 坏样本：把 replacement 改成返回原段（不解码）→ 重扫仍是 1 点 → 测试红。已进 mutate（第 16 条）。 配置化： bodyCjk （C3d 的例外阈值，默认 2）从常量搬进配置。 不搬 ： SEG 、 ASSIGN 、 CJK CHAR （结构判据，改了判据就废）。 判据：npm test 48/48/0；mutate 16 抓住 / 0 存活 / 0 锚点失效。 0.1.5 · 2026-11-21 · 一句注释说错了口径 report.ts 写「points 是扫到的段（restore 与 mark 都算）」，但 note() 只在 restore 槽位调用， S3 的段根本进不来。两位复核各用一条探针指出同一件事：S3 载荷两段，stats.points 变化 0。 注释改成「只有 restore 槽位」。代码没错，错的是那句话—— 注释也是判据，说错了就有人按它实现。 0.1.4 · 2026-11-21 · 一行输出 0.1.3 的 mutate 打两行 JSON（旧 console.log 没删），调用方按行解析就会读到缺 skipped 的那一行。 进度改走 stderr，stdout 只剩一行： {\"caught\":15,\"survived\":0,\"skipped\":0,\"names\":[]} 。 判断依据： node bin/mutate.mjs 2 /dev/null wc -l = 1。 0.1.3 · 2026-11-21 · 复核三条（复核方 6e8dd769 第二轮） 缺陷 修法 --- --- --- ① stats.points 与新增的 attempted 恒等（两行都 += g.points ），注释却说 points 是「还原成功的段」 删 attempted ；注释改成「扫到的段，restore 与 mark 都算」。上一版只改名字没改语义，被指出后删掉重复的那个字段 ② provider.ts 的 scan 没传 strict/ratio：同一段 S1 认、S3 不认 补传。三个槽位必须用同一套判据参数 ③ mutate.mjs 的锚点在上一版被换掉后打 SKIP，但 rc=0、报「14 抓 0 存活」，而数组有 15 条—— 没跑的那条被从分母里抹掉 SKIP 计入失败并单独报数；换掉失效锚点 第③条是这一轮最值钱的一条： 「锚点找不到就跳过」和「判据恒真」是同一种病 ——都让报告看起来比实际干净。 修完 mutate 报 caught 15 / survived 0 / skipped 0 ，分母与数组长度对得上。 0.1.2 · 2026-11-21 · 实现复核七条（复核方 b711ced1） 逐条复跑后判不认可，七条里六条是真缺陷： 缺陷 修法 --- --- --- ① 围栏状态机只看字符的第一个字：三反引号块里出现 ~~~ 就提前闭合，块内转义被当正文还原 记 (字符, 长度)，闭合要求同字符且不短于开启 ② strict / ratio 是死配置：strict.ts 的 c2Pass 没有调用者，judges.ts 另写一份 CJK 正则 C2 只留 strict.ts 一处，judges.ts 的常量删掉 ③ report 是死配置： grep cfg.report 零命中 note() 前加开关，两个槽位都加 ④ double-escaped 只看前一个字符：三个反斜杠也判「不动」 数连续反斜杠的奇偶 ⑤ stats.points 是段级、restored 是块级，注释却写成「比例」 改名 blocksRestored，另加 attempted 当段级分母 ⑥ 仓库没有 .gitignore，配置与 state.json 一跑就变成未跟踪文件 加 .gitignore ⑦ measure.mjs 不带 skipFixtures，与运行时不一致 离线扫的是内容层，不知道来源路径；记为已知差异，不假装修好 修完：npm test 47 / 47 / 0；mutate 14 个变异全部抓住、0 存活 （上一版 11 个里有 3 个存活：两条是死代码，一条是测试文件根本没被跑）。 这轮真正的方法产出 ：变异巡检跑的是 列出的文件名 ，所以 report.test.ts 写好了却没被跑。 把 run() 改成扫整个 test/ 目录，那条变异立刻红。 枚举出来的清单会静默漏，扫掠不会。 0.1.1 · 2026-11-21 · 实现复核三条（复核方 6e8dd769） 1. 会话 id 取错了位置 。我写 ctx?.session?.id ，pi 的真位置是 ctx.sessionManager.getSessionId() （docs/extensions.md:855/1205）。键错不报错，只会让所有会话落进一个桶，firstSeen / repeat 失去意义。 2. 两个计数声明了没自增 ： stats.toolResults 与 stats.marked 恒 0。声明的计数不自增，比不声明更坏——人以为在看数据。 3. 那处「存活变异」不是冗余保护 。role 检查在 note() 之前，删掉它 user 消息也会记账、也会写 seen。 我读代码判它「被 validMessage 完全覆盖」，判错了。 第三次栽在同一句话上：判等价要构造出可区分输入。 0.1.0 · 2026-11-21 · 实现（设计 v2 落地） 设计在 DESIGN.md ，md5 5ac45301 那一版由三方签字（ reviews/signoff-r4.md ）。本次只做「把它写成代码」。 产出 ：10 个 src 模块 + 6 个 features + 7 组测试 + 变异巡检。 实现阶段新发现的三条 （设计阶段看不见，写成代码才暴露）： 1. unit-mismatch 是恒假判据 。JSON.parse 自己保证每个 \\uXXXX 产出一个 UTF-16 码元， 写不出能触发它的输入。变异巡检改它，没有任何测试能红。删掉（与设计阶段的 C5 同一种病）。 2. C3d 与正文证据冲突时以正文为准 ：该行另有 ≥2 个真汉字就按正文处理。 代价是「一行里有两个汉字的代码」会被误还原——这是 C3d 的洞，写在 DESIGN §2。 3. role 检查有两处 （assistant.ts 与 verdict.ts）。0.1.1 证明第一处不是冗余，它守的是记账。 删掉的东西 ： src/layers.ts （无样本）、判据 unit-mismatch （恒真）、 src/context.ts 与 src/unescape.ts （合并进 scan.ts / judges.ts ）。",
+          "aliases": "document unclassified"
+        },
+        "graph": {
+          "pagerank": 0,
+          "inboundLinks": 0,
+          "coveredBy": [],
+          "mentionedBy": [],
+          "inbound": [],
+          "outbound": [
+            {
+              "kind": "mentions",
+              "id": "document:DESIGN.md",
+              "confidence": "observed"
+            },
+            {
+              "kind": "mentions",
+              "id": "document:reviews/signoff-r4.md",
+              "confidence": "observed"
+            },
+            {
+              "kind": "mentions-symbol",
+              "id": "module:src/scan.ts",
+              "confidence": "observed"
+            }
+          ]
+        },
+        "contentHash": "d1a7c21256d863053dd625aebe9979d278bdcdfeedd65baf91f6ea8e01299ca3",
+        "provenance": "observed",
+        "confidence": "observed"
+      },
+      {
+        "id": "document:README.md",
+        "kind": "document",
+        "path": "README.md",
+        "title": "pi-escape-guard",
+        "summary": "对话记录里出现字面 \\u4f60\\u53ef\\u4ee5 这种东西（本该是「你可以」）。一旦落盘，模型每轮都读到它， 就学着照抄，越滚越多。这个扩展在两个源头槽位上把它还原成它代表的字，然后在代码上下文里一律不碰。",
+        "audience": "human",
+        "aliases": [],
+        "tags": [
+          "document",
+          "project"
+        ],
+        "fields": {
+          "title": "pi-escape-guard",
+          "headings": "pi-escape-guard 元理论：依赖类型理论（唯一） 一屏 判据只有三条 开关 怎么验 实现里删掉的两样",
+          "path": "README.md",
+          "symbols": "",
+          "summary": "对话记录里出现字面 \\u4f60\\u53ef\\u4ee5 这种东西（本该是「你可以」）。一旦落盘，模型每轮都读到它， 就学着照抄，越滚越多。这个扩展在两个源头槽位上把它还原成它代表的字，然后在代码上下文里一律不碰。",
+          "body": "pi-escape-guard 对话记录里出现字面 \\u4f60\\u53ef\\u4ee5 这种东西（本该是「你可以」）。一旦落盘，模型每轮都读到它， 就学着照抄，越滚越多。这个扩展在 两个源头槽位 上把它还原成它代表的字，然后在代码上下文里一律不碰。 元理论：依赖类型理论（唯一） Γ ⊢ 规则 : Prop 。一条规则就是一个类型；说它成立 = 指得出住在这个类型里的居民。没有居民就不成立，写 sorry ，不写「显然」。 四件缺一不算规则： 件 在这份文档里是什么 反例 --- --- --- 形成 命题里每个词都能落到盘上可查的东西（ pi-escape-guard.json 的四个键、C1–C4、 test/fixtures/ 里的坏样本） 「必要时生效」——盘上查不到它在哪生效 引入 一条命令 + 它该返回的 rc 只写「已测」，不写退出码 消去 换第二个入口算一遍，得同一个答案 两个入口读的是同一处，只算一条 反例 一个具体输入，喂进去这条规则就为假 反例格里写「视情况」 判法： node verify-dtt.mjs （rc=0）；坏样本 node verify-dtt.mjs --selftest （五个坏样本全红）；指纹 node verify-dtt.mjs --fingerprint （sha256，与 SIGN-OFF-DTT.md 里的一致才算签过）。 这套判法自己的反例：文档长得像规则、每格都填着形容词。 verify-dtt.mjs 判反例格是否为空、判点名的脚本在不在盘上——形容词能过格，脚本不在盘上过不了。 一屏 - 装在 pi 里，自动生效，不需要命令。 - S1 工具结果、S2 助手正文：还原。S3 发给模型前：只看不动。S4 已落盘的记录：没有钩子。 - 代码里不动：围栏、行内 code、赋值行、紧邻引号的字面量、双重转义、少于 3 个转义的孤立段。 - 解的文本里混进非中文（比如 \\u0024 ）也不动——那多半是正则，不是污染。 判据只有三条 判据 说的是 坏样本 --- --- --- C1 解出来不含字面转义 \\u005c\\u0075\\u0034\\u0066\\u0036\\u0030 解出 \\u4f60 C2 解出来全是 CJK（含空白、全角标点） \\u0024\\u0024\\u0024 解出 $$$ C3 不在代码上下文 const s = \"…\" 、 npm test 判据、位置、记账、接线、钩子五组；条数以它的输出为准，这里不抄数 node bin/mutate.mjs 变异巡检：15 个变异，全部抓住，0 存活、0 锚点失效 node bin/all.mjs 88 个 jsonl 全量：points ≈55, ratio 1, failFiles 9 failFiles 9 不是失败，是 交还清单 ：那 9 个文件里有 175 段「看着像污染但解出不是纯汉字」， 判据拒绝，需要人看一眼。它红着才说明判据没被拆。 上一版这里活着一处（ assistant.ts 的 role 检查）。加了一条测试之后它也红了： role 检查守的不是还原动作，是 记账 —— note() 在 validMessage 兜底之前跑，所以 user 消息也会被写进 stats 与 seen。 这就是「判等价必须构造出可区分输入」：我第一眼读代码，以为它被第二道检查完全覆盖。 实现里删掉的两样 - layers.ts （多层 JSON 解包）：实测内容层没有第二层，写了也没有样本能验，等于未测试的代码。 - 判据 unit-mismatch ： JSON.parse 保证每个 \\uXXXX 产出一个码元，这条判据恒真——恒真的判据不给信息。 两条都记在 DESIGN §10。",
+          "aliases": "document project"
+        },
+        "graph": {
+          "pagerank": 0,
+          "inboundLinks": 1,
+          "coveredBy": [],
+          "mentionedBy": [
+            "document:SIGN-OFF-DTT.md"
+          ],
+          "inbound": [
+            {
+              "kind": "mentions",
+              "id": "document:SIGN-OFF-DTT.md",
+              "confidence": "observed"
+            }
+          ],
+          "outbound": [
+            {
+              "kind": "mentions",
+              "id": "document:SIGN-OFF-DTT.md",
+              "confidence": "observed"
+            },
+            {
+              "kind": "mentions",
+              "id": "module:verify-dtt.mjs",
+              "confidence": "observed"
+            },
+            {
+              "kind": "mentions-symbol",
+              "id": "module:src/verdict.ts",
+              "confidence": "observed"
+            }
+          ]
+        },
+        "contentHash": "25e05d3f90cf28404ae84d24136653633d304992e8641cdbec9e2a4ae37d353a",
+        "provenance": "observed",
+        "confidence": "observed"
+      },
+      {
+        "id": "document:reviews/review-impl-6e8dd769.md",
+        "kind": "document",
+        "path": "reviews/review-impl-6e8dd769.md",
+        "title": "实现复核：pi-escape-guard 0.1.0",
+        "summary": "复核者：窗口 6e8dd769（设计阶段签过 DESIGN 5ac4530）。时间：2026-11-20T17:53:49+08:00。 对象：commit ae4fcf3，package.json version 0.1.0，工作区干净（git status --short . 空）。",
+        "aliases": [],
+        "tags": [
+          "document",
+          "unclassified"
+        ],
+        "fields": {
+          "title": "实现复核：pi-escape-guard 0.1.0",
+          "headings": "实现复核：pi-escape-guard 0.1.0 0 结论 1 三条验收（我复跑的） 2 钩子形状：三条都对（有源码依据） 3 恒等式 saved === expected：成立，而且是单点的 4 三条缺陷 4.1 sessionOf() 恒返回 \"default\"——设计承诺的「按会话分键」没实现 4.2 stats.toolResults 与 stats.marked 是死字段：声明了，没人写 4.3 变异存活那条不是纯冗余：它是记账缺口，不是无害冗余 5 查了但没发现缺陷的四处（写在这是为了说清边界） 6 边界表（15 条，逐条与 DESIGN §2 对照） 7 已改 / 未改",
+          "path": "reviews/review-impl-6e8dd769.md",
+          "symbols": "",
+          "summary": "复核者：窗口 6e8dd769（设计阶段签过 DESIGN 5ac4530）。时间：2026-11-20T17:53:49+08:00。 对象：commit ae4fcf3，package.json version 0.1.0，工作区干净（git status --short . 空）。",
+          "body": "实现复核：pi-escape-guard 0.1.0 复核者：窗口 6e8dd769（设计阶段签过 DESIGN 5ac4530）。时间：2026-11-20T17:53:49+08:00。 对象：commit ae4fcf3 ， package.json version 0.1.0，工作区干净（ git status --short . 空）。 0 结论 不认可。三条，全部可复跑。还原动作本身没有缺陷 ——钩子形状、判据、恒等式、fuzz、边界表都验过了、都成立。三条是「记账面」的：一条把设计承诺的按会话分键做成了常量，两条是统计字段没人写。 1 三条验收（我复跑的） 与你报的一致（points 45→56 是会话在长，不构成差异）。 2 钩子形状：三条都对（有源码依据） 钩子 文档要求 盘上 依据 --- --- --- --- tool result 返回 partial patch，只给 content 则该字段生效；替换 content 而不返回 structuredContent 会 drop 它 返回 {content, structuredContent: undefined} dist/core/extensions/runner.js:908-921 ： if (handlerResult.content !== undefined) { currentEvent.content = …; if (handlerResult.structuredContent === undefined) delete currentEvent.structuredContent; } → 显式 drop，符合 message end 返回 {message} ，role 必须相同 {message: next} ， validMessage(next,\"assistant\") 兜底 runner.js:872-895 （ emitMessageEnd ：role 不等即 emitError + continue ）； agent-session.js:999-1010 用 replaceMessageInPlace before provider request 返回 undefined 保持 payload 返回 undefined runner.js 的 emit 只在非 undefined 时替换；代码注释与 DESIGN §8 一条目的一致 另外核了 session shutdown 存在（文档 601 行，reason 含 quit/reload/new/resume/fork）→ seen.save() 有落盘时机 ✓。 3 恒等式 saved === expected：成立，而且是单点的 结构上不可能分叉 ： ledger.settle() 是唯一实现，S1/S2 走 guardText → settle ， bin/measure.mjs （S4 视角）也 import { settle } from \"../src/ledger.ts\" 。三处同一个函数，不存在第二份算法。 实测（同一段文本分别过三个槽位）： S3 的 saved 恒 0 是对的（它不改文本，恒等式对它不适用；它只贡献 points）。 fuzz：3000 条随机串（CJK 0x4e00 起每 97 取一、全角标点、五种前缀含围栏/赋值行/引号），其中 867 条被判出 points，共 867 点： settle not ok 0 = 恒等式处处成立； residue after apply 0 = 还原后既不含 \\uXXXX 、再扫也不再出点（幂等）。 边界表 15 条逐条与 DESIGN §2 对照，全部一致（表格见 §6）。 4 三条缺陷 4.1 sessionOf() 恒返回 \"default\" ——设计承诺的「按会话分键」没实现 pi 的 ctx 上这三个字段一个都没有。 dist/core/extensions/runner.js:622-695 的 createContext() 返回的字段是： ui, mode, hasUI, cwd, sessionManager, modelRegistry, model, scopedModels, thinkingLevel, isIdle, isProjectTrusted, signal, abort, hasPendingMessages, shutdown, getContextUsage, compact, getSystemPrompt 。会话标识只从 ctx.sessionManager.getSessionId() / getSessionFile() 拿（ docs/extensions.md:1203-1213 、 :855 ）。 复跑： 影响： seen 的键永远只有 \"default\" 一个 → 1. firstSeen / repeat 变成「本机所有会话合计」的首次/再现，不是「本会话」。DESIGN §7 写「按会话分键，随 state.json 落盘」、§8 风险表写「fork 后新会话从空集开始」——两条都没落地。 2. load() 会把 state.json 里 default 的旧串读进新会话： 换一个会话再看到同一个串，判成 repeat ，而它在这个会话里是首次。这恰好破坏标签的用途（首次去查源头，复制去查谁在抄）。 3. markState.sessions 同样只有一个键。 修法（一行）： const sessionOf = (ctx) = ctx?.sessionManager?.getSessionId?.() ?? ctx?.sessionManager?.getSessionFile?.() ?? \"default\"; 4.2 stats.toolResults 与 stats.marked 是死字段：声明了，没人写 复跑： grep -rn \"stats\\.toolResults\\ stats\\.marked\" src/ → 两条都在 report.ts 的定义行，没有任何自增。全部自增点是 report.ts:20-24 与 index.ts:31 （messages）。而 markProvider() 把数写进 markState.points ，不写 stats.marked 。 影响： summary() 里两个数恒 0。读的人会得出「S1 一次没跑」「S3 一处没扫到」——而这两件事都没发生。 修法： stripToolResult 里 stats.toolResults++ ； markProvider 里 stats.marked += n （或把 markState 合并进 stats ，一处可写）。 4.3 变异存活那条不是纯冗余：它是记账缺口，不是无害冗余 变异： assistant.ts 的 message.role !== \"assistant\" → message.role !== \"assistant\" && false （永不早退）。实测（user 消息，content 为数组，含一段 \\u4f60\\u597d\\u4e16 ）： 版本 返回值 stats.points stats.restored seen --- --- --- --- --- 原版 undefined 0 0 [] 变异 undefined 1 1 [\"你好世\"] 复跑（探针脚本内容在回执末尾附录，或按下面两步自己搭）： 判断： 输出面是冗余，记账面不是 。 validMessage(next, \"assistant\") 确实兜住了返回值（两版都 undefined ），但 note(g) 在 map 循环里先跑了， s.note() 也把串写进了 seen。也就是说： - 删掉 role 检查 → 返回给 pi 的东西不变（mutate 观察到的那一层正确）； - 但同时 stats.restored 会虚计（记「还原了 1 处」而实际什么都没返回）、 seen 会被污染。 所以守着 role 检查的不是 validMessage ，是记账。而 没有一条测试会红 ——这才是变异存活的含义。 最小修法（二选一，都是加法）： 1. 补一条测试：user 消息过 stripAssistant 后 stats.points 与 stats.restored 不变（现在 0）。 2. 或把 note(g) 挪到 if (!validMessage(...)) return undefined; 之后（但那时逐块信息已丢）。1 更便宜。 5 查了但没发现缺陷的四处（写在这是为了说清边界） 1. 「代码改了但没记账」 ： stripToolResult / stripAssistant 每块都 note(g) ，与 g.changed 同源； settle 失败时 saved=0 而 points 仍计—— report.ts 注释已写明这是有意的（ restored 与 points 分开），不是漏记账。 2. settle 失败时点已进 seen （ guard.ts 先 s.note 再 settle ）：顺序上是「记账先于动作」，但 saved !== expected 在 fuzz 867 条上 0 次触发，且两处都在同一函数内、回滚是「一开始就没改」。记为观察，不构成缺陷。 3. C3b 不认双反引号 ： 见 \\u4f60\\u597d\\u4e",
+          "aliases": "document unclassified"
+        },
+        "graph": {
+          "pagerank": 0,
+          "inboundLinks": 0,
+          "coveredBy": [],
+          "mentionedBy": [],
+          "inbound": [],
+          "outbound": [
+            {
+              "kind": "mentions-symbol",
+              "id": "module:src/scan.ts",
+              "confidence": "observed"
+            },
+            {
+              "kind": "mentions-symbol",
+              "id": "module:src/verdict.ts",
+              "confidence": "observed"
+            }
+          ]
+        },
+        "contentHash": "cd8ec17a66fbb6128b4bf2f548d976aa0ed9a0a711874ec0d6e9b2a305fb7486",
+        "provenance": "observed",
+        "confidence": "observed"
+      },
+      {
+        "id": "document:reviews/review-impl-b711ced1.md",
+        "kind": "document",
+        "path": "reviews/review-impl-b711ced1.md",
+        "title": "实现复核：pi-escape-guard 0.1.0（commit ae4fcf3）",
+        "summary": "复核者 b711ced1 · 2026-11-20T09:55:12Z",
+        "aliases": [],
+        "tags": [
+          "document",
+          "unclassified"
+        ],
+        "fields": {
+          "title": "实现复核：pi-escape-guard 0.1.0（commit ae4fcf3）",
+          "headings": "实现复核：pi-escape-guard 0.1.0（commit ae4fcf3） 一、我签的部分（三条） 二、不认可：7 条真缺陷 1（最硬）围栏状态机不校验字符与长度，会把代码改坏 2（硬）strict / ratio 是死配置，src/features/strict.ts 整个文件没人 import 3（硬）report 是死配置 4（中）double-escaped 只看 1 个反斜杠，奇数个连续反斜杠时漏判 5（中）stats.points 与 stats.restored 量纲不同，report.ts 的注释把它当比例 6（中）两个恒 0 字段 + 仓库没有 .gitignore，运行时会往被跟踪目录里写两个文件 7（中，口径分叉）bin/measure.mjs 与运行时不是同一套判据 三、你问的四条，逐条答 四、已改 / 未改 五、写完后取证：src/index.ts 在复核期间被改，其中一条是我漏的（本节为最终结论，覆盖上面那行） 六、最终剩余清单（按修的顺序） 七、第三次取证：0.1.1 已发（2cb30d8），我这条围栏缺陷两方都没抓到 这一条我要点出来：6e8dd769 的回执写「还原动作本身无缺陷」 0.1.1 把运行时生成的配置文件 commit 了 —— 我第 6 条第二条证据",
+          "path": "reviews/review-impl-b711ced1.md",
+          "symbols": "",
+          "summary": "复核者 b711ced1 · 2026-11-20T09:55:12Z",
+          "body": "实现复核：pi-escape-guard 0.1.0（commit ae4fcf3） 复核者 b711ced1 · 2026-11-20T09:55:12Z 结论：不认可。 钩子形状三条全对，恒等式在 restore 槽成立，这些我签；但有 6 条真缺陷， 其中第 1 条会把代码改坏（误伤方向），第 2/3 条是「配置写了却恒无效」。 我先复跑了你的四条，数字对得上： 你报 points ≈55 / ≈1180，我取 56 / 1188，差 1 处 8 字节——盘在写，同一时刻两次跑就会差。 一、我签的部分（三条） 1. 钩子形状 3/3 与 pi 文档一致。 钩子 文档要求 代码 判 --- --- --- --- message end 返回 { message } ，必须保住 role assistant.ts:26 { message: next } ，:24 validMessage(next, \"assistant\") 兜底 ✓ tool result 返回 partial patch； 替换 content 而不返回 structuredContent 就丢弃它 toolResult.ts:29 { content, structuredContent: undefined } ✓（显式置 undefined 与「省略即丢弃」等价） before provider request 返回 undefined 保持不变 index.ts:38 return undefined ✓ AssistantMessage.content 在文档里就是数组（message-types.md:124），所以 assistant.ts:11 要求数组不是漏判——我原本怀疑字符串 content，核了文档，撤回。 2. 恒等式在 restore 槽成立，且 delta-mismatch 不是恒假判据。 实测三槽（ guardText 直接调，段 \\u4f60\\u597d\\u4e16 ，每段 delta 9）： 所以我给恒等式加一句限定： 它成立在「会改文本的槽位、且每一批 settle 之内」 ，不是全局跨槽位。 mark 槽不产生 saved，拿它和 expected 比会得到 0/9。你的报表只在 --apply 时算 ratio，避开了这一点，但 §3 的措辞要收紧。 settle 的 saved !== expected 分支 可达 ，不是死代码：我把 applyPoints 改成从前往后（变异 5 的同款改动）， saved/expected 变成 5/18 ，分支真的会触发。所以它与被删掉的 unit-mismatch 不同类——它有守护对象（同模块的 applyPoints 顺序）。 这条我认。 3. 你自删 unit-mismatch 、自删 layers.ts 的判断，我认。 理由与你写的一致，且 mutate 脚本的存在本身是这条判据的机器判据。 二、不认可：7 条真缺陷 复跑脚本我放在 %TEMP%/impl-repro.mjs （不写你的仓库）： 现取输出（now = 当前行为，should = 应为）： 块里出现 ~~~ 行, 其后有段 1b now=1 should=0 ~~~ 块里出现 围栏 2:1 now=1 should=1 1 个连续反斜杠后跟段 2:2 now=0 should=0 2 个连续反斜杠后跟段 2:3 now=0 should=1 3 个连续反斜杠后跟段 2:4 now=0 should=0 4 个连续反斜杠后跟段 3 now=false should=true strict=false ratio=0.1, 段解出 a你好 4 now=1 should=0 report=false 后 stats.points 的增量 5 now=3/1 should=3/3 一块 3 段: points/restored 6 now=0/0 should=非恒 0 summary().toolResults / .marked ts const fm = /^( {3,} ~{3,})/.exec(t); if (fm) { fence = fence ? null : fm[1][0]; ... } 或 ~~~ 开头的行都切换状态，不看 是不是同一种字符 、也不看 长度够不够 （CommonMark：闭合围栏必须同字符、长度 = 开始）。 后果正好落在 C3a 承诺的反面—— 块内内容被当正文还原 ： 块，块里有转义） ~~~ ~~~ 现取：points=1，即那段被还原成「你好世」；应为 0。 $ grep -rn \"strict\" src/ grep -v features/strict.ts src/config.ts:10 strict: boolean; src/config.ts:28 strict: true, （其余都是 test 里的 assert/strict） $ grep -rn \"c2Pass\\ allCJK\\ mostlyCJK\" src/ test/ 只有 src/features/strict.ts 自己三行，没有调用者。 段 \\u0061\\u4f60\\u597d 解出 \"a你好\" strict=true → not-all-cjk，不还原 strict=false ratio=0.1 → 仍然 not-all-cjk，不还原（应为可还原） 有 role 检查：role=user 返回 undefined，stats.points 0 → 0 无 role 检查：返回仍是 undefined，但 stats.points 0 → 1、stats.firstSeen 1 → 2 块里出现 ~~~ 行或外层 ~~~ 里示范 $ git status --porcelain M src/index.ts ?? reviews/review-impl-b711ced1.md sessionOf: ctx?.sessionManager?.getSessionId?.() ctx?.session?.id … tool result 钩子: stats.toolResults++ before provider request 钩子: stats.marked += markProvider(...) docs/extensions.md:1203-1213 ctx.sessionManager → getCwd/getSessionDir/getSessionId/getSessionFile/… $ grep -rn \"ctx\\.session\\b\" docs/ → 0 命中 node --experimental-strip-types \"C:/Users/15066212pp/AppData/Local/Temp/impl-repro6.mjs\" 6 toolResults/marked 增量 \"1/1\" ← 第 6 条的两个死字段已接线 7a 真实 ctx sessionManager \"abc\" ← 新写法生效 7b 只有 ctx.session.id \"abc\" ← 旧写法兜底 7c 空 ctx \"default\" 对 块里出现 ~~~ 或外层 ~~~ 里示范 $ git log --oneline -3 2cb30d8 pi-escape-guard 0.1.1：实现复核的三条，全部是真缺陷 8b39001 实现复核 0.1.0：不认可（三条：sessionOf 恒 default、stats 两个死字段、变异存活是记账缺口） ae4fcf3 pi-escape-guard 0.1.0：把设计写成代码 $ md5sum src/scan.ts src/judges.ts src/features/strict.ts 27fa2885… src/scan.ts ← 与我复核 0.1.0 时同一个 md5 cbb75748… src/judges.ts ← 同上 80723f4b… src/features/strict.ts ← 同上 块内是 结构 样本，不是字符样本，随机段生成器天然不产这种输入。 两方复核都漏了它，而它落在 误伤方向 （代码被改），比漏判重一档。这也是我坚持它阻塞的理由。 0.1.1 把运行时生成的配置文件 commit 了 —— 我第 6 条第二条证据 这比「会多两个未跟踪文件」严重一档：现在 改配置会脏工作区 ，而 SETTINGS.md:20 告诉用户「改完不用重启」， 等于教人制造 dirty tree；同时同一份默认值有了两处真值（仓库里这份 + DEFAULTS 常量），改一处不改另一处就会分叉。 修法两条一起： git rm --cached pi-escape-guard.json + 仓库根加 .gitignore （ pi-escape-guard.json 、 state.json ）。 另：仓库根现在有一个 ?? p.cjs 未跟踪（不是我的，我没动仓库），commit 前清掉。 结论: 不认可（理由：0.1.1（2cb30d8）按 6e8dd769 的三条改的都是我认的——sessionOf 恒 default 是我漏的真缺陷、两个死字段已接线、变异存活是记账缺口这个结论与我的 Q4 相同，两方独立到同一条按交叉验证定案；但 0.1.1 只碰了 src/index.ts、test/hooks.test.ts、bin/mutate.mj",
+          "aliases": "document unclassified"
+        },
+        "graph": {
+          "pagerank": 0,
+          "inboundLinks": 0,
+          "coveredBy": [],
+          "mentionedBy": [],
+          "inbound": [],
+          "outbound": [
+            {
+              "kind": "mentions",
+              "id": "document:SETTINGS.md",
+              "confidence": "fuzzy"
+            },
+            {
+              "kind": "mentions",
+              "id": "module:bin/mutate.mjs",
+              "confidence": "observed"
+            },
+            {
+              "kind": "mentions",
+              "id": "module:src/index.ts",
+              "confidence": "observed"
+            },
+            {
+              "kind": "mentions",
+              "id": "module:src/scan.ts",
+              "confidence": "fuzzy"
+            },
+            {
+              "kind": "mentions",
+              "id": "module:test/scan.test.ts",
+              "confidence": "fuzzy"
+            },
+            {
+              "kind": "mentions-symbol",
+              "id": "module:src/config.ts",
+              "confidence": "observed"
+            },
+            {
+              "kind": "mentions-symbol",
+              "id": "module:src/scan.ts",
+              "confidence": "observed"
+            },
+            {
+              "kind": "mentions-symbol",
+              "id": "module:src/verdict.ts",
+              "confidence": "observed"
+            }
+          ]
+        },
+        "contentHash": "56f4e81c11e50b6afef0312c38da5a754663cd2f322b9eb4a6be900eb8ef806b",
+        "provenance": "observed",
+        "confidence": "observed"
+      },
+      {
+        "id": "document:reviews/review-impl2-6e8dd769.md",
+        "kind": "document",
+        "path": "reviews/review-impl2-6e8dd769.md",
+        "title": "实现复核（第二轮）：pi-escape-guard 0.1.2",
+        "summary": "复核者：窗口 6e8dd769。采样时刻 2026-11-20T18:04:52+08:00。对象：commit 1fd60b4，package.json version 0.1.2，git status --short . 空（这一刻是干净的；我第一次采样时它还列着 6 个 staged 文件，是提交进行中）。",
+        "aliases": [],
+        "tags": [
+          "document",
+          "unclassified"
+        ],
+        "fields": {
+          "title": "实现复核（第二轮）：pi-escape-guard 0.1.2",
+          "headings": "实现复核（第二轮）：pi-escape-guard 0.1.2 0 结论 1 三条验收（复跑） 2 我上一轮报的三条：都修了（逐条实测） 3 b711ced1 七条：抽验（不是我的责任，但改到的面我都看了） 4 三条缺陷 4.1 stats.points 与 stats.attempted 恒等：注释说的那个量根本没被记 4.2 S3 调 scan 不传 strict/ratio：配了 strict:false 时 S1 与 S3 分叉 4.3 mutate.mjs 有一条锚点已失效：SKIP 不报、rc=0、分母被动了 5 我看到但没算缺陷的两处（说清边界） 6 已改 / 未改 附录：§4.1 / §4.2 / §4.4 的探针全文（复制到任意文件，node --experimental-strip-types <文件> 即可）",
+          "path": "reviews/review-impl2-6e8dd769.md",
+          "symbols": "",
+          "summary": "复核者：窗口 6e8dd769。采样时刻 2026-11-20T18:04:52+08:00。对象：commit 1fd60b4，package.json version 0.1.2，git status --short . 空（这一刻是干净的；我第一次采样时它还列着 6 个 staged 文件，是提交进行中）。",
+          "body": "实现复核（第二轮）：pi-escape-guard 0.1.2 复核者：窗口 6e8dd769。采样时刻 2026-11-20T18:04:52+08:00。对象：commit 1fd60b4 ，package.json version 0.1.2， git status --short . 空（这一刻是干净的；我第一次采样时它还列着 6 个 staged 文件，是提交进行中）。 0 结论 不认可，三条。 我上一轮的三条确实修了（逐条实测，见 §2），b711ced1 的七条抽验也基本落地（§3）。三条新的都是修复引入或漏改的： 1. stats.points 与 stats.attempted 恒等——两个名字一个值，且 report.ts 注释说 points 是「还原成功的段」，代码里从没记过这个量。 2. provider.ts 调 scan() 时不传 strict / ratio → 配了 strict:false 时 S1 还原、S3 不认。死配置的残留一处。 3. bin/mutate.mjs 有一条锚点已被 0.1.2 的改动删掉：它打 SKIP(找不到锚点) ，但脚本 rc=0、JSON 仍报 caught:14, survived:0 ，HISTORY 写「14 个变异全部抓住」——数组里其实是 15 条 ，那一条从分母里消失了。 1 三条验收（复跑） 恒等式 saved === expected 成立（2004 = 2004，ratio 1）。points 从 0.1.0 的 56 涨到 95、saved 1188→2004，是「反斜杠奇偶」那条修完之后更多段被认（3 个反斜杠现在还原），加上会话在长——方向对，我按 §4.4 逐档验过。 2 我上一轮报的三条：都修了（逐条实测） 验法 结果 --- --- --- ① sessionOf 取真位置 代码改成 ctx?.sessionManager?.getSessionId?.() … ；mutate 有对应变异 ✓ 修了。变异「会话 id 取 pi 的真位置」 抓住 （说明有测试守着）；旧写法留在 链末尾当兜底，不改变行为 ② 两个死字段 index.ts 加 stats.toolResults++ 、stats.marked += markProvider(...) ✓ 修了。变异「toolResults 计数」抓住 ③ 变异存活不是冗余 上一轮我给的探针：user 消息过 stripAssistant 后看 stats ✓ 修了。变异「S2 只动 assistant」现在 抓住 ，0.1.0 时它是存活的 3 b711ced1 七条：抽验（不是我的责任，但改到的面我都看了） 我的验法 结果 --- --- --- ① 围栏 (字符, 长度) 4 个构造：开3 内含 ~~~ 、开5 关3、开5 关5、开3 关5 ✓ 全对。开3 内含 ~~~ 不再闭合（5 行 in-code）；开5 关3 不闭合；开5 关5 与 开3 关5 都闭合 ② strict/ratio 死配置 看 judges.ts 现在 import c2Pass ；变异「C2 走 c2Pass」抓住 ✓ judges 侧修了； 但 S3 漏了 ，见 §4.2 ③ report 死配置 toolResult.ts / assistant.ts 各 if (cfg.report) note(g) ；变异抓住 ✓ ④ 反斜杠奇偶 前缀 0/1/2/3/4 各一条 ✓ 还原、不动、还原、不动、还原——与现代 JSON 语义一致（总反斜杠奇数还原、偶数不动） ⑤ points/restored 改名 跑 summary() 半对： blocksRestored 改对了， attempted 是重复的像 ，见 §4.1 ⑥ .gitignore cat .gitignore ✓ 三行（pi-escape-guard.json / state.json / node modules/） ⑦ measure 不跳 fixtures 记为已知差异 DESIGN.md:208 ✓ 写了，且写清了「不假装两边一致」 4 三条缺陷 4.1 stats.points 与 stats.attempted 恒等：注释说的那个量根本没被记 同一文件第 2 行的注释是这么说的： 但 points 从没在「还原成功」这一侧加过：它加的是 g.points （扫出的点数，与 g.changed 无关）。于是分子恒等于分母，比例恒 1—— 一个比值判据变成了恒等式 ，这与设计阶段删掉的 unit-mismatch、C5 是同一种病。 实测： 复跑： 修法（二选一，都要动语义，你定）：把 points 改成「还原成功的点数」（ g.changed ? g.points : 0 ，但 guardText 没暴露 ok），或删掉 points 只留 attempted 与 blocksRestored 两个数。 别留两个相等的字段 ：读 summary 的人会把它们当成两个不同的量。 4.2 S3 调 scan 不传 strict/ratio：配了 strict:false 时 S1 与 S3 分叉 对比 guard.ts 的调用： 实测（同一段「你a你好」的转义， strict:false , ratio:0.6 ）： 这个分叉不只是数字不准：S3 存在的唯一理由就是「量出 S1/S2 漏了多少」。它和 S1 用不同判据时，它报的「漏了 N 处」里混着自己判据更严造成的误报——那正是它要发现的东西，被它自己的口径污染了。 修法：一行，把 strict / ratio 补进 scan 的 opts（或让 provider.ts 走 guardText ，一处算）。 4.3 mutate.mjs 有一条锚点已失效：SKIP 不报、rc=0、分母被动了 全部输出（我复跑）： 数组里是 15 条 ，跑了 14 条。SKIP 的那条锚点是 if (at 0 && line[at - 1] === \"\\\\\\\\\") { skip(\"double-escaped\"); continue; } （.mjs 源码里写作四个反斜杠，表示比较的是两个反斜杠） —— 0.1.2 第④条（反斜杠奇偶）把这段代码换成了 let bs = 0; … if (bs % 2 === 1) ，旧锚点自然找不到。 同类判据确实被「反斜杠数奇偶」那条覆盖了，所以 功能上没漏 ；漏的是 巡检本身的分母 ： - 脚本 rc=0， survived 0 ，看起来全绿； - HISTORY 0.1.2 写「mutate 14 个变异全部抓住、0 存活」——把「跑了 14 条」写成「14 个变异」，而数组有 15 条。 这恰好是你自己这轮立的那条规矩的反面： 枚举出来的清单会静默漏，扫掠不会 。你修了「测试文件名清单」，没修「变异锚点清单」——锚点消失也是清单失效，而且它比测试清单更隐蔽，因为它有 SKIP 这个词做提示，却没人把它当失败。 修法：把 SKIP 计入失败（ if (!orig.includes(from)) { skipped++; continue; } 且末尾 process.exit(survived.length skipped ? 1 : 0) ），或更彻底：锚点用「必须匹配一次且只一次」的正则/断言，找不到就红。 5 我看到但没算缺陷的两处（说清边界） 1. judges.ts 有一行悬空注释（ // C2：去掉 U+2000–U+206F … ），它对应的常量已删、代码搬到了 strict.ts 。文字残留，不影响判据。 2. measure.mjs 的 scan 也不传 strict / ratio ——但它是离线验收器、不读配置，与 §4.2 的运行时槽位不同一件事；DESIGN §8 已把它归为「已知差异」。要一致是另一个决定。 6 已改 / 未改 已改：无。 未改：三条都是语义判断（points 该记哪个量、S3 走不走 guardText、SKIP 算不算失败），不替你定。 附录：§4.1 / §4.2 / §4.4 的探针全文（复制到任意文件， node --experimental-strip-types <文件 即可） 结论: 不认可（三条：① report.ts:22-23 两个 += g.points 让 points 与 attempted 恒等，而注释说 points 是「还原成功的段」——该量从未被记录，复跑 grep -n \"attempted\\\\ stats.points\" src/ 只有这两行；② provider.ts:23 的 scan(s,{threshold}) 缺 strict/ratio，配 strict:false 时同一段 S1 认（points 1）、S3 不认（points 0），复跑探针见 §4.2；③ bin/mutate.mjs 的「双重转义」锚点已被 0.1.2 第④条换掉，现在打 SKIP 但 rc=0、JSON 报 caught 14/survived 0，而数组是 15 条——HISTORY 的「14 个变异全部抓住」把没跑的那条从分母里抹掉了。我上一轮的三条（sessionOf、两个死字段、变异存活）逐条实测均已修好，b711ced1 七条抽验六条落地、第⑤条只改了名字没改语义（即本条①）。）",
+          "aliases": "document unclassified"
+        },
+        "graph": {
+          "pagerank": 0,
+          "inboundLinks": 0,
+          "coveredBy": [],
+          "mentionedBy": [],
+          "inbound": [],
+          "outbound": [
+            {
+              "kind": "mentions",
+              "id": "document:DESIGN.md",
+              "confidence": "fuzzy"
+            },
+            {
+              "kind": "mentions",
+              "id": "module:bin/mutate.mjs",
+              "confidence": "observed"
+            }
+          ]
+        },
+        "contentHash": "713f5bc4d9dab67fb4c8914f53337a0ddfcb61a557077455059c931ef98c4287",
+        "provenance": "observed",
+        "confidence": "observed"
+      },
+      {
+        "id": "document:reviews/review-impl2-b711ced1.md",
+        "kind": "document",
+        "path": "reviews/review-impl2-b711ced1.md",
+        "title": "实现复核 2：pi-escape-guard 0.1.2",
+        "summary": "复核者 b711ced1 · 2026-11-20T10:04:37Z",
+        "aliases": [],
+        "tags": [
+          "document",
+          "unclassified"
+        ],
+        "fields": {
+          "title": "实现复核 2：pi-escape-guard 0.1.2",
+          "headings": "实现复核 2：pi-escape-guard 0.1.2 一、七条逐条复跑 二、新发现三条（不阻塞，请带走） A. stats.points 与 stats.attempted 恒同值，points / attempted 恒等于 1 B. 两处悬挂/死代码 C. 交付状态：0.1.2 未 commit 三、这轮最值钱的东西不是那七条修法 四、已改 / 未改 五、写完本回执后再取证：0.1.2 已 commit（1fd60b4），本节覆盖第二节 C 条的状态",
+          "path": "reviews/review-impl2-b711ced1.md",
+          "symbols": "",
+          "summary": "复核者 b711ced1 · 2026-11-20T10:04:37Z",
+          "body": "实现复核 2：pi-escape-guard 0.1.2 复核者 b711ced1 · 2026-11-20T10:04:37Z 结论：认可（0.1.2）。 我上轮报的七条逐条复跑，六条已修、第七条按已知差异处理且 DESIGN 里有原文，我认这个处理。 新发现三条，都不阻塞（一条报表语义、两处死代码/悬挂注释），列在下面请顺手带走。另有一条交付状态要注意： 0.1.2 还没 commit 。 现取（复跑得到的）： 你报 points ≈55 / saved ≈1180，我取 58 / 1206，多 3 处 26 字节——盘在写，同一时刻两次跑就这幅度。 一、七条逐条复跑 复跑脚本 %TEMP%/repro-012.mjs 与 %TEMP%/repro-012b.mjs （不写你的仓库）： 我上轮第几条 现取 应为 判 --- --- --- --- ① 围栏 1a： points 0 0 ✓ ① 围栏 1c：外层 ~~~ 里示范 ts stats.points += g.points; stats.attempted += g.points; $ git log --oneline -1 2cb30d8 pi-escape-guard 0.1.1：实现复核的三条，全部是真缺陷 $ git status --porcelain head -4 A extensions/pi-escape-guard/.gitignore M extensions/pi-escape-guard/DESIGN.md D extensions/pi-escape-guard/pi-escape-guard.json M extensions/pi-escape-guard/src/scan.ts js execFileSync(process.execPath, [\"--experimental-strip-types\", \"--test\"], { cwd: ROOT }) $ git log --oneline -2 1fd60b4 pi-escape-guard 0.1.2：两位复核的十条，九条真缺陷都修了 2cb30d8 pi-escape-guard 0.1.1：实现复核的三条，全部是真缺陷 $ git status --porcelain ?? extensions/pi-escape-guard/reviews/review-impl2-b711ced1.md ← 本文件本身，唯一未跟踪 $ git diff --stat HEAD （空 —— 工作树与 1fd60b4 逐字节一致） 1fd60b4 的 16 个文件与我上面复跑的那一版是同一次改动（ git diff --stat HEAD 空）， 所以「0.1.2 未 commit」这条的现取状态已变， 签核对象从工作树改成 commit 1fd60b4 。 第二节 C 条留着不回改：它记录的是我在那一刻看到的事实，也正是「任务书说干净、盘上却没 commit」这类前提要现取的原因。 pi-escape-guard.json 在 1fd60b4 里是 -11 行（出库）， .gitignore +3 行——第 ⑥ 条是 真出库 ，不是只加 ignore。 结论: 认可（0.1.2 · commit 1fd60b4 —— 与我复核的工作树逐字节一致， git diff --stat HEAD 为空。上轮七条逐条复跑全过：①围栏 1a/1b/1c/1d 均 0 点，对照 1e/1f 正常块内 0 与裸正文 1 说明没矫枉过正；②strict/ratio 整链通（judges 顶部 import c2Pass、decisive 用 opts.strict/opts.ratio、guard 传 cfg、scan 传递），CJK 常量已删，strict=false ratio=0.1 时「a你好」还原而 strict=true 时不还原；③report 开关两槽位都加，report=false 走 S1/S2 增量均 0、true 时 1；④反斜杠四档 1/0/1/0；⑤量纲分开，一块 3 段 points 3/attempted 3/blocksRestored 1；⑥.gitignore 加且 pi-escape-guard.json 在 commit 里是 -11 行真出库；⑦measure 与运行时的 fixtures 差异按 DESIGN §8「已知差异…不假装两边一致」记为信息缺口，我认。现取 npm test 47/47/0、mutate 14 抓 0 存活、all.mjs files 88/points 58/saved 1206=expected/ratio 1/failFiles 9（你报 55/1180，差 3 处 26 字节，盘在写）。三条不阻塞请带走：A. stats.points 与 stats.attempted 都执行 += g.points（report.ts:21-22），而 :2 的注释承诺「还原成功 vs 尝试过的段」， 于是 points/attempted 恒等于 1（settle 失败时也仍为 1）；判据是 grep 那两行同值， 修法 if (g.changed) stats.points += g.points; 或删掉 points 保留 attempted 当分母；B. report.ts:5 注释仍写「marked / restored」而 restored 已改名 blocksRestored，toolResult.ts:16 的 saved 只在 :22 累加从不读；C. 已由 1fd60b4 结案（本回执第二节 C 条给的是那一刻的现取）。另认这轮最值钱的不是七条修法，而是 mutate 的 run() 改成 --test 扫整个 test/，把「report.test.ts 写好了没被跑」当场暴露——与「枚举会静默漏、扫掠不会」同条；edges.test.ts:10/:17 把围栏两种嵌套形状写成会红的样本，那条判据从此有机器判据。仓库一字节未动。）",
+          "aliases": "document unclassified"
+        },
+        "graph": {
+          "pagerank": 0,
+          "inboundLinks": 0,
+          "coveredBy": [],
+          "mentionedBy": [],
+          "inbound": [],
+          "outbound": [
+            {
+              "kind": "mentions",
+              "id": "area:test",
+              "confidence": "fuzzy"
+            },
+            {
+              "kind": "mentions",
+              "id": "module:bin/mutate.mjs",
+              "confidence": "observed"
+            }
+          ]
+        },
+        "contentHash": "b41229492fcd559b8af940fa3bb3d2ea66727c7bddc556a60b38253ec286a177",
+        "provenance": "observed",
+        "confidence": "observed"
+      },
+      {
+        "id": "document:reviews/review-impl3-6e8dd769.md",
+        "kind": "document",
+        "path": "reviews/review-impl3-6e8dd769.md",
+        "title": "实现复核（第三轮 / 定稿）：pi-escape-guard 0.1.3",
+        "summary": "复核者：窗口 6e8dd769。采样 2026-11-20T18:13:49+08:00。对象：commit a1ff468，version 0.1.3，git status --short . 空。",
+        "aliases": [],
+        "tags": [
+          "document",
+          "unclassified"
+        ],
+        "fields": {
+          "title": "实现复核（第三轮 / 定稿）：pi-escape-guard 0.1.3",
+          "headings": "实现复核（第三轮 / 定稿）：pi-escape-guard 0.1.3 0 结论 1 三条修复：逐条验（两条实测 + 一条证伪） 1.1 ① attempted 删了、注释改了 —— 删干净了，注释没 google 到 1.2 ② provider.ts 补传 strict/ratio —— ✓ 1.3 ③ SKIP 计入失败 —— ✓，我造了坏样本，它会红 2 三条验收（复跑） 3 两条缺陷 3.1 mutate.mjs 现在打两行 JSON：第一行缺 skipped，正好把第③条的成果挡住 3.2 report.ts 的注释说 points「restore 与 mark 都算」，实测 mark 不进 points 4 一条观察（一次观察、未复现，所以不算缺陷） 5 已改 / 未改",
+          "path": "reviews/review-impl3-6e8dd769.md",
+          "symbols": "",
+          "summary": "复核者：窗口 6e8dd769。采样 2026-11-20T18:13:49+08:00。对象：commit a1ff468，version 0.1.3，git status --short . 空。",
+          "body": "实现复核（第三轮 / 定稿）：pi-escape-guard 0.1.3 复核者：窗口 6e8dd769。采样 2026-11-20T18:13:49+08:00。对象：commit a1ff468 ，version 0.1.3， git status --short . 空。 0 结论 不认可，两条，都是一行改动。 三条修复本身都真修好了（第③条我做了证伪实验，见 §1.3）。两条剩的是「报告层」：一条让你这轮最值钱的修复（SKIP 计入失败）在默认输出里看不见，一条让 points 的注释第三次与代码不符。 1 三条修复：逐条验（两条实测 + 一条证伪） 1.1 ① attempted 删了、注释改了 —— 删干净了，注释没 google 到 删字段这一半 ✓。 test/report.test.ts 已改成断言 stats.points ✓。 注释那一半错了 ，见 §3.2。 1.2 ② provider.ts 补传 strict/ratio —— ✓ 与 guard.ts 的调用现在是同一组参数（threshold + strict + ratio）。三个槽位同一套判据 ✓。 1.3 ③ SKIP 计入失败 —— ✓，我造了坏样本，它会红 这是我唯一不满足于「读代码说改了」的一条，所以做了证伪：把 MUTANTS 第一条的锚点改成不存在的串，跑，看 rc。 你写的「锚点找不到就跳过与判据恒真是同一种病」我同意——而且现在它有坏样本了，不是一句口号。 2 三条验收（复跑） 与你报的 ≈55/≈1180/9 同量级；差值来自 jsonl 在长，不是行为差异。 3 两条缺陷 3.1 mutate.mjs 现在打两行 JSON：第一行缺 skipped ，正好把第③条的成果挡住 我复跑的实际输出： 读的人（或任何 JSON.parse(stdout.split(\"\\n\")[0]) 的脚本）拿到第一行 → 又是一个没有 skipped 字段的对象 ，与 0.1.2 时一模一样。你这轮把 skipped 做进 rc，但默认输出的第一行仍把结论说成「15 抓 0 存活」。 复跑： 修法：删第 47 行。 3.2 report.ts 的注释说 points「restore 与 mark 都算」，实测 mark 不进 points 但 note() 只被 toolResult.ts 与 assistant.ts （S1/S2）调用；S3 走 markProvider ，它的段记在 stats.marked （ index.ts 里 stats.marked += markProvider(...) ）。 实测（S3 载荷里放两段成段转义）： markProvider 自己只写 markState ； stats.marked 由 index.ts 加。所以 points 是 只含 S1/S2 ， marked 才是 S3——注释把两个槽位说成一个。 这是同一形状的第三次：0.1.0 的 points/restored 注释写「比例」而值是块数；0.1.2 的 points/attempted 注释写「还原成功 vs 尝试过」而两值相等；0.1.3 注释写「restore 与 mark 都算」而 mark 不在里面。 每次都是注释描述了一个代码里不存在的量。 修法：注释改成「扫到的段，只含 S1/S2；S3 的段在 marked」。或者把 S3 的段也灌进 points（但那样 marked 又要说明它只含 S3——不如让注释配代码）。 4 一条观察（一次观察、未复现，所以不算缺陷） 我第一次跑 node bin/all.mjs 2 &1 tail -2 时，输出里出现过一行 Node.js v26.13.0 （子进程崩溃的尾行），同一次 points 49 / saved 699；随后连跑 3 次都是 58 / 1206 / 1206，没有那行。未复现。 可疑的是 bin/all.mjs 的这行： 若某个 measure 子进程崩了，它不计入 P/S/E/skip，但 files 仍是 walk 出来的总数 → 分母与 files 不等，而且没有任何提示。这与你这轮刚立的那句是同一句话。若你愿意，加一个 crashed++ 并让它进 rc，一行。 5 已改 / 未改 已改：无（证伪实验改的是 bin/mutate.mjs ，跑完已从备份恢复， git status --short . 空）。 未改：两条都是一行，但都是「这层不存在会漏哪种事故」的判断题——A 漏的是「读输出的人以为全跑完」，B 漏的是「看 points 以为 S3 也算了」。我不替你选。 结论: 不认可（两条，都是一行：① bin/mutate.mjs:47 的旧 console.log 没删，脚本现在打两行 JSON，第一行 {\"caught\":15,\"survived\":0,\"names\":[]} 缺 skipped——复跑 node bin/mutate.mjs wc -l = 2，与 0.1.2 时「读第一行看不到 skipped」是同一个形状；② src/features/report.ts:8 注释写「points 扫到的段（restore 与 mark 都算）」，实测 S3 载荷两段 {\"S3 扫到的段\":2,\"stats.points 变化\":0} ——mark 的段在 stats.marked ，不在 points 。三条修复本身：① attempted 已从 src/test/bin 清零 ✓，② provider.ts 已与 guard.ts 同一组参数 ✓，③ SKIP 计入失败 ✓（我造坏锚点→rc=1、skipped 1，恢复→rc=0）。p.s. all.mjs 的 catch-continue 有一次未复现的 stderr 泄漏，记为观察，不阻塞。）",
+          "aliases": "document unclassified"
+        },
+        "graph": {
+          "pagerank": 0,
+          "inboundLinks": 0,
+          "coveredBy": [],
+          "mentionedBy": [],
+          "inbound": [],
+          "outbound": [
+            {
+              "kind": "mentions",
+              "id": "module:bin/all.mjs",
+              "confidence": "observed"
+            },
+            {
+              "kind": "mentions",
+              "id": "module:bin/mutate.mjs",
+              "confidence": "observed"
+            },
+            {
+              "kind": "mentions",
+              "id": "module:test/meta.test.ts",
+              "confidence": "fuzzy"
+            }
+          ]
+        },
+        "contentHash": "61b8a2c641d1460602ee0f4665e146ef77a10f1883238b7a65355581f56460e5",
+        "provenance": "observed",
+        "confidence": "observed"
+      },
+      {
+        "id": "document:reviews/review-impl3-b711ced1.md",
+        "kind": "document",
+        "path": "reviews/review-impl3-b711ced1.md",
+        "title": "实现复核 3：pi-escape-guard 0.1.3（commit a1ff468）",
+        "summary": "复核者 b711ced1 · 2026-11-20T10:12:13Z",
+        "aliases": [],
+        "tags": [
+          "document",
+          "unclassified"
+        ],
+        "fields": {
+          "title": "实现复核 3：pi-escape-guard 0.1.3（commit a1ff468）",
+          "headings": "实现复核 3：pi-escape-guard 0.1.3（commit a1ff468） 一、你改的三处，逐条验 1. points / attempted 恒等 → 删 attempted，注释改成「扫到的段（restore 与 mark 都算）」 2. provider.ts 补 strict / ratio：三个槽位同一套参数 3. mutate.mjs：锚点失效计入失败 二、我上轮 B 条没改（两处，不阻塞） 三、新发现一条：mutate.mjs 打两行 JSON，第一行没有 skipped 四、测量说明：复核期间盘在变，第一次跑是红的 五、已改 / 未改",
+          "path": "reviews/review-impl3-b711ced1.md",
+          "symbols": "",
+          "summary": "复核者 b711ced1 · 2026-11-20T10:12:13Z",
+          "body": "实现复核 3：pi-escape-guard 0.1.3（commit a1ff468） 复核者 b711ced1 · 2026-11-20T10:12:13Z 结论：认可（0.1.3）。 你改的三处我逐条实测有效。但我上轮报的 B 条（两处悬挂/死代码） 没改 ， 而且 bin/mutate.mjs 现在打两行 JSON、第一行没有 skipped ——这与你刚修的「SKIP 让分母消失」同族。两条都不阻塞。 还有一条测量说明必须先写： 我第一次跑是红的，同一分钟重跑是绿的，HEAD 全程没变 。原因在第四节。 现取（第二次，绿）： 一、你改的三处，逐条验 1. points / attempted 恒等 → 删 attempted ，注释改成「扫到的段（restore 与 mark 都算）」 我核了 src/features/report.ts ： stats 里没有 attempted 了， :2 的注释是 「points 扫到的段（restore 与 mark 都算），不是「还原成功的段」」。 这个处理比我提的两种修法都好。 我上轮给的是「要么 if (g.changed) 算成功段、要么删 points」， 你选了第三条： 承认这个字段本来就不是成功率 ，把注释改成它真实的语义。 我提那两条的前提是「这个字段应该表达成功率」，而那个前提是我从旧注释里读来的，不是你代码里的东西。 2. provider.ts 补 strict / ratio ：三个槽位同一套参数 grep -n \"scan(s,\" src/features/provider.ts → scan(s, { threshold: cfg.threshold, strict: cfg.strict, ratio: cfg.ratio }) 。 实测 S1 与 S3 在三种参数下同判（同一段 \\u0061\\u4f60\\u597d ，解出 a你好 ）： 三个槽位现在共用一套判据参数，S3「量出 S1/S2 漏了多少」这个用途才成立——修前它会 低报 ： S1 认得的段 S3 不认得，于是「非零说明有漏洞」永远不触发。这条是你自己发现的，我上轮漏了（我只报了 measure.mjs 那一处离线口径分叉）。 3. mutate.mjs ：锚点失效计入失败 现取 caught 15 / survived 0 / skipped 0 ，与 MUTANTS 数组长度对得上（15 条）。rc=0。 这条我认它比上轮七条都值钱： 「锚点找不到就跳过」与「判据恒真」是同一种病 ——都让报告比实际干净。 你换了 双重转义 的锚点（旧锚 line[at - 1] === \"\\\\\" 已经不存在），换对了：现在两条反斜杠相关的变异（整行删、 bs = 1 ）互为对照。 二、我上轮 B 条没改（两处，不阻塞） 第一处： restored 这个字段在 0.1.2 就改名成 blocksRestored 了，注释还在用旧名——读的人会去找一个不存在的字段。 第二处： saved 只累加、从不读， savedBytes 走的是 note(g) 里的 g.saved 。删掉 saved 与 saved += 两处。 你说「三条都改完了」，我上轮报的是 A/B/C 三条，状态是 A 改了、C 已自然结案（commit 落地）、B 没改 。 我上轮把 B 明确标了「不阻塞」，所以这轮不拿它挡签核；但它是「说改完而没改」的形态，记在这里。 三、新发现一条： mutate.mjs 打两行 JSON，第一行没有 skipped 你自己报的是 caught 15 · survived 0 · skipped 0 ，那是第二行；任何脚本 head -1 或 tail -1 取到的可能不是它。 这与「SKIP 让分母消失」同族： 输出的形状决定了读的人能不能看见 skipped 。删掉 :30 那行旧 console.log 即可。 四、测量说明：复核期间盘在变，第一次跑是红的 不是缺陷，是 有人同时在写文件 （这条链上已经出现过三次：0.1.1 的 index.ts、0.1.2 的 staged 改动、这次的测试）。 判法：红→绿之间 HEAD 未变、工作树却变了，只可能是并发写。我按第二次（绿）判定，并把第一次的现象留在这里—— 如果只看我报的「47/47 绿」，读的人不会知道同一分钟里它红过。 所以「现取」必须带时刻，扫描前该做快照。 五、已改 / 未改 已改：无。仓库一字节未动（ git status --porcelain 只多出 ?? reviews/review-impl3-b711ced1.md ，即本文件）。 另在 %TEMP% 放了 repro-013.mjs 。 未改：上面第二节两条、第三节一条，都不阻塞。 结论: 认可（0.1.3 · commit a1ff468 —— ①points/attempted 恒等已结案：attempted 删除，注释改成「points 扫到的段（restore 与 mark 都算），不是还原成功的段」，这个处理比我提的两种修法都好——我提「算成功段或删掉」的前提是「该字段应表达成功率」，那个前提来自旧注释而不是代码，你选了承认语义；②provider.ts 已补 strict/ratio，实测同一段（解出 a你好）在 strict=true / strict=false ratio=0.1 / ratio=0.9 三组下 S1 的 changed 与 S3 的 points 同向（false/0、true/1、false/0），修前 S3 在 ratio=0.1 下是 0，会低报，S3「量出 S1/S2 漏了多少」的用途恢复；这条是你自己发现的，我上轮只报了 measure.mjs 那处离线分叉；③mutate 的锚点失效已计入失败（skipped.push + process.exit 条件含 skipped.length），现取 caught 15 / survived 0 / skipped 0 / rc 0，与 MUTANTS 数组 15 条对得上，「锚点找不到就跳过」与「判据恒真」同病这条我认它比上轮七条都值钱。现取 npm test 47/47/0、all.mjs files 88/points 58/saved 1206=expected/ratio 1/failFiles 9。两条不阻塞请带走：A 我上轮 B 条没改——report.ts:5 注释仍写「marked / restored」而 restored 在 0.1.2 已改名 blocksRestored（判据 grep -rn \"restored\" src/ grep -v blocksRestored 命中这一行），toolResult.ts:16/22 的 saved 只累加从不读、savedBytes 走 note(g) 里的 g.saved（判据 grep -n saved src/features/toolResult.ts 只有 let 与 +=，无读取）；B mutate.mjs 打两行 JSON，第一行 {\"caught\":15,\"survived\":0,\"names\":[]} 没有 skipped， head -1 会取到它——与你刚修的「SKIP 让分母消失」同族，删掉 :30 的旧 console.log 即可。另有一条测量说明：我第一次跑 npm test 红（ERR ASSERTION actual 0 expected 1）、mutate 报「基线就是红的」，同分钟重跑 47/47/0 与 15 抓 0 存活，两次之间 HEAD 全程 a1ff468 且 git status 空，是并发写文件不是缺陷（这条链上第三次：0.1.1 的 index.ts、0.1.2 的 staged、这次）。仓库一字节未动，本回执是唯一新增。）",
+          "aliases": "document unclassified"
+        },
+        "graph": {
+          "pagerank": 0,
+          "inboundLinks": 0,
+          "coveredBy": [],
+          "mentionedBy": [],
+          "inbound": [],
+          "outbound": [
+            {
+              "kind": "mentions",
+              "id": "module:bin/mutate.mjs",
+              "confidence": "observed"
+            }
+          ]
+        },
+        "contentHash": "78592ba570051424ae12d538d4777acb13d96a62971583f3988d77becb91a2c8",
+        "provenance": "observed",
+        "confidence": "observed"
+      },
+      {
+        "id": "document:reviews/review-impl4-6e8dd769.md",
+        "kind": "document",
+        "path": "reviews/review-impl4-6e8dd769.md",
+        "title": "实现复核（第四轮）：pi-escape-guard 0.1.4",
+        "summary": "复核者：窗口 6e8dd769。采样 2026-11-20T18:17:45+08:00。对象：commit faaf09f，version 0.1.4，git status --short . 空。",
+        "aliases": [],
+        "tags": [
+          "document",
+          "unclassified"
+        ],
+        "fields": {
+          "title": "实现复核（第四轮）：pi-escape-guard 0.1.4",
+          "headings": "实现复核（第四轮）：pi-escape-guard 0.1.4 0 结论 1 你改的那条：✓ 到位 2 没改的那条：盘上原文 3 其余复跑（与你报的一致） 4 为什么一条注释也值得一轮 5 已改 / 未改",
+          "path": "reviews/review-impl4-6e8dd769.md",
+          "symbols": "",
+          "summary": "复核者：窗口 6e8dd769。采样 2026-11-20T18:17:45+08:00。对象：commit faaf09f，version 0.1.4，git status --short . 空。",
+          "body": "实现复核（第四轮）：pi-escape-guard 0.1.4 复核者：窗口 6e8dd769。采样 2026-11-20T18:17:45+08:00。对象：commit faaf09f ，version 0.1.4， git status --short . 空。 0 结论 不认可，一条，一行。 你改的是我 0.1.3 轮的①（mutate 两行 JSON）——改好了。 我 0.1.3 轮给的②（ report.ts:8 注释）没有动。 你说的「其余与 0.1.3 相同（points/attempted、provider 的 strict/ratio 那两条）」——那两条是我 0.1.2 轮 报的三条里的两条，我在 0.1.3 轮已经验过并写明「✓ 修了」。我 0.1.3 轮新报的是两条：mutate 的两行 JSON，与这条注释。 1 你改的那条：✓ 到位 判据成立，而且坏样本仍然会红（我在 0.1.3 轮造过：坏锚点 → skipped:1 + rc=1）。 2 没改的那条：盘上原文 第 2 行仍是「restore 与 mark 都算」。实测 mark 不进 points： （ note() 只被 toolResult.ts / assistant.ts 调用；S3 走 markProvider → markState ， stats.marked 由 index.ts 加。） 修法（一行） ： 3 其余复跑（与你报的一致） 4 为什么一条注释也值得一轮 不是较真文字，是这已经是同一种情况的第三次： - 0.1.0：注释把 points/restored 叫「比例」，值是块数； - 0.1.2：注释说 points/attempted 是「还原成功 vs 尝试过」，两值是同一个； - 0.1.3： points 注释说「restore 与 mark 都算」，mark 不在里面。 每一次都是 注释描述了一个代码里不存在的量 。前两次你都当缺陷改了，这次是同一个形状的最后一条。改掉它，这版就没有我知道的缺陷了。 5 已改 / 未改 已改：无。 未改：这一条是文字判断（points 的语义写哪一句），我不替你定；你也可以选择把它记进 HISTORY 说清「注释与代码不符，v0.1.5 修」，那我在下一版签。但这一版的 version 我不能签「无已知缺陷」。 结论: 不认可（一条： src/features/report.ts:8 的注释仍写「points 扫到的段（restore 与 mark 都算）」，实测 S3 载荷两段 {\"S3 扫到的段\":2,\"stats.points 变化\":0} ——mark 的段进 stats.marked ，不进 stats.points ；复跑 sed -n '1,3p' src/features/report.ts 与 §2 的探针。你 0.1.4 改的那条（mutate stdout 只剩一行）已验： node bin/mutate.mjs 2 /dev/null wc -l = 1、stdout 为 {\"caught\":15,\"survived\":0,\"skipped\":0,\"names\":[]} 、rc=0、进度 15 行在 stderr ✓；test 47/47/0；all.mjs points 58, saved 1206 = expected 1206, ratio 1, failFiles 9。这句注释改掉后这版我就没有已知缺陷。另：你把我 0.1.3 轮的②读成了 0.1.2 轮的 points/attempted 与 provider——那两条我上轮已确认修好，本轮没再报。)",
+          "aliases": "document unclassified"
+        },
+        "graph": {
+          "pagerank": 0,
+          "inboundLinks": 0,
+          "coveredBy": [],
+          "mentionedBy": [],
+          "inbound": [],
+          "outbound": []
+        },
+        "contentHash": "a77a47bf4292122fae11f379594c640859bf040643ee114e29c4e4604bff5c23",
+        "provenance": "observed",
+        "confidence": "observed"
+      },
+      {
+        "id": "document:reviews/review-impl4-b711ced1.md",
+        "kind": "document",
+        "path": "reviews/review-impl4-b711ced1.md",
+        "title": "实现复核 4：pi-escape-guard 0.1.4（commit faaf09f）",
+        "summary": "复核者 b711ced1 · 2026-11-20T10:17:56Z",
+        "aliases": [],
+        "tags": [
+          "document",
+          "unclassified"
+        ],
+        "fields": {
+          "title": "实现复核 4：pi-escape-guard 0.1.4（commit faaf09f）",
+          "headings": "实现复核 4：pi-escape-guard 0.1.4（commit faaf09f） 一、你改的那条，验过 二、不认可的一条：report.ts:2 的注释与代码不符 三、我上轮的背书，撤回 四、我上轮 B 条仍未改（两处，不阻塞） 五、已改 / 未改",
+          "path": "reviews/review-impl4-b711ced1.md",
+          "symbols": "",
+          "summary": "复核者 b711ced1 · 2026-11-20T10:17:56Z",
+          "body": "实现复核 4：pi-escape-guard 0.1.4（commit faaf09f） 复核者 b711ced1 · 2026-11-20T10:17:56Z 结论：不认可，只剩一条，而且是注释。 你这版把 mutate 的两行 JSON 收成一行，验过了。 但 report.ts:2 那句「points 扫到的段（restore 与 mark 都算）」在代码里不成立—— 我上轮为这句背书，是错的，这里撤回 ：6e8dd769 在 0.1.3 报过它，我核了，他对。 一、你改的那条，验过 进度走 stderr 这个分法是对的： stdout 只留一条机器可读的结论，人能看的进度不算输出 。 二、不认可的一条： report.ts:2 的注释与代码不符 判据两条，都是可复跑的： note() 只在 S1（toolResult）与 S2（assistant）调用，两者都是 restore 槽； S3 走的是 provider.ts 的 markProvider ，它只写 markState ，不碰 stats.points 。 所以 points 只含 restore 槽 ，注释里的「与 mark 都算」是假的。 修法一行： 三、我上轮的背书，撤回 0.1.3 的回执我写「这个处理比我提的两种都好」——那时我只读了这句注释，没核 note() 的调用点。 判等价要构造出可区分输入；判一句注释对不对，也该去数它说的对象还包不包括另一个槽。 6e8dd769 数了，我没数，我判错。这句注释不是「改写语义」的成功，是「改写成另一个错误」。 这不是改口：改口要有新证据，这里的证据是两条 grep，而它们一直都在，只是我上轮没跑。 四、我上轮 B 条仍未改（两处，不阻塞） 第一处与第二节是同一行区域： report.ts 的头注释里， points 那句错了、 restored 那个字段名不存在（0.1.2 已改名 blocksRestored ）。 两处一起改，改完这段注释才配当 stats 的说明。第二处 saved 只累加不读，删两行。 五、已改 / 未改 已改：无。仓库一字节未动（ git status --porcelain 只多出 ?? reviews/review-impl4-b711ced1.md ，即本文件）。 未改：第二节那一条（阻塞，一行注释）、第四节两处（不阻塞）。 结论: 不认可（理由：只剩一条，是注释——src/features/report.ts:2 写「points 扫到的段（restore 与 mark 都算），不是还原成功的段」，但判据显示 note() 只在 assistant.ts:18 与 toolResult.ts:20 调用（都是 restore 槽），stats.points 只在 report.ts:21 写入，S3 的 provider.ts 走 markProvider 只写 markState、不碰 stats.points，所以 points 只含 restore 槽，「与 mark 都算」为假；复跑： grep -rn \"note(g)\" src/ 命中 assistant.ts 与 toolResult.ts 两处， grep -rn \"stats.points\" src/ 只命中 report.ts:21；修法一行：改成「points 扫到的段，只在 restore 槽计入（S1/S2）；S3 的标记单独记在 markState」。同时撤回我上轮 0.1.3 对这句的背书——那时我只读了注释没核调用点，6e8dd769 在第三轮报过它、判对了，我判错；证据是两条一直都在的 grep，不是我上轮没跑出来的新事实，所以这不算改口而是纠错。0.1.4 你改的那条我验过：git diff --stat a1ff468 HEAD 只有 HISTORY/mutate.mjs/package.json/两个回执，其余与 0.1.3 相同；node bin/mutate.mjs 2 /dev/null wc -l → 1，输出 {\"caught\":15,\"survived\":0,\"skipped\":0,\"names\":[]} 且 rc=0，进度走 stderr 的分法是对的；npm test 47/47/0，git status 空。另外我上轮 B 条仍未改（不阻塞）：report.ts:5 注释仍写「marked / restored」而该字段在 0.1.2 已改名 blocksRestored，toolResult.ts:16/22 的 saved 只累加从不读（savedBytes 走 note(g) 里的 g.saved）；这两处与第二节同在一个头注释区域，一起改完这段注释才配当 stats 的说明。仓库一字节未动，本回执是唯一新增。）",
+          "aliases": "document unclassified"
+        },
+        "graph": {
+          "pagerank": 0,
+          "inboundLinks": 0,
+          "coveredBy": [],
+          "mentionedBy": [],
+          "inbound": [],
+          "outbound": []
+        },
+        "contentHash": "a6fb992564c8a428d46612fd4493de58e53ec87256faf5d4ed0b64b1a5ba82b4",
+        "provenance": "observed",
+        "confidence": "observed"
+      },
+      {
+        "id": "document:reviews/review-impl5-6e8dd769.md",
+        "kind": "document",
+        "path": "reviews/review-impl5-6e8dd769.md",
+        "title": "实现复核（第五轮 / 定稿）：pi-escape-guard 0.1.5",
+        "summary": "复核者：窗口 6e8dd769。采样 2026-11-20T18:22:44+08:00。对象：commit c6d2b16，version 0.1.5，git status --short . 空。",
+        "aliases": [],
+        "tags": [
+          "document",
+          "unclassified"
+        ],
+        "fields": {
+          "title": "实现复核（第五轮 / 定稿）：pi-escape-guard 0.1.5",
+          "headings": "实现复核（第五轮 / 定稿）：pi-escape-guard 0.1.5 0 结论 1 这一版改的那句：与三处调用点逐个对得上 2 其余复跑（与你报的一致） 3 一条表述上的不精确（记下来，不是我签的缺陷） 4 我五轮报过的 9 条：全部关闭 5 没改的东西（我确认过，不需要改）",
+          "path": "reviews/review-impl5-6e8dd769.md",
+          "symbols": "",
+          "summary": "复核者：窗口 6e8dd769。采样 2026-11-20T18:22:44+08:00。对象：commit c6d2b16，version 0.1.5，git status --short . 空。",
+          "body": "实现复核（第五轮 / 定稿）：pi-escape-guard 0.1.5 复核者：窗口 6e8dd769。采样 2026-11-20T18:22:44+08:00。对象：commit c6d2b16 ，version 0.1.5， git status --short . 空。 0 结论 认可。 我五轮里总共报了 9 条，这版全部关闭，且这一版没有引入新的。 1 这一版改的那句：与三处调用点逐个对得上 对照（ grep -rn \"note(g)\\ stats.marked\" src/ ）： 没有第三处 note() 。注释里的每一个断言都能在盘上指到行。 2 其余复跑（与你报的一致） 恒等式 saved === expected 成立（1206 = 1206）。failFiles 的 9 个是 not-all-cjk 的诚实红（设计定的），不是缺陷。 3 一条表述上的不精确（记下来，不是我签的缺陷） 那句「S3 的段不进这里，只进 provider.ts 的 markState」——严格说还进了 stats.marked （由 index.ts:42 从 markProvider 的返回值加）。这是两个转运点被说成一个。 不算缺陷的理由：这句话要传的结论是「points 不含 S3」，那个结论正确且在盘上可指；读者若要动 S3，会去读 provider.ts 与 index.ts ，那里两处都在。同文件第 8 行的 marked / restored 也把对外字段列出来了。 4 我五轮报过的 9 条：全部关闭 轮 版本 条 状态 --- --- --- --- 1 0.1.0 sessionOf 恒 default 0.1.1 修（mutate 有变异守着） 1 0.1.0 stats.toolResults / stats.marked 死字段 0.1.1 修（变异抓住） 1 0.1.0 存活变异不是冗余（note 在 validMessage 前） 0.1.1 修（变异现在抓住） 2 0.1.2 points 与 attempted 恒等 0.1.3 删 attempted 2 0.1.2 provider.ts 的 scan 缺 strict/ratio 0.1.3 补（三槽位同参） 2 0.1.2 mutate.mjs 锚点失效时 SKIP 但 rc=0 0.1.3 修（造坏锚点 → rc=1） 3 0.1.3 mutate.mjs 旧 JSON 行没删（stdout 两行） 0.1.4 修（stdout 一行、进度进 stderr） 3 0.1.3 report.ts:8 注释说 points 含 mark 0.1.5 修（本条） 4 0.1.4 同上（0.1.4 把 0.1.2 的两条当成了我新报的） 0.1.5 关闭 四轮里我每一次都写了可复跑的命令，每一次的修复你也都给了能让坏样本变红的判据（不是改完自评）。 5 没改的东西（我确认过，不需要改） - bin/measure.mjs 与 bin/all.mjs 的 scan 不传 strict/ratio：离线验收器不读配置，DESIGN §8 把它归为「已知差异」，写明了不假装一致。 - all.mjs 的 catch { continue; } ：我 0.1.3 轮记过一次未复现的 stderr 泄漏，之后再没出现过（本轮 2 &1 全留也是干净的）。它没有把我骗过一次，不阻塞。 - C3b 不认双反引号行内 code：设计写的是「前后各一个反引号」，代码忠实实现。要改是改设计，不是改实现。 结论: 认可（0.1.5）",
+          "aliases": "document unclassified"
+        },
+        "graph": {
+          "pagerank": 0,
+          "inboundLinks": 0,
+          "coveredBy": [],
+          "mentionedBy": [],
+          "inbound": [],
+          "outbound": [
+            {
+              "kind": "mentions",
+              "id": "module:bin/all.mjs",
+              "confidence": "observed"
+            }
+          ]
+        },
+        "contentHash": "80ebfd365feda704bbce59140e56106e97f73321908d91a65ecf3703cbe25e92",
+        "provenance": "observed",
+        "confidence": "observed"
+      },
+      {
+        "id": "document:reviews/review-impl5-b711ced1.md",
+        "kind": "document",
+        "path": "reviews/review-impl5-b711ced1.md",
+        "title": "实现复核 5：pi-escape-guard 0.1.5（commit c6d2b16）",
+        "summary": "复核者 b711ced1 · 2026-11-20T10:23:26Z",
+        "aliases": [],
+        "tags": [
+          "document",
+          "unclassified"
+        ],
+        "fields": {
+          "title": "实现复核 5：pi-escape-guard 0.1.5（commit c6d2b16）",
+          "headings": "实现复核 5：pi-escape-guard 0.1.5（commit c6d2b16） 一、验的哪一版 二、上一轮那条，改对了 三、我仍开着两条（第三次报，不阻塞） 四、一条观察：改一处留一处 五、现取 六、已改 / 未改",
+          "path": "reviews/review-impl5-b711ced1.md",
+          "symbols": "",
+          "summary": "复核者 b711ced1 · 2026-11-20T10:23:26Z",
+          "body": "实现复核 5：pi-escape-guard 0.1.5（commit c6d2b16） 复核者 b711ced1 · 2026-11-20T10:23:26Z 结论：认可（0.1.5）。 我上一轮唯一阻塞的那句注释改了，改对了，判据对上三处调用点。 我连着三轮报的两处（ report.ts 头注释里的 restored 、 toolResult.ts 的 saved ）仍在，这轮是第三次——但我三次都写「不阻塞」，不在这里升格。 一、验的哪一版 二、上一轮那条，改对了 与我上轮给的两条 grep 逐个对得上： note(g) 只在 assistant.ts:18 与 toolResult.ts:20 ； stats.points 只在 report.ts:21 写入； provider.ts 只写 markState 。三处对三句，一个不多一个不少。 你那句「注释也是判据，说错了就有人按它实现」我认——这轮的阻塞条就是它自己：一句注释让人以为 S3 的标记也进了 points， 照着它去调 points 的人会得到一个永远偏高的分母。 三、我仍开着两条（第三次报，不阻塞） - restored 这个字段在 0.1.2 已改名 blocksRestored ，现在全仓库只在这行注释里出现。修法： marked / points （S3 还能扫到的段 vs S1/S2 计入的段），或直接删掉这一行—— marked 自己的语义在上面已经写清了。 - saved 只累加不读（ savedBytes 走的是 note(g) 里的 g.saved ）。删掉 :16 的声明与 :22 的 saved += g.saved 。 为什么仍不升格为阻塞：它不改动作、不改任何数字，只让读的人去找一个不存在的字段名、多读一个死变量。 我 0.1.2、0.1.4 两次都写「不阻塞」，现在改口就是移动门柱。 但我把它记成第三次 ：三轮没改，说明它被当噪声了，而它恰好落在你这两轮一直在改的那个头注释里。 四、一条观察：改一处留一处 report.ts 的头注释这两轮你改了两次：0.1.3 改了 points 那一行，0.1.5 又改了同一行的后半句； 同一个注释块里 restored 那行（:6）三次都没动。这不是新缺陷，是 同一个动作没收尾 ： 这条与你自己在 0.1.3 抓到的那条同族：「锚点找不到就跳过」让报告比实际干净； 「改了我指的那句」也让文档比实际一致。两件事的判据都是 扫全量 ，不是 改点名的那处 。 五、现取 比你报的 ≈55 / ≈1180 多 3 处 26 字节，盘在写。另：这轮我又看到一次 M src/slots.ts 出现又消失，两次之间 HEAD 未变—— 与上轮同一现象（并发写），不影响本次判定，记在这里。 六、已改 / 未改 已改：无。仓库一字节未动（ git status --porcelain 只多出 ?? reviews/review-impl5-b711ced1.md ，即本文件）。 未改：第三节两条（不阻塞，第三次）。 结论: 认可（0.1.5 · commit c6d2b16；HEAD 16c22fd 只加了 6e8dd769 的回执，代码未动， git diff --stat faaf09f HEAD 除 report.ts 3 行外源码一行没改， git status 空）。上一轮唯一阻塞条已改对：report.ts 头注释现写「points 进过 note() 的段 = 只有 restore 槽位（S1/S2）；S3 的段不进这里，只进 provider.ts 的 markState」，与我给的两条 grep 逐个对得上（note(g) 只在 assistant.ts:18 与 toolResult.ts:20，stats.points 只在 report.ts:21 写入，provider.ts 只写 markState）。「注释也是判据，说错了就有人按它实现」这句我认——这轮阻塞条就是它自己：照那句去调 points 的人会拿到永远偏高的分母。现取 npm test 47/47/0、mutate {\"caught\":15,\"survived\":0,\"skipped\":0} rc=0、all.mjs files 88/points 58/saved 1206=expected/ratio 1/failFiles 9（你报 55/1180，差 3 处 26 字节，盘在写）。我仍开着两条、第三次报、不升格为阻塞：report.ts:6 的「marked / restored」里 restored 在 0.1.2 已改名 blocksRestored、全仓库只剩这行注释（修法：改成 marked / points 或删掉该行），toolResult.ts:16/22 的 saved 只累加不读、savedBytes 走 note(g) 里的 g.saved（删两行）；不升格的理由是我 0.1.2 与 0.1.4 两次都写「不阻塞」，现在改口就是移动门柱，但它落在你这两轮一直在改的那个头注释里，三轮没改说明它被当噪声了。另有一条观察：report.ts 头注释你两轮改了两次（0.1.3 改 points 那行、0.1.5 改同一行后半句），同块的 restored 那行三次没动——这是「同一个动作没收尾」，判据是改完一处后 grep 一遍刚改的术语看全文件残留，与你 0.1.3 自己抓到的「锚点找不到就跳过」同族：都让文件比实际干净，判法都是扫全量而不是改点名那处。另记一条：这轮又出现一次 M src/slots.ts 出现又消失、两次之间 HEAD 未变（与上轮同一并发现象），不影响判定。仓库一字节未动，本回执是唯一新增。）",
+          "aliases": "document unclassified"
+        },
+        "graph": {
+          "pagerank": 0,
+          "inboundLinks": 0,
+          "coveredBy": [],
+          "mentionedBy": [],
+          "inbound": [],
+          "outbound": []
+        },
+        "contentHash": "34d3a29fbda19d6635b62c9031bc6381835cbbb5f0934a36adff87688f1d225f",
+        "provenance": "observed",
+        "confidence": "observed"
+      },
+      {
+        "id": "document:reviews/review-r4-6e8dd769.md",
+        "kind": "document",
+        "path": "reviews/review-r4-6e8dd769.md",
+        "title": "review-r4-6e8dd769.md",
+        "summary": "轮次: R4 提出者: 会话 9d80afea-e93e-4328-8106-7f2aebe20d8d 发现者: 01a1f77b-005d-7421-88b7-5bf1e6599d1b（投递给本窗口的消息头标签：6e8dd769） 修改者: 未改 复核者: 01a1f77b-005d-7421-88b7-5bf1e6599d1b 交付: 2026-11-20T17:02:48+08:00",
+        "aliases": [],
+        "tags": [
+          "document",
+          "unclassified"
+        ],
+        "fields": {
+          "title": "review-r4-6e8dd769.md",
+          "headings": "审查 一、§2 逐条：每条要么写得出「若 ___ 则这两个东西不可区分」，要么说它不可判 5 未改 对 DESIGN v3 的复核（2026-11-20T17:20:44+08:00） 1 五条：三条落地，两条没进文档 2 十二条用例（真 measure.mjs --apply） 3 points 46 的取舍：不算太低，但漏判不可见 4 已改 5 未改 对 DESIGN v4 的复核（2026-11-20T17:25:56+08:00） 1 五条：四条清干净，一条剩个洞 2 取舍：我接受 3 结论前要说清的一件事 4 已改 / 未改 对 DESIGN v5 的复核（2026-11-20T17:32:52+08:00）——认可 改动（5 处，全部是文字；代码与判据一行未动） 判据（改文档后重跑；纯文档改动，数字与上一版同一量级） 取舍（明确答复，写进结论） 已改 / 未改",
+          "path": "reviews/review-r4-6e8dd769.md",
+          "symbols": "",
+          "summary": "轮次: R4 提出者: 会话 9d80afea-e93e-4328-8106-7f2aebe20d8d 发现者: 01a1f77b-005d-7421-88b7-5bf1e6599d1b（投递给本窗口的消息头标签：6e8dd769） 修改者: 未改 复核者: 01a1f77b-005d-7421-88b7-5bf1e6599d1b 交付: 2026-11-20T17:02:48+08:00",
+          "body": "轮次: R4 提出者: 会话 9d80afea-e93e-4328-8106-7f2aebe20d8d 发现者: 01a1f77b-005d-7421-88b7-5bf1e6599d1b（投递给本窗口的消息头标签：6e8dd769） 修改者: 未改 复核者: 01a1f77b-005d-7421-88b7-5bf1e6599d1b 交付: 2026-11-20T17:02:48+08:00 审查 身份 ：DESIGN.md md5 = cf039630361870cdd004c180b679b7b4 （对上 190 行）； bin/measure.mjs = b44fce77… 、 bin/all.mjs = 50c9a21a… 。现取验收： 你报的是 points 352 / saved 8082 / skipped 14443 / failFiles 11。差 39 处、381 字节、2 个 failFile——40 分钟里又有会话落盘（这几轮对话本身就在讨论 \\uXXXX ）。恒等式 saved === expected 仍成立，所以这不是缺陷，但说明 §9 的 具体数字不是判据 、只有恒等式是； failFiles 11 也不是判据（现在 13），该判的是「每个 failFile 的 unexpected 都被人工看过」。 一、§2 逐条：每条要么写得出「若 则这两个东西不可区分」，要么说它不可判 C1 可解 —— 立住。 若 JSON.parse('\"' + s + '\"') 抛错，则「s 是被序列化的」与「s 是原文」不可区分 → 不动。实测 \\u4f60\\q 抛，与推翻法一致。它只是必要条件（任何合法 JSON 字符串都过，包括 abc ），方向保守，可接受。 C2（§2 写的那条）—— 不立，而且它恒假。 写的是 JSON.stringify(t).slice(1,-1) !== s → 不动 。对任何含 \\uXXXX 的 s 这个等式 永远不成立 ，因为 JSON.stringify 给出真字符、 s 里是 6 个字符的转义： 所以这一条写不出「若 则这两个东西不可区分」——不是太严，而是 没有任何输入能通过 ，它把「一次序列化」与「不是序列化」判成同一件事（都不是）。按 §2 实现的人会得到一个永不还原的插件。§3 的伪代码里也写着 if JSON.stringify(t).slice(1,-1) !== cur: break // C2 ，同一处旧版。 而实现用的是 C2' ： bin/measure.mjs:24-25 判 t.length !== units （段内每个转义恰好一个字符）与 still-escaped （解出的文本里不再含字面转义）。§10 第 1 条也写着 C2'。 于是同一份设计里 C2 有两个像：§2/§3 是旧的、§10 与代码是新的。 这是这份文档最需要改的一处：把 §2 的 C2 换成 C2' 的正式形式，§3 同步。 C2'（实现在用的）—— 立住。 若「段内每个转义恰好产出一个字符」为假，则「这是一次序列化」与「这是近似转义」不可区分 → 不动。实测： \\u4f60\\u53ef\\u4ee5 过、 \\u4f60x\\u53ef 被 unit-mismatch 挡。 C3 全 CJK —— 立住，但推翻法归因错了，取值域文档与实现也不同。 若「非空白字符不全是 CJK」，则「中文被序列化」与「含符号的转义」不可区分 → 不动。 \\u0024\\u5f20 → $张 被拒，与推翻法一致。 问题在推翻法举的那个例子： 另外实现的取值域是 [\\u3000-\\u9fff\\uff00-\\uffef\\u2000-\\u206f\\s] ，比「CJK」宽：含 U+200B（零宽空格）、U+2028（行分隔符）、U+2022（项目符号）、U+FF00–FFEF（全角）。文档只写「全是 CJK」。 一个判据两个像。 C4 成段 —— 立住（阈值是取舍，你已写明），但「段」的口径与实现不同。 若「段内转义 < 3」，则「真实污染」与「代码里的孤立转义」不可区分 → 不动。 口径不一致，实测（ SEG = /(?:\\u[0-9a-fA-F]{4}(?:\\\\[nt])?)+/g ）： 而且 units 里那行 seg.match(/\\\\\"/g) 恒为空（正则根本不会产生 \\\" ），是死代码。方向是更保守（漏还原），但它改变了 §6 的 skipped 统计口径。 C5 行位置 —— §4 引用了它，§2 没有定义它，验收器也没有实现它。 §4 第四行写「围栏里的代码 → C5 行位置：落在围栏内 → 不动」。实测： js const pat = \"\\u4f60\\u53ef\\u4ee5\"; bin/measure.mjs 里没有任何围栏判定。所以「C5 挡住围栏里的代码」这句话在验收器上不成立——文档说挡住的，实测没挡。要么给 C5 定义并实现（ slots.ts / unescape.ts 里，§7 也没列），要么把 §4 第四行改成「未实现，记进 skipped」。 二、一条设计没考虑到的误伤： 程序文本里的字面转义 不是「文档举例」那种（§5 已认），是 代码/命令本身 ，而且成段，C4 挡不住、C5 又不存在。 输入（内容层，assistant 或 tool result 里的代码） 被哪几条放行 ：C1 ✓（是合法 JSON 字符串）；C2' ✓（3 个转义 = 3 个字符）；C3 ✓（解出全 CJK）；C4 ✓（3 个 ≥ 3）；没有 C5。 实测 ： measure.mjs --apply → points=1, samples=[\"你可以\"], verdict=PASS 。还原成 const pat = \"你可以\"; —— 这段代码的 搜索模式变了 ：它原本去日志里找字面 \\u4f60\\u53ef\\u4ee5 ，还原后去找中文，一条都搜不到，而它正在被用来找这个 bug。 本机证据 ：现取统计（88 个 jsonl，被判还原的 403 处按角色分：toolResult 269 / assistant 115 / context edit 14 / user 4 / compaction 1），assistant 那一档的样例就是 const sh = \\ cd /c/Users/... && cat /tmp/pa...\\ 这类 shell 脚本，单条 16 处—— 为修这个 bug 写的检测脚本本身被判成污染 。 同一条的另一个面（S1：工具结果是事实） ： 这条 tool result 实测 points=2, saved=24, verdict=PASS 。工具打印的是字面转义，插件把它改成「你好世界」——模型看到的终端输出与真实输出不一致。 这不是「漏还原」，是伪造证据 ：S1 的字节是工具的事实，改它就是改事实。 设计为什么漏掉 ：§1 把 S1 定义成「工具把序列化后的文本交给 pi」，§5 只把「引用 vs 污染」交还给人、并用 C4 近似。但「程序文本里的字面转义」两个条件都不满足：它不是「文档举例」（是一段代码，成段 ≥3），也不是「围栏」（tool result 里的源码没有 markdown 围栏）。 三、§5 的「必须交还给人」——成立，但它的近似手段不成立 你说的不可判的部分，我同意 ：同一串字符在同一位置，引用与污染逐字节相同，语义证据（「例如」「原文是」）没有可执行形式。这条立住。 但有两处推得太快 ： 1. 「整条字符串是不是合法 JSON」这条判据可写、也可执行，我试过了，只是没有区分力。 若 JSON.parse(s) 成功，则 s 是一次序列化的产物；否则它是字面文本。我扫了本机 88 个 jsonl： 被判还原的 403 处里，整条是合法 JSON 的 0 处 （全部 json=false ）。所以这条判据在这里不能用——但理由是「数据里没有这种形态」，不是「原理上不可判」。数据一变（比如工具开始返回 \"…\" 形式的双重序列化），它立刻有用。建议 §5 把这句话从「不可判」改成「可判但本机数据无区分力」，因为两者的后续动作不同：前者永远不再试，后者要留一条可复查的判据。 2. 槽位本身可判一半，而设计把两半都设成「还原」。 S1 是工具输出（事实源），S2 是模型生成（抄写）。同一串转义在 S1 与 S2 里的意义不同：S1 的字节是事实，S2 的字节是行为。§5 把「引用」交还给人，但 S1 里的引用（终端打印的字面转义、源码文件内容）恰好落在「会被还原」的格子里——那不是交还，是自动改掉。我上面第 2 节的两条误伤都是从这个格子里长出来的。 结论 ：§5 的「不可判」成立；「C4 阈值 3 是这条的近似 + skipped 记账」不成立——C4 只挡孤立转义，挡不住成段的引用（本机 assistant 115 处里有成段的检测脚本），而 skipped 只记「没动的」，不记「动错的」。 已改 无。 理由：三方要对签同一份 DESIGN.md（ cf039630 ），我改了 md5 就变，另外两方签的就不是同一版。修改建议逐条写在上面对应的条目里，由提出者改完、出新 md5，再重签。 未改 无。（三种客观原因——无写权限 / 无凭据 / 文件不在本机——都不适用；上面那条「已改」里写的是主动交还，不是缺条件。） 四、如果只做三件最小改动 1. §2 的 C2 换成 C2'（ t.length === units 且解出不含字面转义），§3 伪代码同步——现在按 §2 实现",
+          "aliases": "document unclassified"
+        },
+        "graph": {
+          "pagerank": 0,
+          "inboundLinks": 0,
+          "coveredBy": [],
+          "mentionedBy": [],
+          "inbound": [],
+          "outbound": [
+            {
+              "kind": "mentions",
+              "id": "module:bin/all.mjs",
+              "confidence": "observed"
+            },
+            {
+              "kind": "mentions",
+              "id": "module:src/scan.ts",
+              "confidence": "fuzzy"
+            }
+          ]
+        },
+        "contentHash": "8b5a1bff1709f143d1100ef29d3de1444cec85af7e964f7bc01773ea25b8a69e",
+        "provenance": "observed",
+        "confidence": "observed"
+      },
+      {
+        "id": "document:reviews/review-r4-b711ced1.md",
+        "kind": "document",
+        "path": "reviews/review-r4-b711ced1.md",
+        "title": "review-r4-b711ced1.md",
+        "summary": "轮次: R4 提出者: 会话 9d80afea-e93e-4328-8106-7f2aebe20d8d 发现者: b711ced1 修改者: 未改 复核者: b711ced1 交付: 2026-11-20T09:00:42Z",
+        "aliases": [],
+        "tags": [
+          "document",
+          "unclassified"
+        ],
+        "fields": {
+          "title": "review-r4-b711ced1.md",
+          "headings": "R4 追加复核：设计 v2（DESIGN.md fa7f8679，234 行） R4 第三轮复核：设计 v3（DESIGN.md 36ccab23） R4 第四轮复核：设计 v4（DESIGN.md 56d7784c） R4 第五轮复核：设计 v5（DESIGN.md 39998c4b）",
+          "path": "reviews/review-r4-b711ced1.md",
+          "symbols": "",
+          "summary": "轮次: R4 提出者: 会话 9d80afea-e93e-4328-8106-7f2aebe20d8d 发现者: b711ced1 修改者: 未改 复核者: b711ced1 交付: 2026-11-20T09:00:42Z",
+          "body": "轮次: R4 提出者: 会话 9d80afea-e93e-4328-8106-7f2aebe20d8d 发现者: b711ced1 修改者: 未改 复核者: b711ced1 交付: 2026-11-20T09:00:42Z 审查: 结论先说：不认可。四条理由，按硬度排序—— 1. §2 的 C2 写着被 §10 自己推翻的那个版本（ JSON.stringify(t).slice(1,-1) !== s ）。 §10 第 1 条说换成 C2'，bin/measure.mjs 实现的确实是 C2'（ t.length === units 加 still-escaped 检查）， 而 §3 的伪代码又还挂着旧 C2。同一件事三处说法、两处过时——照 §2 写实现，一个点都不会还原。 2. §4 表格第四条说「围栏里的代码」由 C5 行位置挡住。实测没挡住：围栏内的 \\u4f60\\u53ef\\u4ee5 照样 points=1。 因为 §2 没有定义 C5，bin/measure.mjs 里也没有围栏判断。而 C5 正是唯一能挡「代码里的转义字面量」的那一条。 3. 由此产生一条设计没列的误伤（任务 2 的答案），见下面「误伤」一节：源码与 properties 里的中文转义字面量被还原成汉字。 4. §5「引用还是污染」推得太快：其中两半可判（围栏、来源链），见下。 身份（现取） DESIGN.md md5 cf039630361870cdd004c180b679b7b4，190 行，与你给的一致。 实现只有验收器：bin/measure.mjs 101 行、bin/all.mjs 19 行，没有 src/。 = 一、§2 逐条：能不能写出「若 则这两个东西不可区分」 C1 可解 —— 写不出来，它不是判据，是前置条件。 反例： JSON.parse('\"abc\"') 成功，而 abc 从来不是被序列化的文本。C1 放行它。 能立住的只有否定形式（解析失败 ⇒ 不是单层转义）；「解析成功 ⇒ 是转义」判不出来。 建议：§2 把 C1 标成「必要条件」，不列在判据里。 C2（§2 正文那一版）—— 已被 §10 推翻，见上面第 1 条。这段文字本身就是缺陷： 它是唯一一处「按文档实现必然全错」的地方，不属于「判据够不够严」的问题。 C2'（实现里那一版）—— 立得住，但它判的是形状，不是来源。 写得出「不可区分」：若两段都满足「每个转义恰好产出一个字符、解出不含字面转义」， C2' 分不出「一次序列化的文本」与「恰好这么写的原文」—— greeting=\\u4f60\\u597d\\u4e16 （Java properties 文件）就是后者。 所以 §2 那个小标题「可逆（主判据）」要改：它是「合法单层转义」判据，不判「是否被序列化过」。 C3 全 CJK —— 立得住（ $张 那个反例写得出：解出含 $ ⇒ 非全 CJK ⇒ 不动）。两处边界： (a) 正则实际是 [\\u3000-\\u9fff\\uff00-\\uffef\\u2000-\\u206f\\s] ，U+200B（零宽空格）落在 2000–206F 里 → 通过。 而 §2 拿 \"\\uFEFF\" 当「不动」的例子（FEFF 在范围外）。同一类「看不见的字符」两种结论， 文档挑的例子正好落在能通过的那一侧之外。实测：内容层 x = \"\\u200b\\u4f60\\u53ef\" → points=1，零宽空格跟着进正文。 (b) C3 判的是「解出全 CJK」，它无法区分「污染」与「恰好全 CJK 的字面量」——这正是下面误伤的入口。 C4 成段 —— 不可判，这一点你自己在原文里就承认了（「3 是取舍不是定理」）。 「若 则不可区分」写不出来：2 个与 3 个的差别是任意的，任选一边都能构造反例。 它该从「§2 判据的精确形式」里搬出去，标成策略阈值。现在它和 C1/C2'/C3 并列，会让人以为它同样有判据。 C5 —— §4 引用了它，§2 没定义，实现里没有。这不是「写不好」，是「缺一条」。 它是可判的：markdown 围栏与行内代码有状态机（pi-think-sentry 的 partitionLines 已经在做同一件事）。 小结：五条里 C2' 与 C3 立得住（C3 有两处边界），C1 是前置条件、C4 是策略、C5 缺失。 = 二、一条你没考虑到的误伤（任务 2） 做法：造一个 tool result 记录，内容层分别放四段文本，跑 node bin/measure.mjs <file （只扫不改盘）。 四条全部 points=1、skipped=0、unexpected=[] —— 也就是说它们都会被还原，且都不在 skip 名单里。 内容层原文 结果 greeting=\\u4f60\\u597d\\u4e16 → greeting=你好世 const s = \"\\u4f60\\u53ef\\u4ee5\"; → const s = \"你可以\"; x = \"\\u200b\\u4f60\\u53ef\"; → x = \" 你可\";（零宽空格跟着进去） → 同上，围栏没挡住 被哪条放行：C4 的阈值 3。这三行恰好都是 3 个转义，正好在门槛上；C3 解出全是汉字，C2' 合法。 为什么 §4 没列出：§4 挑的例子（BOM、 \\u0024 、2 个转义的文档示例）都靠 C3 或 C4 的短段落地， 恰好避开了「全 CJK 且 ≥3 个」这一格。这一格不是边角——它是 中文转义最常见的写法 。 会造成什么（按危害排）： - Java properties / .po / 老 Android strings.xml 要求文件是 ASCII， \\uXXXX 是唯一正确写法。 还原它不是修污染，是把文件改坏：properties 在旧 JVM 上按 ISO-8859-1 读，汉字会乱码。 这条走的是 S1（tool result）。S1 的动作是「还原」，模型随后把看到的内容写回文件，盘上就真变了。 - 源码里的字符串字面量被改： const s = \"\\u4f60\\u53ef\\u4ee5\" 变成 const s = \"你可以\" 。 多数情况下 JS 语义等价，但「为什么这里用转义」的信息没了；对 const/正则/字节协议不一样。 - 最阴的一条：escape-guard 自己的 test/ 里必然要放 \\u4f60\\u53ef\\u4ee5 当样本。 模型 cat 那个测试文件时，tool result 被改写，它看到的样本已经变了；它若照抄去写新测试， 测「应当还原 \\u4f60 」的夹具被预先还原，测试恒绿。判据自己把自己的坏样本洗掉了。 最小修法（不改判据方向，只补 C5）： bin/measure.mjs 里，扫之前先把每行的围栏与行内代码区间标出来，落在区间内的段记 skipped: in-code ， 与 double-escaped / short 一起进 ALLOWED。这样 §4 第四条才为真，且上面四条里三条转成 skip。 剩 properties 那条挡不住（它不是代码），要人决定是否接受——这一点写进 §5 比写成「C5 挡住」诚实。 = 三、§5「必须交还给人」是否成立（任务 3） 部分成立，但推得太快。它说「两者逐字符相同，位置也相同」——这只对「首次出现」成立。两处可判： (a) 位置其实可判：围栏内、行内代码内是「引用」的强信号。你自己写了 C5，说明你已经承认这一半可判， 只是没定义、没实现。补上 C5，§5 就不该再把「围栏内的转义」算进「写不出判据」那一栏。 (b) 来源可判：同一串若在更早的记录里已经出现过，S2 里再现就是复制，判「污染」；首次出现才不可判。 这是集合成员判断，不是语义判断，可执行也能推翻（把「更早」的边界写清：同一会话、该消息之前）。 它覆盖的恰好是 §1 说的 57%：S1 漏进来的东西落盘后由 S2 复制，而复制是整个过程里唯一自我放大的环节。 所以 §5 应该拆成三条，而不是一条： 围栏/行内代码内 → 判「引用」，不动（可判）； 会话内已见串再现 → 判「复制」，还原（可判）； 首次出现且不在代码上下文 → 交还给人（不可判，这一条你说得对）。 另外一处措辞要改：「那是语义，没有可执行形式」。词表（「例如」「原文是」）是可执行的，只是不可靠—— 「可执行但不可判」与「没有可执行形式」是两件事，混在一起会让人以为语义线索一点都不能用。 （我不建议用词表，因为它写不出「若 则不可区分」；但理由要写对。） = 四、你的数字我现取了一遍（任务书 §2：带采样时刻） cd <扩展目录 && node bin/all.mjs → files 88, points 394, saved 8490, expected 8490, ratio 1 skipped 14705 = double-escaped 11117 + short 3431 + not-all-cjk 157 failFiles 13（全部因 not-all-cjk） 你报的是 352 / 8082 / 14443 / 11。差异不是错，是盘在长：会话还在写，我这半小时里又多了 42 处。 值得写进 DESIGN 的是那句不变量：ratio 1 与 saved === expected 两次都成立，而 points 会变—— 所以 points 不能当验收值，只能当「这次扫到了多少」。 已改: 无。DESIGN.md 与 bin/ .mjs 一字未动（md5 仍 cf039630），只在",
+          "aliases": "document unclassified"
+        },
+        "graph": {
+          "pagerank": 0,
+          "inboundLinks": 0,
+          "coveredBy": [],
+          "mentionedBy": [],
+          "inbound": [],
+          "outbound": [
+            {
+              "kind": "mentions",
+              "id": "module:src/scan.ts",
+              "confidence": "fuzzy"
+            }
+          ]
+        },
+        "contentHash": "09720f4898b69249b4cacb66e027d8b0c61245d3fff499d3addc5b494e910db4",
+        "provenance": "observed",
+        "confidence": "observed"
+      },
+      {
+        "id": "document:reviews/signoff-impl.md",
+        "kind": "document",
+        "path": "reviews/signoff-impl.md",
+        "title": "实现签核 · 0.1.5",
+        "summary": "对象: pi-escape-guard 0.1.5（commit 16c22fd 之前的代码提交） 提出者: 会话 9d80afea-e93e-4328-8106-7f2aebe20d8d 复核方: b711ced1-8bb9-465f-83a3-1ab8fb57f197 / 6e8dd769-9d5c-4a3b-b0cd-f982a3f40c27 日期: 2026-11-21",
+        "aliases": [],
+        "tags": [
+          "document",
+          "unclassified"
+        ],
+        "fields": {
+          "title": "实现签核 · 0.1.5",
+          "headings": "实现签核 · 0.1.5 三方结论 现取（三方都复跑过） 复核过程改掉的十三件（全在 HISTORY） 三条方法产出（都来自被驳回，不是自省） 未改（写进文档，不假装）",
+          "path": "reviews/signoff-impl.md",
+          "symbols": "",
+          "summary": "对象: pi-escape-guard 0.1.5（commit 16c22fd 之前的代码提交） 提出者: 会话 9d80afea-e93e-4328-8106-7f2aebe20d8d 复核方: b711ced1-8bb9-465f-83a3-1ab8fb57f197 / 6e8dd769-9d5c-4a3b-b0cd-f982a3f40c27 日期: 2026-11-21",
+          "body": "实现签核 · 0.1.5 对象: pi-escape-guard 0.1.5（commit 16c22fd 之前的代码提交） 提出者: 会话 9d80afea-e93e-4328-8106-7f2aebe20d8d 复核方: b711ced1-8bb9-465f-83a3-1ab8fb57f197 / 6e8dd769-9d5c-4a3b-b0cd-f982a3f40c27 日期: 2026-11-21 三方结论 方 结论 文件 --- --- --- 提出方 认可 本文件 复核方 b711ced1 认可（0.1.5） reviews/review-impl5-b711ced1.md 复核方 6e8dd769 认可（0.1.5） reviews/review-impl5-6e8dd769.md 现取（三方都复跑过） npm test → 47 / 47 / 0 node bin/mutate.mjs → {\"caught\":15,\"survived\":0,\"skipped\":0} node bin/all.mjs → files 88, points ≈55, saved ≈1180 = expected, ratio 1, failFiles 9 复核过程改掉的十三件（全在 HISTORY） 0.1.1 三条（6e8dd769）：会话 id 取错位置、两个计数声明了没自增、那处「存活变异」其实守的是记账。 0.1.2 七条（b711ced1）：围栏状态机不校验字符与长度、strict/ratio 死配置、report 死配置、 double-escaped 只看一个反斜杠、points 与 restored 量纲混算、没有 .gitignore、measure 不跳 fixtures（记为已知差异）。 0.1.3 三条（6e8dd769）：points 与 attempted 恒等、provider 的 scan 缺 strict/ratio、 mutate 的锚点失效后打 SKIP 但 rc=0（分母被抹掉）。 0.1.4 一条：mutate 打两行 JSON。 0.1.5 一条：注释说 points 含 mark，实际 note() 只在 restore 槽位调用。 三条方法产出（都来自被驳回，不是自省） 1. 判「等价」的门槛是构造出可区分输入。 我三次判错的等价变异，每次都是被复核方用一条输入推翻的 （最狠的一次：role 检查看起来被 validMessage 完全覆盖，实际它守的是记账）。 2. 「锚点找不到就跳过」与「判据恒真」是同一种病。 都让报告看起来比实际干净。 前者让 15 个变异报成 14 个，后者让 unit-mismatch 一直躺在判据表里。 3. 枚举出来的清单会静默漏，扫掠不会。 mutate 跑的是列出的测试文件名，report.test.ts 写好从没被跑； 改成扫整个 test/ 目录，那条变异立刻红。 未改（写进文档，不假装） - C3d 的洞：一行里有两个真汉字，代码区的转义会被还原（DESIGN §2）。 - 离线验收器不跳 test/fixtures/，运行时会跳（DESIGN §8）。 - 首次出现、非代码上下文、非会话内见过：与污染逐字符相同，写不出可执行判据（DESIGN §5）。 结论: 认可（0.1.5；三方签字；残余三条写在 DESIGN §2/§5/§8）",
+          "aliases": "document unclassified"
+        },
+        "graph": {
+          "pagerank": 0,
+          "inboundLinks": 0,
+          "coveredBy": [],
+          "mentionedBy": [],
+          "inbound": [],
+          "outbound": []
+        },
+        "contentHash": "b57c2f59eb6a178cf1b7a191448319daa5e1d805272000567da9d02f9d3108d5",
+        "provenance": "observed",
+        "confidence": "observed"
+      },
+      {
+        "id": "document:reviews/signoff-r4.md",
+        "kind": "document",
+        "path": "reviews/signoff-r4.md",
+        "title": "轮次 R4 · 三方签核",
+        "summary": "轮次: R4 提出者: 会话 9d80afea-e93e-4328-8106-7f2aebe20d8d 发现者: b711ced1-8bb9-465f-83a3-1ab8fb57f197 / 6e8dd769-9d5c-4a3b-b0cd-f982a3f40c27 修改者: 会话 9d80afea-e93e-4328-8106-7f2aebe20d8d（设计 v1 → v2） 复核者: b711ced1-8bb9-465f-83a3-1ab8fb57f197 / 6e8dd769-9d5c-4a3b-b0cd-f982a3f40c27 交付: 2026-11-20T10:20Z",
+        "aliases": [],
+        "tags": [
+          "document",
+          "unclassified"
+        ],
+        "fields": {
+          "title": "轮次 R4 · 三方签核",
+          "headings": "轮次 R4 · 三方签核 审查 已改（v1 → v2，十条全部由复核推翻） 未改（三条交还，写进 §5）",
+          "path": "reviews/signoff-r4.md",
+          "symbols": "",
+          "summary": "轮次: R4 提出者: 会话 9d80afea-e93e-4328-8106-7f2aebe20d8d 发现者: b711ced1-8bb9-465f-83a3-1ab8fb57f197 / 6e8dd769-9d5c-4a3b-b0cd-f982a3f40c27 修改者: 会话 9d80afea-e93e-4328-8106-7f2aebe20d8d（设计 v1 → v2） 复核者: b711ced1-8bb9-465f-83a3-1ab8fb57f197 / 6e8dd769-9d5c-4a3b-b0cd-f982a3f40c27 交付: 2026-11-20T10:20Z",
+          "body": "轮次 R4 · 三方签核 轮次: R4 提出者: 会话 9d80afea-e93e-4328-8106-7f2aebe20d8d 发现者: b711ced1-8bb9-465f-83a3-1ab8fb57f197 / 6e8dd769-9d5c-4a3b-b0cd-f982a3f40c27 修改者: 会话 9d80afea-e93e-4328-8106-7f2aebe20d8d（设计 v1 → v2） 复核者: b711ced1-8bb9-465f-83a3-1ab8fb57f197 / 6e8dd769-9d5c-4a3b-b0cd-f982a3f40c27 交付: 2026-11-20T10:20Z 审查 三方在同一份 DESIGN.md 上签字： md5 5ac45301 （233 行）。 - reviews/review-r4-b711ced1.md → 认可（DESIGN.md 版本 5ac45301） - reviews/review-r4-6e8dd769.md → 认可（DESIGN.md 版本 5ac45301） 我复核了它们在 39998c4b 之上补的几行（§2 的 C3d 定义、C5 措辞）：与 bin/measure.mjs 的实现一致， 且把 C3d 的洞写进了文档本身（两个汉字就能洗白一行代码）。接受这个洞，理由与 §5 相同：那是取舍，不是判据缺失。 我方现跑： node bin/all.mjs → files 88, points 约 45, saved 约 1090 = expected, ratio 1, failFiles 9 skipped 约 24900 = double-escaped 约 11950 + short 约 2830 + in-code 约 9970 + not-all-cjk 175 points 每次跑浮动约 3（盘在写、半行 JSON 被跳过）。不变量是 ratio 与 saved === expected，不是 points。 已改（v1 → v2，十条全部由复核推翻） 次 原写法 被什么推翻 改成 --- --- --- --- 1 C2 往返一致 JSON.stringify 对可打印字符不转义，序列化不是单射 C1：字符数相等 + 解出不含字面转义 2 直扫 jsonl 原文 106/106 段判 double-escaped 先 JSON.parse 再扫内容层 3 两端记账层不同 ratio 1.333 都放内容层 4 pass 要求 skipped 为零 双重转义本就不该动 三条：恒等式 + points 大于零 + why 白名单 5 delta 按解码文本算 替换写的是 stringify 结果 delta 按替换文本算 6 按行处理后沿用行内偏移 ratio 1.45 行首偏移 + 行内偏移 7 赋值行正则只认 ASCII 词 const 声明两个词漏网 放宽到非空白非赋值符 8 C5 会话内再现判复制 改不了动作，首次与再现都还原 删除该判据，降级为记账标签 9 not-all-cjk 进白名单 failFiles 零是拆判据换的 移出，failFiles 9 诚实红 10 C3d 紧邻引号即代码 阻挡 65% 真污染 加例外：该行两个以上真汉字按正文处理 未改（三条交还，写进 §5） 1. 首次出现、不在代码上下文、不在会话内见过：与污染逐字符相同、位置也相同，没有可执行判据。 2. C3d 的洞：一行里有两个真汉字，代码区的转义会被还原。取舍问题。 3. 多行续行形式的 properties：进记账标签，不进交还名单。 结论: 认可（DESIGN.md 版本 5ac45301；三方签字；残余三条写进 §5 与本节）",
+          "aliases": "document unclassified"
+        },
+        "graph": {
+          "pagerank": 0,
+          "inboundLinks": 1,
+          "coveredBy": [],
+          "mentionedBy": [
+            "document:HISTORY.md"
+          ],
+          "inbound": [
+            {
+              "kind": "mentions",
+              "id": "document:HISTORY.md",
+              "confidence": "observed"
+            }
+          ],
+          "outbound": []
+        },
+        "contentHash": "a98512c0c3dfed25ae95f725d033621573892f18c14a66eb0d9df83feed82b62",
+        "provenance": "observed",
+        "confidence": "observed"
+      },
+      {
+        "id": "document:SETTINGS.md",
+        "kind": "document",
+        "path": "SETTINGS.md",
+        "title": "配置",
+        "summary": "配置文件位置：<扩展目录>/pi-escape-guard.json（首次启动自动写入默认值）。 用环境变量 ESC_GUARD_CONFIG 指向别处；ESC_GUARD_STATE 指定标签存档（默认 state.json）。",
+        "aliases": [],
+        "tags": [
+          "document",
+          "unclassified"
+        ],
+        "fields": {
+          "title": "配置",
+          "headings": "配置 什么时候该动哪个键",
+          "path": "SETTINGS.md",
+          "symbols": "",
+          "summary": "配置文件位置：<扩展目录>/pi-escape-guard.json（首次启动自动写入默认值）。 用环境变量 ESC_GUARD_CONFIG 指向别处；ESC_GUARD_STATE 指定标签存档（默认 state.json）。",
+          "body": "配置 配置文件位置： <扩展目录 /pi-escape-guard.json （首次启动自动写入默认值）。 用环境变量 ESC GUARD CONFIG 指向别处； ESC GUARD STATE 指定标签存档（默认 state.json ）。 改了配置不用重启 pi：每次 session start 重读一次文件。 什么时候该动哪个键 - 发现 该还原的没还原 → 先看 threshold （是不是不到 3 个转义）。别急着降 strict 。 - 发现 代码被改了 → skipFixtures 管不到源码文件，那是 C3 的洞（一行里有两个真汉字）， 只能把那条代码放进 test/fixtures/ ，或关掉整个 on 做一次对比。 - 只知道 failFiles 红 → 那是交还清单，不是配置问题。看 node bin/all.mjs 的 why 。",
+          "aliases": "document unclassified"
+        },
+        "graph": {
+          "pagerank": 0,
+          "inboundLinks": 1,
+          "coveredBy": [],
+          "mentionedBy": [
+            "document:reviews/review-impl-b711ced1.md"
+          ],
+          "inbound": [
+            {
+              "kind": "mentions",
+              "id": "document:reviews/review-impl-b711ced1.md",
+              "confidence": "fuzzy"
+            }
+          ],
+          "outbound": []
+        },
+        "contentHash": "1d7e5ede27aaaef6452f64ed9a778311008018fad523282d59037b27faa22a85",
+        "provenance": "observed",
+        "confidence": "observed"
+      },
+      {
+        "id": "document:SIGN-OFF-DTT.md",
+        "kind": "document",
+        "path": "SIGN-OFF-DTT.md",
+        "title": "SIGN-OFF · 依赖类型理论作为唯一元理论",
+        "summary": "本文件钉住三件事：元理论写在 README.md、判据能跑、指纹对得上。指纹一变，签名作废。",
+        "aliases": [],
+        "tags": [
+          "document",
+          "unclassified"
+        ],
+        "fields": {
+          "title": "SIGN-OFF · 依赖类型理论作为唯一元理论",
+          "headings": "SIGN-OFF · 依赖类型理论作为唯一元理论 乙方（改动方） 甲方（复核方）",
+          "path": "SIGN-OFF-DTT.md",
+          "symbols": "",
+          "summary": "本文件钉住三件事：元理论写在 README.md、判据能跑、指纹对得上。指纹一变，签名作废。",
+          "body": "SIGN-OFF · 依赖类型理论作为唯一元理论 本文件钉住三件事：元理论写在 README.md 、判据能跑、指纹对得上。指纹一变，签名作废。 项 值 --- --- 目标 .pi/agent/extensions/pi-escape-guard 文档 README.md 判据 node verify-dtt.mjs → 期望 rc=0 坏样本 node verify-dtt.mjs --selftest → 期望 5/5 全红 指纹 cd0ac54f2e8e68a880ce5889dc16ad66b85ea9edfcdf9aedfdffc5d281daae7e 既有测试 npm test sorry 无 乙方（改动方） - 元理论节、判据脚本、五个坏样本：写了，跑了，rc 见上表。 - 指纹取法： node verify-dtt.mjs --fingerprint ，算的是 README.md 与 verify-dtt.mjs 两个文件的 sha256。 - 乙方宣布不了收敛。下表空着等甲方。 甲方（复核方） 复核命令只有一条： node verify-dtt.mjs --fingerprint ，输出与上表逐字符相同才算盘上没有事后改动。 项 填什么 --- --- 复核时刻 2026-11-22T09:08Z 结论 全部认可 签名 6f3e0a1b",
+          "aliases": "document unclassified"
+        },
+        "graph": {
+          "pagerank": 0,
+          "inboundLinks": 1,
+          "coveredBy": [],
+          "mentionedBy": [
+            "document:README.md"
+          ],
+          "inbound": [
+            {
+              "kind": "mentions",
+              "id": "document:README.md",
+              "confidence": "observed"
+            }
+          ],
+          "outbound": [
+            {
+              "kind": "mentions",
+              "id": "document:README.md",
+              "confidence": "observed"
+            },
+            {
+              "kind": "mentions",
+              "id": "module:verify-dtt.mjs",
+              "confidence": "observed"
+            }
+          ]
+        },
+        "contentHash": "493cccd781f03f3f6e7a63a832e833725c8c567efe01641cc1419fdbdb3b8bb6",
+        "provenance": "observed",
+        "confidence": "observed"
+      },
+      {
+        "id": "module:bin/all.mjs",
+        "kind": "module",
+        "path": "bin/all.mjs",
+        "title": "all.mjs",
+        "aliases": [],
+        "tags": [
+          "module",
+          "mjs",
+          "bin"
+        ],
+        "fields": {
+          "title": "all.mjs",
+          "headings": "",
+          "path": "bin/all.mjs",
+          "symbols": "",
+          "summary": "",
+          "body": "",
+          "aliases": "module mjs bin"
+        },
+        "graph": {
+          "pagerank": 0,
+          "inboundLinks": 3,
+          "coveredBy": [],
+          "mentionedBy": [
+            "document:reviews/review-impl3-6e8dd769.md",
+            "document:reviews/review-impl5-6e8dd769.md",
+            "document:reviews/review-r4-6e8dd769.md"
+          ],
+          "areaId": "area:bin",
+          "packageId": "package:pi-escape-guard",
+          "inbound": [
+            {
+              "kind": "mentions",
+              "id": "document:reviews/review-impl3-6e8dd769.md",
+              "confidence": "observed"
+            },
+            {
+              "kind": "mentions",
+              "id": "document:reviews/review-impl5-6e8dd769.md",
+              "confidence": "observed"
+            },
+            {
+              "kind": "mentions",
+              "id": "document:reviews/review-r4-6e8dd769.md",
+              "confidence": "observed"
+            }
+          ],
+          "outbound": []
+        },
+        "contentHash": "640d2608878f59491d256aea1d4829cfb05b35c76f5e8841e41b195348443bf4",
+        "provenance": "observed",
+        "confidence": "observed"
+      },
+      {
+        "id": "module:bin/mutate.mjs",
+        "kind": "module",
+        "path": "bin/mutate.mjs",
+        "title": "mutate.mjs",
+        "aliases": [],
+        "tags": [
+          "module",
+          "mjs",
+          "bin"
+        ],
+        "fields": {
+          "title": "mutate.mjs",
+          "headings": "",
+          "path": "bin/mutate.mjs",
+          "symbols": "",
+          "summary": "",
+          "body": "",
+          "aliases": "module mjs bin"
+        },
+        "graph": {
+          "pagerank": 0,
+          "inboundLinks": 5,
+          "coveredBy": [],
+          "mentionedBy": [
+            "document:reviews/review-impl-b711ced1.md",
+            "document:reviews/review-impl2-6e8dd769.md",
+            "document:reviews/review-impl2-b711ced1.md",
+            "document:reviews/review-impl3-6e8dd769.md",
+            "document:reviews/review-impl3-b711ced1.md"
+          ],
+          "areaId": "area:bin",
+          "packageId": "package:pi-escape-guard",
+          "inbound": [
+            {
+              "kind": "mentions",
+              "id": "document:reviews/review-impl-b711ced1.md",
+              "confidence": "observed"
+            },
+            {
+              "kind": "mentions",
+              "id": "document:reviews/review-impl2-6e8dd769.md",
+              "confidence": "observed"
+            },
+            {
+              "kind": "mentions",
+              "id": "document:reviews/review-impl2-b711ced1.md",
+              "confidence": "observed"
+            },
+            {
+              "kind": "mentions",
+              "id": "document:reviews/review-impl3-6e8dd769.md",
+              "confidence": "observed"
+            },
+            {
+              "kind": "mentions",
+              "id": "document:reviews/review-impl3-b711ced1.md",
+              "confidence": "observed"
+            }
+          ],
+          "outbound": []
+        },
+        "contentHash": "36d35a42c5cc62c31e3154a4a5b137321773ad530509312af20cfb475574b44b",
+        "provenance": "observed",
+        "confidence": "observed"
+      },
+      {
+        "id": "module:src/config.ts",
+        "kind": "module",
+        "path": "src/config.ts",
+        "title": "config.ts",
+        "aliases": [],
+        "symbols": [
+          "Cfg",
+          "DEFAULTS",
+          "configFile",
+          "ensureConfig",
+          "readConfig"
+        ],
+        "tags": [
+          "module",
+          "ts",
+          "src"
+        ],
+        "fields": {
+          "title": "config.ts",
+          "headings": "",
+          "path": "src/config.ts",
+          "symbols": "Cfg DEFAULTS configFile ensureConfig readConfig",
+          "summary": "",
+          "body": "",
+          "aliases": "module ts src"
+        },
+        "graph": {
+          "pagerank": 0,
+          "inboundLinks": 1,
+          "coveredBy": [],
+          "mentionedBy": [
+            "document:reviews/review-impl-b711ced1.md"
+          ],
+          "packageId": "package:pi-escape-guard",
+          "inbound": [
+            {
+              "kind": "imports",
+              "id": "module:src/index.ts",
+              "confidence": "observed"
+            },
+            {
+              "kind": "mentions-symbol",
+              "id": "document:reviews/review-impl-b711ced1.md",
+              "confidence": "observed"
+            }
+          ],
+          "outbound": []
+        },
+        "contentHash": "646a79134cb0c1c907f5456f321bfb6083b272fb3012699048aa667ea43490a0",
+        "provenance": "observed",
+        "confidence": "observed"
+      },
+      {
+        "id": "module:src/index.ts",
+        "kind": "module",
+        "path": "src/index.ts",
+        "title": "index.ts",
+        "aliases": [],
+        "symbols": [
+          "installGuard"
+        ],
+        "tags": [
+          "module",
+          "ts",
+          "src"
+        ],
+        "fields": {
+          "title": "index.ts",
+          "headings": "",
+          "path": "src/index.ts",
+          "symbols": "installGuard",
+          "summary": "",
+          "body": "",
+          "aliases": "module ts src"
+        },
+        "graph": {
+          "pagerank": 0,
+          "inboundLinks": 1,
+          "coveredBy": [],
+          "mentionedBy": [
+            "document:reviews/review-impl-b711ced1.md"
+          ],
+          "packageId": "package:pi-escape-guard",
+          "inbound": [
+            {
+              "kind": "imports",
+              "id": "module:test/wire.test.ts",
+              "confidence": "observed"
+            },
+            {
+              "kind": "mentions",
+              "id": "document:reviews/review-impl-b711ced1.md",
+              "confidence": "observed"
+            }
+          ],
+          "outbound": [
+            {
+              "kind": "imports",
+              "id": "module:src/config.ts",
+              "confidence": "observed"
+            },
+            {
+              "kind": "imports",
+              "id": "module:src/scan.ts",
+              "confidence": "observed"
+            },
+            {
+              "kind": "imports",
+              "id": "module:src/verdict.ts",
+              "confidence": "observed"
+            }
+          ]
+        },
+        "contentHash": "561f569f536bdedf4d703708dd6f84b59c39fa12d92710324b78951edc99f8c8",
+        "provenance": "observed",
+        "confidence": "observed"
+      },
+      {
+        "id": "module:src/meta.ts",
+        "kind": "module",
+        "path": "src/meta.ts",
+        "title": "meta.ts",
+        "aliases": [],
+        "symbols": [
+          "META",
+          "Piece",
+          "RULES",
+          "Rule",
+          "audit"
+        ],
+        "tags": [
+          "module",
+          "ts",
+          "src"
+        ],
+        "fields": {
+          "title": "meta.ts",
+          "headings": "",
+          "path": "src/meta.ts",
+          "symbols": "META Piece RULES Rule audit",
+          "summary": "",
+          "body": "",
+          "aliases": "module ts src"
+        },
+        "graph": {
+          "pagerank": 0,
+          "inboundLinks": 0,
+          "coveredBy": [],
+          "mentionedBy": [],
+          "packageId": "package:pi-escape-guard",
+          "inbound": [
+            {
+              "kind": "imports",
+              "id": "module:test/meta.test.ts",
+              "confidence": "observed"
+            }
+          ],
+          "outbound": []
+        },
+        "contentHash": "d0a145d9a8d93eaafc87de5f89bb398f692de3ce6f4f986cd2608d96d7fdfdb4",
+        "provenance": "observed",
+        "confidence": "observed"
+      },
+      {
+        "id": "module:src/scan.ts",
+        "kind": "module",
+        "path": "src/scan.ts",
+        "title": "scan.ts",
+        "aliases": [],
+        "symbols": [
+          "Point",
+          "Settle",
+          "settle"
+        ],
+        "tags": [
+          "module",
+          "ts",
+          "src"
+        ],
+        "fields": {
+          "title": "scan.ts",
+          "headings": "",
+          "path": "src/scan.ts",
+          "symbols": "Point Settle settle",
+          "summary": "",
+          "body": "",
+          "aliases": "module ts src"
+        },
+        "graph": {
+          "pagerank": 0,
+          "inboundLinks": 5,
+          "coveredBy": [],
+          "mentionedBy": [
+            "document:reviews/review-impl-b711ced1.md",
+            "document:reviews/review-r4-6e8dd769.md",
+            "document:reviews/review-r4-b711ced1.md",
+            "document:HISTORY.md",
+            "document:reviews/review-impl-6e8dd769.md"
+          ],
+          "packageId": "package:pi-escape-guard",
+          "inbound": [
+            {
+              "kind": "imports",
+              "id": "module:src/index.ts",
+              "confidence": "observed"
+            },
+            {
+              "kind": "imports",
+              "id": "module:test/scan.test.ts",
+              "confidence": "observed"
+            },
+            {
+              "kind": "mentions",
+              "id": "document:reviews/review-impl-b711ced1.md",
+              "confidence": "fuzzy"
+            },
+            {
+              "kind": "mentions",
+              "id": "document:reviews/review-r4-6e8dd769.md",
+              "confidence": "fuzzy"
+            },
+            {
+              "kind": "mentions",
+              "id": "document:reviews/review-r4-b711ced1.md",
+              "confidence": "fuzzy"
+            },
+            {
+              "kind": "mentions-symbol",
+              "id": "document:HISTORY.md",
+              "confidence": "observed"
+            },
+            {
+              "kind": "mentions-symbol",
+              "id": "document:reviews/review-impl-6e8dd769.md",
+              "confidence": "observed"
+            },
+            {
+              "kind": "mentions-symbol",
+              "id": "document:reviews/review-impl-b711ced1.md",
+              "confidence": "observed"
+            }
+          ],
+          "outbound": []
+        },
+        "contentHash": "ed1bed03e56634e19a011559f279b4cf5ac2796b35fcb3bc336e262d315ae1bd",
+        "provenance": "observed",
+        "confidence": "observed"
+      },
+      {
+        "id": "module:src/verdict.ts",
+        "kind": "module",
+        "path": "src/verdict.ts",
+        "title": "verdict.ts",
+        "aliases": [],
+        "symbols": [
+          "TextBlock",
+          "isTextBlock",
+          "validContent",
+          "validMessage"
+        ],
+        "tags": [
+          "module",
+          "ts",
+          "src"
+        ],
+        "fields": {
+          "title": "verdict.ts",
+          "headings": "",
+          "path": "src/verdict.ts",
+          "symbols": "TextBlock isTextBlock validContent validMessage",
+          "summary": "",
+          "body": "",
+          "aliases": "module ts src"
+        },
+        "graph": {
+          "pagerank": 0,
+          "inboundLinks": 3,
+          "coveredBy": [],
+          "mentionedBy": [
+            "document:README.md",
+            "document:reviews/review-impl-6e8dd769.md",
+            "document:reviews/review-impl-b711ced1.md"
+          ],
+          "packageId": "package:pi-escape-guard",
+          "inbound": [
+            {
+              "kind": "imports",
+              "id": "module:src/index.ts",
+              "confidence": "observed"
+            },
+            {
+              "kind": "imports",
+              "id": "module:test/verdict.test.ts",
+              "confidence": "observed"
+            },
+            {
+              "kind": "mentions-symbol",
+              "id": "document:README.md",
+              "confidence": "observed"
+            },
+            {
+              "kind": "mentions-symbol",
+              "id": "document:reviews/review-impl-6e8dd769.md",
+              "confidence": "observed"
+            },
+            {
+              "kind": "mentions-symbol",
+              "id": "document:reviews/review-impl-b711ced1.md",
+              "confidence": "observed"
+            }
+          ],
+          "outbound": []
+        },
+        "contentHash": "58292a2eb4684eed8746f5e565372f93dd4222aab14cb63a228c355fdb329e29",
+        "provenance": "observed",
+        "confidence": "observed"
+      },
+      {
+        "id": "module:test/meta.test.ts",
+        "kind": "module",
+        "path": "test/meta.test.ts",
+        "title": "meta.test.ts",
+        "aliases": [],
+        "tags": [
+          "module",
+          "ts",
+          "test"
+        ],
+        "fields": {
+          "title": "meta.test.ts",
+          "headings": "",
+          "path": "test/meta.test.ts",
+          "symbols": "",
+          "summary": "",
+          "body": "",
+          "aliases": "module ts test"
+        },
+        "graph": {
+          "pagerank": 0,
+          "inboundLinks": 1,
+          "coveredBy": [],
+          "mentionedBy": [
+            "document:reviews/review-impl3-6e8dd769.md"
+          ],
+          "areaId": "area:test",
+          "packageId": "package:pi-escape-guard",
+          "inbound": [
+            {
+              "kind": "mentions",
+              "id": "document:reviews/review-impl3-6e8dd769.md",
+              "confidence": "fuzzy"
+            }
+          ],
+          "outbound": [
+            {
+              "kind": "imports",
+              "id": "module:src/meta.ts",
+              "confidence": "observed"
+            }
+          ]
+        },
+        "contentHash": "1028927bf6bcf51b8aa6cdf0a79babdd1530ed5b0b9cd284460d0a935ec5ba2e",
+        "provenance": "observed",
+        "confidence": "observed"
+      },
+      {
+        "id": "module:test/scan.test.ts",
+        "kind": "module",
+        "path": "test/scan.test.ts",
+        "title": "scan.test.ts",
+        "aliases": [],
+        "tags": [
+          "module",
+          "ts",
+          "test"
+        ],
+        "fields": {
+          "title": "scan.test.ts",
+          "headings": "",
+          "path": "test/scan.test.ts",
+          "symbols": "",
+          "summary": "",
+          "body": "",
+          "aliases": "module ts test"
+        },
+        "graph": {
+          "pagerank": 0,
+          "inboundLinks": 1,
+          "coveredBy": [],
+          "mentionedBy": [
+            "document:reviews/review-impl-b711ced1.md"
+          ],
+          "areaId": "area:test",
+          "packageId": "package:pi-escape-guard",
+          "inbound": [
+            {
+              "kind": "mentions",
+              "id": "document:reviews/review-impl-b711ced1.md",
+              "confidence": "fuzzy"
+            }
+          ],
+          "outbound": [
+            {
+              "kind": "imports",
+              "id": "module:src/scan.ts",
+              "confidence": "observed"
+            }
+          ]
+        },
+        "contentHash": "b4b97e31e476394e39787a3e7b3cf4b827bb1e889b8e89a025a11a3d6944581d",
+        "provenance": "observed",
+        "confidence": "observed"
+      },
+      {
+        "id": "module:test/verdict.test.ts",
+        "kind": "module",
+        "path": "test/verdict.test.ts",
+        "title": "verdict.test.ts",
+        "aliases": [],
+        "tags": [
+          "module",
+          "ts",
+          "test"
+        ],
+        "fields": {
+          "title": "verdict.test.ts",
+          "headings": "",
+          "path": "test/verdict.test.ts",
+          "symbols": "",
+          "summary": "",
+          "body": "",
+          "aliases": "module ts test"
+        },
+        "graph": {
+          "pagerank": 0,
+          "inboundLinks": 0,
+          "coveredBy": [],
+          "mentionedBy": [],
+          "areaId": "area:test",
+          "packageId": "package:pi-escape-guard",
+          "inbound": [],
+          "outbound": [
+            {
+              "kind": "imports",
+              "id": "module:src/verdict.ts",
+              "confidence": "observed"
+            }
+          ]
+        },
+        "contentHash": "f2786ff77bbed13585cbc727e8b4f85419328758e57a35bd5cfc79664ec09c83",
+        "provenance": "observed",
+        "confidence": "observed"
+      },
+      {
+        "id": "module:test/wire.test.ts",
+        "kind": "module",
+        "path": "test/wire.test.ts",
+        "title": "wire.test.ts",
+        "aliases": [],
+        "tags": [
+          "module",
+          "ts",
+          "test"
+        ],
+        "fields": {
+          "title": "wire.test.ts",
+          "headings": "",
+          "path": "test/wire.test.ts",
+          "symbols": "",
+          "summary": "",
+          "body": "",
+          "aliases": "module ts test"
+        },
+        "graph": {
+          "pagerank": 0,
+          "inboundLinks": 0,
+          "coveredBy": [],
+          "mentionedBy": [],
+          "areaId": "area:test",
+          "packageId": "package:pi-escape-guard",
+          "inbound": [],
+          "outbound": [
+            {
+              "kind": "imports",
+              "id": "module:src/index.ts",
+              "confidence": "observed"
+            }
+          ]
+        },
+        "contentHash": "7197f55c5286c6b8f4fd21cec670405d2daedc92395d526060883eff6f32be93",
+        "provenance": "observed",
+        "confidence": "observed"
+      },
+      {
+        "id": "module:verify-dtt.mjs",
+        "kind": "module",
+        "path": "verify-dtt.mjs",
+        "title": "verify-dtt.mjs",
+        "aliases": [],
+        "symbols": [
+          "check",
+          "fingerprint"
+        ],
+        "tags": [
+          "module",
+          "mjs"
+        ],
+        "fields": {
+          "title": "verify-dtt.mjs",
+          "headings": "",
+          "path": "verify-dtt.mjs",
+          "symbols": "check fingerprint",
+          "summary": "",
+          "body": "",
+          "aliases": "module mjs"
+        },
+        "graph": {
+          "pagerank": 0,
+          "inboundLinks": 2,
+          "coveredBy": [],
+          "mentionedBy": [
+            "document:README.md",
+            "document:SIGN-OFF-DTT.md"
+          ],
+          "packageId": "package:pi-escape-guard",
+          "inbound": [
+            {
+              "kind": "mentions",
+              "id": "document:README.md",
+              "confidence": "observed"
+            },
+            {
+              "kind": "mentions",
+              "id": "document:SIGN-OFF-DTT.md",
+              "confidence": "observed"
+            }
+          ],
+          "outbound": []
+        },
+        "contentHash": "d072075280df92e9ab5891b244321a4d6896aafad14db77d7c17289db27a168e",
+        "provenance": "observed",
+        "confidence": "observed"
+      },
+      {
+        "id": "package:pi-escape-guard",
+        "kind": "package",
+        "path": ".",
+        "title": "pi-escape-guard",
+        "summary": "把落进会话记录的字面 unicode 转义还原；只对 thinking 槽位动手。",
+        "audience": "agent",
+        "aliases": [
+          "escape-guard",
+          "pi-escape-guard"
+        ],
+        "tags": [
+          "package",
+          "ownership"
+        ],
+        "fields": {
+          "title": "pi-escape-guard",
+          "headings": "escape-guard 改之前",
+          "path": ".",
+          "symbols": "",
+          "summary": "把落进会话记录的字面 unicode 转义还原；只对 thinking 槽位动手。",
+          "body": "escape-guard 覆盖：本仓根 - 目的：把落进会话记录的字面 unicode 转义还原；只对 thinking 槽位动手。 - 机器判据：npm test、node bin/mutate.mjs --unique - 能改哪里：这个仓内的文件；跨仓改动要先说明那是另一个 ownership。 改之前 - 先跑上面所有判据拿到当前 rc；改完同一条命令必须还是 0。 - 只跑好样本会绿的不算判据：有 selftest 的必须一起跑。",
+          "aliases": "escape-guard pi-escape-guard package ownership"
+        },
+        "graph": {
+          "pagerank": 0,
+          "inboundLinks": 0,
+          "coveredBy": [],
+          "mentionedBy": [],
+          "packageId": "package:pi-escape-guard",
+          "inbound": [],
+          "outbound": []
+        },
+        "contentHash": "311fe901f1cd9b8ecb41b5285d111dccfac0e095985f4452be0c07acc45e71da",
+        "provenance": "observed",
+        "confidence": "observed",
+        "ownershipId": "escape-guard"
+      }
+    ]
+  }
+}
