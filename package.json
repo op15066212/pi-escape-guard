@@ -10,7 +10,8 @@
     "all": "node bin/all.mjs",
     "mutate": "node bin/mutate.mjs",
     "mutate:unique": "node bin/mutate.mjs --unique",
-    "check:docs": "node scripts/check-doc-accuracy.mjs"
+    "check:docs": "node scripts/check-doc-accuracy.mjs",
+    "status": "node bin/status.mjs"
   },
   "pi": {
     "extensions": [
