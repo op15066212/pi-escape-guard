@@ -23,13 +23,20 @@ export default async function installGuard(pi: any) {
   // 一行一条，每行 ≤44 字符（PiDeck 通知弹窗约 400px，超了会被裁掉）。
   pi.registerCommand("escape-guard", {
     description: "看阈值，并用当前配置跑三种样例",
-    handler: async () => {
-      const rows = ["threshold " + cfg.threshold + "   开关 " + (cfg.on ? "开" : "关")];
-      for (const d of DEMOS) {
+    handler: async (args?: any) => {
+      // 三种样例算一次，人读与机读共用（一处可写：两处各算一遍，迟早不一样）。
+      const demos = DEMOS.map((d) => {
         const r = settle(d.text, cfg.threshold);
-        const hit = r.ok && r.out !== d.text;
-        // 只报「改没改」，不把整段原文贴出来：原文里有反斜杠，贴进弹窗更看不懂。
-        rows.push(d.label + "   " + (hit ? "还原 " + (d.text.length - r.out.length) + " 字符" : "不动"));
+        return { label: d.label, hit: r.ok && r.out !== d.text, ok: r.ok, saved: d.text.length - r.out.length };
+      });
+      if (String(args || "").trim() === "json") {
+        return JSON.stringify({ threshold: cfg.threshold, on: cfg.on, demos });
+      }
+      // 一行一条，每行 ≤44 字符（PiDeck 通知弹窗约 400px，超了会被裁掉）。
+      const rows = ["threshold " + cfg.threshold + "   开关 " + (cfg.on ? "开" : "关")];
+      for (const d of demos) {
+        // 只报「改没改」，不贴原文：原文里是反斜杠，贴进弹窗更看不懂。
+        rows.push(d.label + "   " + (d.hit ? "还原 " + d.saved + " 字符" : "不动"));
       }
       return rows.join(String.fromCharCode(10));
     },

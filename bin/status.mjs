@@ -22,14 +22,22 @@ const DEMOS = [
   { label: "代码里", text: "\u0060\u0060\u0060\nconst re = /[\\u4e00-\\u9fff]/;\n\u0060\u0060\u0060", want: false },
 ];
 
-const out = ["threshold " + cfg.threshold + "   开关 " + (cfg.on ? "开" : "关")];
-let bad = 0;
-for (const d of DEMOS) {
+// 三种样例算一次，人读与机读共用（一处可写：两处各算一遍，迟早不一样）。
+const results = DEMOS.map((d) => {
   const r = settle(d.text, cfg.threshold);
   const hit = r.ok && r.out !== d.text;
-  if (hit !== d.want) bad++;
-  out.push(d.label + "   " + (hit ? "还原 " + (d.text.length - r.out.length) + " 字符" : "不动") + (hit === d.want ? "" : "  ← 不对"));
-}
+  return { label: d.label, want: d.want, hit, ok: hit === d.want, saved: d.text.length - r.out.length };
+});
+const bad = results.filter((x) => !x.ok).length;
 
-console.log(out.join("\n"));
+// 机读：与短表同一次计算，只是换个形状。
+if (process.argv.includes("--json")) {
+  console.log(JSON.stringify({ threshold: cfg.threshold, on: cfg.on, demos: results, ok: bad === 0 }, null, 2));
+} else {
+  const out = ["threshold " + cfg.threshold + "   开关 " + (cfg.on ? "开" : "关")];
+  for (const r of results) {
+    out.push(r.label + "   " + (r.hit ? "还原 " + r.saved + " 字符" : "不动") + (r.ok ? "" : "  ← 不对"));
+  }
+  console.log(out.join(String.fromCharCode(10)));
+}
 if (bad) process.exitCode = 1;

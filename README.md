@@ -34,7 +34,31 @@ cd ~/.pi/agent/extensions/pi-escape-guard && npm run status
 `want` 不写死：从「段内转义数 ≥ 门槛」推导。所以把 `threshold` 调到 6 时，
 第一条会变成 `不动`，退出码仍然是 0——**门槛是可配的，判据不该因为配置变了就自己红**。
 
+加 `--json` 出机读：
+
+```json
+{
+  "threshold": 3,
+  "on": true,
+  "demos": [
+    { "label": "该还原", "want": true, "hit": true, "ok": true, "saved": 25 },
+    { "label": "不够数", "want": false, "hit": false, "ok": true, "saved": 0 },
+    { "label": "代码里", "want": false, "hit": false, "ok": true, "saved": 0 }
+  ],
+  "ok": true
+}
+```
+
 退出码：0 三种样例都符合规则；1 有一条不符合（判据失败）。
+
+### 四个入口，两种形状
+
+| 从哪进 | 人读 | 机读 |
+|---|---|---|
+| pi 内 | `/escape-guard` | `/escape-guard json` |
+| bash | `npm run status` | `node bin/status.mjs --json` |
+
+三种样例只算一遍，两个形状从同一份结果渲染——两处各算一遍，迟早不一样。
 
 ## 元理论：依赖类型理论（唯一）
 
