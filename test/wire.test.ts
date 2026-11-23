@@ -13,10 +13,28 @@ async function setup(cfgObj: any = {}) {
   try {
     const install = (await import("../src/index.ts")).default;
     const h: Record<string, any> = {};
-    await install({ on(e: string, f: any) { h[e] = f; }, registerCommand() {} });
-    return { h, CFG };
+    const cmds: Record<string, any> = {};
+    // 命令也要收进来：只有接线测试抓不到「命令根本没注册」。
+    await install({ on(e: string, f: any) { h[e] = f; }, registerCommand(n: string, spec: any) { cmds[n] = spec; } });
+    return { h, cmds, CFG };
   } finally { console.log = prevLog; }
 }
+
+// 命令是观察面：三种样例各自动作对不对，决定「我现在这条门槛」说得清说不清。
+// 长度也断言：PiDeck 弹窗约 400px，超了会被裁掉、没有复制按钮。
+test("命令：三种样例各自动作对，且不溢出", async () => {
+  const { cmds, CFG } = await setup();
+  try {
+    assert.ok(cmds["escape-guard"], "命令应当注册");
+    const out = String(await cmds["escape-guard"].handler());
+    const rows = out.split("\n");
+    assert.ok(rows.length <= 6, "行数 ≤ 6，实际 " + rows.length);
+    for (const l of rows) assert.ok(l.length <= 44, "每行 ≤ 44，实际 " + l.length + "：" + l);
+    assert.ok(/该还原\s+还原/.test(out), "成段转义要还原，实际：" + out);
+    assert.ok(/不够数\s+不动/.test(out), "单个转义不够门槛，实际：" + out);
+    assert.ok(/代码里\s+不动/.test(out), "围栏内不动，实际：" + out);
+  } finally { fs.rmSync(CFG, { force: true }); }
+});
 
 test("tool_result：文本块里的成段转义被还原", async () => {
   const { h, CFG } = await setup();

@@ -7,9 +7,33 @@ import { ensureConfig, readConfig, type Cfg } from "./config.ts";
 import { settle } from "./scan.ts";
 import { isTextBlock, validContent, validMessage } from "./verdict.ts";
 
+// 观察面：拿**当前配置**现场跑三种样例。
+// 不记「还原过几次」——那不是判据（R12 删过 stats，理由是它不改变动作）。
+// 能自证的是：现在这条门槛，遇到这三种输入会怎么做。任何时刻可跑，不依赖历史。
+const DEMOS = [
+  { label: "该还原", text: "\\u4f60\\u53ef\\u4ee5\\u5e2e\\u6211" },
+  { label: "不够数", text: "\\u4f60" },
+  { label: "代码里", text: "\u0060\u0060\u0060\nconst re = /[\\u4e00-\\u9fff]/;\n\u0060\u0060\u0060" },
+];
+
 export default async function installGuard(pi: any) {
   let cfg: Cfg = ensureConfig();
   pi.on("session_start", async () => { cfg = readConfig(); });
+
+  // 一行一条，每行 ≤44 字符（PiDeck 通知弹窗约 400px，超了会被裁掉）。
+  pi.registerCommand("escape-guard", {
+    description: "看阈值，并用当前配置跑三种样例",
+    handler: async () => {
+      const rows = ["threshold " + cfg.threshold + "   开关 " + (cfg.on ? "开" : "关")];
+      for (const d of DEMOS) {
+        const r = settle(d.text, cfg.threshold);
+        const hit = r.ok && r.out !== d.text;
+        // 只报「改没改」，不把整段原文贴出来：原文里有反斜杠，贴进弹窗更看不懂。
+        rows.push(d.label + "   " + (hit ? "还原 " + (d.text.length - r.out.length) + " 字符" : "不动"));
+      }
+      return rows.join(String.fromCharCode(10));
+    },
+  });
 
   // S1：工具结果。污染的主入口。
   pi.on("tool_result", async (event: any) => {
