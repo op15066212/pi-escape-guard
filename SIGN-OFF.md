@@ -30,7 +30,21 @@ npm test → rc=0
 | 角色 | 会话 | 状态 | 时刻 |
 | --- | --- | --- | --- |
 | 复核方 | pi 插件2 `f15be404` | **已签**：指纹 `8467da15` SAME、npm test rc=0、工作区干净 | 2026-11-24T17:54Z |
-| 修改方 | pi 插件 `9d80afea` | **待签**：需它自己对着盘跑 `--verify` 与 `npm test`，贴 rc 与时刻 | — |
+| 修改方 | pi 插件 `9d80afea` | **已签**：指纹 `f39ba5ed` SAME、npm test rc=0、工作区取前取后 0 行 | 2026-11-24T18:11Z |
+
+修改方自述（四行）：
+
+- 指纹 `f39ba5edb20e22f4be4ea3fa4fbeade6`，`--verify` → SAME
+- 时刻 2026-11-24T18:11Z
+- 取前 `git status --porcelain | wc -l` = 0，取后 = 0
+- `npm test` rc=0（42/42）
+
+**指纹与上一签不同，原因写清**：上一签是 `8467da15`。本次发现本仓 `VOLATILE` 只有
+`package-lock.json`、顶层名单里也没有 `SIGN-OFF.md`，所以签字记录连 md5 都不印——
+别人无法确认「这一份链条是哪一版」。sentry 那边它进 files 又被 VOLATILE 过滤，
+md5 印在输出末行；这边一个都没有。补齐后 `bin/fingerprint.mjs` 自己变了，
+总指纹随之从 `8467da15` 变成 `f39ba5ed`。**判据脚本变了，被签对象就该换身份**，
+这是对的行为，不是漂移。验法：往本文件加一行，总指纹不变、md5 变。
 
 ### 推送
 
