@@ -211,7 +211,7 @@ C1–C4 全在 `scan.ts` 一个文件里。判据只有四条，把「一段字�
 | 缓存与可复现性：`message_end` 改正文会让上一轮上下文缓存失效 | 已知代价。判据：`stats` 输出 `changedTurns / turns`，> 0.3 说明治不住源头 |
 | 记账标签 firstSeen/repeat 的「更早」在会话被 fork/compaction 后失效 | 判据：`seen` 按 sessionKey 分键，fork 后新会话从空集开始（宁可漏判复制，不可误判） |
 
-**已知差异：离线验收器与运行时对 fixtures 的处理不同**（2026-11-21 复核第⑦条）。bin/measure.mjs 扫的是会话记录的内容层，不知道这一段来自哪个路径，所以它不跳 test/fixtures/；运行时的 toolResult.ts 会跳。差异只影响被当成夹具读进来的文件，离线算出的 points 因此可能略高。不假装两边一致。
+**已不存在：离线验收器**（2026-11-21 记录的第⑦条）。当时有一个 `bin/measure.mjs` 扫会话记录的内容层，它不知道一段文本来自哪个路径，所以不跳 `test/fixtures/`，与运行时的 `toolResult.ts` 不一致。R12 重构把它连同统计一起删了——它只观测、不改变动作。现在判据只有两条入口：`npm test`（构造样本）与 `npm run status`（当前配置下的三种样例）。
 
 ## 9 实测
 
