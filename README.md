@@ -260,7 +260,30 @@ selftest 红了就不跑正常模式——判据本身坏了，它给的「0 处
 反例：往 scripts/ 塞一个返回 1 的 check-zzz-canary.mjs（临时造的名字，验完就删，不落盘），
 gate.mjs 必须 rc=1 并点名。
 
-### 跨仓镜像：同一份判据在两个仓里必须同答案
+### 四个检查脚本
+
+| 脚本 | 挡什么 |
+|---|---|
+| `check-doc-accuracy.mjs` | 文档里的配置键与路径，盘上必须真有 |
+| `check-mirror.mjs` | 两个仓的 `keysIn` / `pathsIn` 行为必须一致 |
+| `check-rc-pipe.mjs` | 报退出码的那一行不许有管道 |
+| `check-main-guard.mjs` | 有导出的脚本，「直接跑」与「被 import」两个方向都要对 |
+
+`check-main-guard` 的 B 方向由 `scripts/main-probe.mjs` 执行——**它是仓里的真文件**。
+原来在判据里运行时拼源码，反斜杠要穿三层转义，我错了四次，最后错到判据自己不准。
+判据自己不准比没有判据更坏，它会让人去改本来没坏的代码。
+
+### 默认值只写一处
+
+`meta.ts` 的四件表里「默认 on:true, min:3」不再是手写，而是从 `config.ts` 的 `DEFAULTS` 插值。
+
+原来手写——那是第二处。改 `DEFAULTS` 时文本不跟着变，而**这种不一致不影响任何运行结果**：
+代码照跑、测试照过、`audit()` 也照过（它只看四格非空）。
+
+断言能发现不一致；插值让它**不可能**不一致。证过：把 `DEFAULTS` 临时改成 7/关/9，
+四件表两格立刻跟着变，复原后逐字回原。
+
+### 跨仓镜像
 
 `scripts/check-doc-accuracy.mjs` 在本仓与 `pi-think-sentry` 各有一份，是抄的，不是共享的。
 
