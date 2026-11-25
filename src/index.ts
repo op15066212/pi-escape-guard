@@ -62,6 +62,11 @@ export default async function installGuard(pi: any) {
     // 这正是「多层转义」的又一个实例：我自己加的那一层把判据挡住了。
     // 试过再用 JSON.parse 还原，那是「用一个转义去解另一个转义」，越走越深。
     // 直接遍历原值，一层都没有。
+    //
+    // 可复现的证据（pi 插件2 给的）：同一段文本，直接匹配命中 1 处；
+    // 先 JSON.stringify 再匹配命中 0 处。差的就是那一层。
+    // 多包一层不是「更保险」，是判据整个失效，而且不报错——
+    // 属于「保护形同不存在」那一类：不叫，因为分支永远不成立。
     const texts: string[] = [];
     const walk = (v: any, depth: number) => {
       if (depth > 20) return; // 防御：极深的嵌套不追
@@ -73,7 +78,6 @@ export default async function installGuard(pi: any) {
 
     const runs: Array<{ seg: string; count: number }> = [];
     for (const t of texts) runs.push(...findEscapeRuns(t, cfg.block.min));
-    if (!runs.length) return undefined;
     if (!runs.length) return undefined;
 
     // 把第一段解出来给他看：模型看到「这一段应该是：你好世」就知道怎么改。

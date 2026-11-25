@@ -59,6 +59,14 @@ export const RULES: readonly Rule[] = [
     消去: "threshold=3 与 threshold=1 在同一份记录上比较",
     反例: "孤立 \\u4f60，只一个转义，不动",
   },
+  {
+    id: "s0-block", kind: "verdict",
+    prop: "S0 调用工具前，入参里有成串转义就拒",
+    形成: "block 在 pi-escape-guard.json（默认 on:true, min:3）；findEscapeRuns 在 scan.ts",
+    引入: "node --experimental-strip-types --test test/block.test.ts；期望 6 条全过、rc=0",
+    消去: "同一段入参在 block.on=true 与 false 下结论相反（block.test.ts 里两条用例）",
+    反例: "一段参数里连续三个转义：该拒；而正则字符类里那种两个不连续的，该放",
+  },
 ];
 
 /** 四件齐不齐。空数组 = 每条规则都有居民。 */
