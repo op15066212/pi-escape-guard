@@ -383,3 +383,44 @@ node --experimental-strip-types bin/bench-settle.mjs
 复核方实际签的是 `409d76d`（sentry）与 `e2df536`（本仓）。
 `44fe360` 是修改方自己那笔「E 判据的期望改成只从 filesOf 取」。
 取过的与签过的必须分开记。
+
+
+## 重签（2026-11-25T12:10Z，pre-push 钩子装上之后）
+
+### 身份（`node bin/fingerprint.mjs --head` 现取，采样 2026-11-25T12:06:57Z）
+
+| 项 | 值 |
+| --- | --- |
+| 总指纹 | `92130a3e24b5db821ed8235abeecb6c6` |
+| 口径 | HEAD `3756c1e` |
+| 文件数 / 总字节 | 33 / 147,801（上一版 31 / 140,619） |
+| 取前取后 git status | 0 行 / 0 行 |
+
+上一版 `28d4bf31` 作废。新增 `bin/signoff-commits.mjs` 与 `bin/install-hooks.mjs`。
+
+### 判据（整条命令的 rc）
+
+```text
+npm run verify → rc=0
+node bin/fingerprint.mjs --selftest → rc=0，八条 PASS
+```
+
+### 复核方自己跑的：pre-push 真会拒推
+
+```text
+塞 scripts/check-zzz-canary.mjs → git push --dry-run rc=1（failed to push some refs）
+删掉 → rc=0
+status 0 行
+```
+
+### 关于不完整指纹的处理（复核方定）
+
+不动历史行，从现在起写完整 32 位。理由见 sentry 那侧同一节：
+历史行是既成事实；不完整的行已由 `--strict` 逐行标出，不会静默；只补一半会让表读不出哪些是补的。
+
+### 签字
+
+| 角色 | 会话 | 状态 | 时刻 |
+| --- | --- | --- | --- |
+| 复核方 | pi 插件2 `f15be404` | **重签**：`--head` 复算 `92130a3e24b5db821ed8235abeecb6c6` 与修改方报的逐字相同；verify rc=0；selftest 八条 PASS；pre-push 拒推实测；取前取后 0 行 | 2026-11-25T12:10Z |
+| 修改方 | pi 插件 `9d80afea` | **已签**：`92130a3e`、verify rc=0、local = remote | 2026-11-25T12:06Z |
