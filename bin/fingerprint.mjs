@@ -87,7 +87,11 @@ const EXTS = new Set([".ts", ".mts", ".mjs", ".js", ".json"]);
 // 而注释写着「不进总指纹」、代码又把 settings.json 放进了 files。
 // 注释说 A，代码做 B——正是这一路在修的形状。现在它真的被用了。
 const VOLATILE = new Set(["settings.json", "SIGN-OFF.md", "package-lock.json"]);
-const TOP_FILES = ["package.json", "tsconfig.json", "README.md", "settings.json", "SIGN-OFF.md"];
+// 2026-11-25：这三个 .md 在本仓的旧清单里就有，被签面必含它们。
+// 我一度用 sentry 那份清单覆盖过来，于是 DESIGN / SETTINGS / HISTORY 从被签面掉了，
+// 文件数 25 -> 22。被签面缩小不会红——它只会让签字"看起来"通过。
+// 两个仓的文档集不同，这一行**不能**照抄。
+const TOP_FILES = ["package.json", "tsconfig.json", "README.md", "DESIGN.md", "SETTINGS.md", "HISTORY.md", "SIGN-OFF.md"];
 
 function walk(dir, out = []) {
   if (!fs.existsSync(dir)) return out;
