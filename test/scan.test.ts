@@ -69,3 +69,25 @@ test("畸形数据不动，且不抛", () => {
 test("不含 \\u 的文本原样返回", () => {
   assert.equal(S("普通一行中文").out, "普通一行中文");
 });
+
+// 幂等（2026-11-25，与 pi-think-sentry 的 idempotence.test.ts 同一件事）：
+// 两个插件里每个改内容的地方，第二遍必须不再改。
+// 不靠「显然」——settle 的输出里不该再有转义段是推理，判据是拿输出再喂一遍逐字节比。
+test("幂等：还原过的文本再还原一次，一个字都不再改", () => {
+  const once = S("\\u4f60\\u597d\\u4e16");
+  assert.equal(once.ok, true);
+  const twice = S(once.out);
+  assert.equal(twice.ok, true);
+  assert.equal(twice.out, once.out);
+});
+
+test("幂等：混合文本（该还原的与不该还原的都有）第二遍不再改", () => {
+  const t = "说明：\\u4f60\\u597d\\u4e16 后面是代码 \u0060\\u4e00-\\u9fff\u0060";
+  const a = S(t);
+  assert.equal(a.ok, true);
+  // 第一遍必须真的改了东西，否则这条测的是空转。
+  assert.ok(a.out !== t, "第一遍没有改动，这条判据就白测了");
+  const b = S(a.out);
+  assert.equal(b.ok, true);
+  assert.equal(b.out, a.out);
+});
