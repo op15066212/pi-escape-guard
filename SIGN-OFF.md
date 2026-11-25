@@ -287,3 +287,51 @@ EXCLUDE 里加 ["nope-does-not-exist.txt"] → rc=1，FAIL C（不生效：nope-
 
 签字只认 HEAD 口径，故签字不受影响。受影响的是日常自查：靠工作区口径判断「有没有改过东西」会误报。
 删掉死的 `settings.json` 是对的，但同一个位置上缺了活的 `pi-escape-guard.json`。
+
+
+## 重签（2026-11-25T10:52Z，加了 D / E 两条判据）
+
+### 身份（`node bin/fingerprint.mjs --head` 现取，采样 2026-11-25T10:49:05Z）
+
+| 项 | 值 |
+| --- | --- |
+| 总指纹 | `d41342168d8e35025aea7e3db39df5e7` |
+| 口径 | HEAD `083dd85` |
+| 文件数 / 总字节 | 30 / 133,577 |
+| 取前取后 git status | 0 行 / 0 行 |
+
+上一版 `016e42ef` 作废。
+
+### 判据（整条命令的 rc）
+
+```text
+node bin/fingerprint.mjs --selftest → rc=0，八条 PASS
+npm run verify → rc=0
+```
+
+### 复核方自己跑的三个变异
+
+| 变异 | 实测 |
+| --- | --- |
+| 造未跟踪顶层文件 `zzz-reviewer-untracked-probe.txt` | rc=1，FAIL D 并点名；删掉后 rc=0 |
+| `VOLATILE` 加 `no-such-file.txt` | rc=1，FAIL E（死条目）；复原后 rc=0 |
+| 两口径差集 | 工作区 30 / HEAD 30，两边差集均为空 |
+
+上一版工作区比 HEAD 多 `state.json` 与 `pi-escape-guard.json` 两个文件，这一版已归零。
+
+### 复核方独立核出的一处：E 抓不到「两边都写」
+
+本仓 `EXCLUDE ∩ VOLATILE = SIGN-OFF.md, package-lock.json`；再人为把 `SIGN-OFF-DTT.md` 同时放进 VOLATILE，
+selftest 仍 rc=0、E PASS。所以 E 判的是「盘上真有」，不是「真的被签」。
+
+### 签字
+
+| 角色 | 会话 | 状态 | 时刻 |
+| --- | --- | --- | --- |
+| 复核方 | pi 插件2 `f15be404` | **重签**：`--head` 复算 `d4134216` 与修改方报的逐字相同；八条 PASS 且 rc=0；D/E 变异各红一次；两口径差集归零；取前取后 0 行 | 2026-11-25T10:52Z |
+| 修改方 | pi 插件 `9d80afea` | **已签**：`d4134216`、verify rc=0、local = remote | 2026-11-25T10:48Z |
+
+### 未验证项（复核方发现）
+
+E 判据不判「EXCLUDE 与 VOLATILE 重叠」。修法：E 的 knownNames 改成 `filesOf` 的输出集合。
+本仓已有两条重叠（SIGN-OFF.md、package-lock.json），在改成 filesOf 口径后它们会立刻红，届时须二选一。
