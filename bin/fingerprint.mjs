@@ -100,6 +100,8 @@ const EXCLUDE = new Map([
   // 本仓的配置文件叫 pi-escape-guard.json 且不进 git，盘上没有 settings.json。
   // 在 EXCLUDE 里留一条不生效的，读代码的人会以为它起了作用。
   // 目录以斜杠结尾。下面两个不进被签面，理由写在这里。
+  ["state.json", "运行时状态（计数与水位）。插件跑一轮写一次，不是人写的，不该进被签面。"],
+  ["pi-escape-guard.json", "本仓的用户配置（.gitignore 忽略）。用户改一个开关它就变，与 sentry 的 settings.json 同一个角色。"],
   [".doc-bridge/", "doc-bridge 工具自动生成的知识索引。它随工具重扫而变，不是人写的。"],
   ["reviews/", "只追加的审查记录。验它该读 git log 的历史，不是读一个应当稳定的数；改了旧记录，git 也会显示。"],
 ]);
@@ -117,7 +119,10 @@ function isExcluded(rel) {
 // 仍在被签面里但不参与总指纹的（只印 md5 给人看）。
 // 与 EXCLUDE 的区别：EXCLUDE 是「不签」；VOLATILE 是「签，但它会随运行变，
 // 所以它的字节不能算进那个应当稳定的数」。
-const VOLATILE = new Set(["settings.json", "SIGN-OFF.md", "package-lock.json"]);
+// 本仓只有两个：SIGN-OFF.md（会追加）、package-lock.json（npm install 会动）。
+// settings.json 本仓没有；pi-escape-guard.json 是 EXCLUDE（不签），不在 VOLATILE——
+// 同一个文件两边都写是矛盾：一个说不签，一个说签。E 判据会抓这个。
+const VOLATILE = new Set(["SIGN-OFF.md", "package-lock.json"]);
 
 function walk(dir, out = []) {
   if (!fs.existsSync(dir)) return out;
@@ -276,6 +281,19 @@ if (SELFTEST) {
   const topNames = new Set(fs.readdirSync(REPO, { withFileTypes: true }).map((e) => e.name));
   const deadExcl = [...EXCLUDE.keys()].filter((k) => !topNames.has(k.endsWith("/") ? k.slice(0, -1) : k));
 
+  // ===== 判据 D：工作区有、HEAD 没有的文件，必须点名 =====
+  // 运行时写出的文件（state.json、配置文件）默认会进工作区口径的被签面，
+  // 于是工作区指纹每轮都变而 HEAD 口径不变——两个口径差一个文件，没人知道为什么。
+  // 2026-11-25 实测：sentry 差 state.json，guard 差 state.json 与 pi-escape-guard.json。
+  // 期望从 git 取（HEAD 清单），实现从 filesOf 取。差集里的每一项都必须被点名。
+  const gitSet = new Set(gitFiles);
+  const unpointed = [...collected].filter((rel) => !gitSet.has(rel) && !isExcluded(rel) && !VOLATILE.has(rel.split("/").pop()));
+
+  // ===== 判据 E：VOLATILE 里有没有指向不存在文件的死条目 =====
+  // 与 C 判据同一形状的另一侧：EXCLUDE 管「不签」，VOLATILE 管「签但字节不入总指纹」。
+  const knownNames = new Set([...collected, ...gitFiles].map((r) => r.split("/").pop()));
+  const deadVol = [...VOLATILE].filter((n) => !knownNames.has(n));
+
   const cases = [
     ["写了探针，工作区口径的指纹必须变", changed !== total && changed !== ""],
     ["探针在盘上时，HEAD 口径与探针之前相同（它不读工作区）", !mHead || !headBefore ? false : mHead === headBefore],
@@ -283,6 +301,8 @@ if (SELFTEST) {
     ["A 判据：git HEAD 里每个文件都被签或被 EXCLUDE 点名（未签：" + missed.slice(0, 4).join(", ") + (missed.length > 4 ? " …共 " + missed.length : "") + "）", missed.length === 0],
     ["B 判据：目录里出现的扩展名都被 EXTS 处理（未处理：" + unhandledExt.join(", ") + "）", unhandledExt.length === 0],
     ["C 判据：EXCLUDE 每条都指向盘上真有的东西（不生效：" + deadExcl.join(", ") + "）", deadExcl.length === 0],
+    ["D 判据：工作区有 HEAD 无的文件必须点名（未点名：" + unpointed.join(", ") + "）", unpointed.length === 0],
+    ["E 判据：VOLATILE 每条都指向真有的文件（死条目：" + deadVol.join(", ") + "）", deadVol.length === 0],
   ];
 
 
