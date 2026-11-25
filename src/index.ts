@@ -1,8 +1,17 @@
-// 接线：两个钩子。没有业务判断——判据与还原在 scan.ts。
+// 接线。没有业务判断——判据与还原在 scan.ts。
 //
-// R12：删掉了第三个钩子（before_provider_request 只标记）、删掉了 seen（首见/重复记账）、
-// 删掉了 slots 的四槽位表、删掉了 stats 与 report。它们都是观测，不改变动作。
-// 留下的两个位置就是「文本进入记录之前」与「助手正文落盘之前」。
+// 钩子清单见本文件下方的 pi.on 注册处，这里只写它们各自管什么。
+// **不写数量**：这一行原来写「两个钩子」，加了 tool_call 之后变成四个，
+// 而那段话在 .ts 里，check-doc-accuracy 只扫 md，抓不到。
+// 数量会变，指向不会变——这是 2026-11-25 pi 插件2 指出的修法。
+//
+// R12：删掉了 before_provider_request（只标记）、seen（首见/重复记账）、
+// slots 的四槽位表、stats 与 report。它们都是观测，不改变动作。
+//
+// 留下的位置分三类：
+//   读一次配置           session_start
+//   写之前拦             tool_call
+//   文本进记录之前还原   tool_result / message_end
 import { ensureConfig, readConfig, type Cfg } from "./config.ts";
 import { settle, findEscapeRuns } from "./scan.ts";
 import { isTextBlock, validContent, validMessage } from "./verdict.ts";
