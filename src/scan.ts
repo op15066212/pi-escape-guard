@@ -31,6 +31,29 @@ export type Point = { at: number; seg: string; repl: string };
 export type Settle = { ok: boolean; out: string };
 
 /**
+ * 找出「成串的转义段」，供调用工具前的拦截用。
+ *
+ * 为什么不复用 settle：settle 判的是「这段该不该还原」，它有一整套位置判据
+ * （围栏、反引号、赋值行、引号）。拦截要问的是另一个问题：
+ * **你写这段参数时，本来可以直接写中文吗？**
+ *
+ * 所以这里不看位置，只看有没有成串的转义。在工具入参里出现成串 \uXXXX，
+ * 就是写的人在偷懒——他本可以直写。
+ *
+ * 单看这一条会误伤：正则字符类 [\u4e00-\u9fff] 是必要的，而且只有两个。
+ * 所以门槛由 min 控制（默认 3），两个不拦。
+ */
+export function findEscapeRuns(text: string, min: number): Array<{ at: number; seg: string; count: number }> {
+  const out: Array<{ at: number; seg: string; count: number }> = [];
+  for (const m of text.matchAll(SEG)) {
+    const seg = m[0];
+    const count = (seg.split("u").length - 1);
+    if (count >= min) out.push({ at: m.index as number, seg, count });
+  }
+  return out;
+}
+
+/**
  * 一段文本进，一段文本出。不成立就返回原文——回滚不是「再改回去」，是「一开始就没改」。
  * 校验用字节数：v1 犯过三次错（文件层与内容层混算、delta 按解码文本算、按行处理后沿用行内偏移），
  * 都表现为「替换位置错开」。字节数对不上就整批不生效，那是最便宜的自检。
