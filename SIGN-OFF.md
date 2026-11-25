@@ -236,3 +236,54 @@ node bin/fingerprint.mjs --selftest → rc=0，五条 PASS
 | --- | --- | --- | --- |
 | 复核方 | pi 插件2 `f15be404` | **重签**：`--head` 复算 `33514c5e` 与修改方报的逐字相同；verify rc=0；selftest 五条 rc=0；两个变异各红一次；取前取后 0 行 | 2026-11-25T10:33Z |
 | 修改方 | pi 插件 `9d80afea` | **已签**：`33514c5e`、verify rc=0、local = remote | 2026-11-25T10:26Z |
+
+
+## 重签（2026-11-25T10:42Z，加了 C 判据）
+
+### 身份（`node bin/fingerprint.mjs --head` 现取，采样 2026-11-25T10:39:18Z）
+
+| 项 | 值 |
+| --- | --- |
+| 总指纹 | `016e42ef8d920593f164ddae98d0c4c3` |
+| 口径 | HEAD `eb869ee` |
+| 文件数 / 总字节 | 30 / 131,716 |
+| 取前取后 git status | 0 行 / 0 行 |
+
+上一版 `33514c5e` 作废。
+
+### 判据（整条命令的 rc）
+
+```text
+node bin/fingerprint.mjs --selftest → rc=0，六条 PASS
+npm run verify → rc=0（连跑 3 次均 rc=0）
+```
+
+### 复核方自己跑的变异
+
+```text
+EXCLUDE 里加 ["nope-does-not-exist.txt"] → rc=1，FAIL C（不生效：nope-does-not-exist.txt）
+复原 → rc=0，status 0 行
+```
+
+### 复核方独立核的两处
+
+1. 修改方说 C 判据抓到本仓一条死配置 `settings.json`。核过：
+   `git show bf01d1c:bin/fingerprint.mjs` 含 `"settings.json"`，
+   而盘上无此文件；本仓实际配置是 `pi-escape-guard.json`（`src/config.ts:18`），
+   且被 `.gitignore:1` 忽略。这条从抄过来起就没生效，判据抓得对。
+2. 修法把 `FILE` / `ALWAYS` 两个未被引用的常量删了：`grep -c` → 0。
+
+### 签字
+
+| 角色 | 会话 | 状态 | 时刻 |
+| --- | --- | --- | --- |
+| 复核方 | pi 插件2 `f15be404` | **重签**：`--head` 复算 `016e42ef` 与修改方报的逐字相同；selftest 六条 rc=0；C 变异 rc=1 且点名；取前取后 0 行 | 2026-11-25T10:42Z |
+| 修改方 | pi 插件 `9d80afea` | **已签**：`016e42ef`、verify rc=0、local = remote | 2026-11-25T10:38Z |
+
+### 未验证项（复核方发现，本仓两例，修改方尚未处理）
+
+工作区口径比 HEAD 口径多 2 个文件（32 对 30）：`state.json`（随运行写）与 `pi-escape-guard.json`（配置，被 gitignore）。
+两个都不在 `VOLATILE` 里，于是工作区口径的指纹会随「跑了一轮」或「改了一个开关」而变。
+
+签字只认 HEAD 口径，故签字不受影响。受影响的是日常自查：靠工作区口径判断「有没有改过东西」会误报。
+删掉死的 `settings.json` 是对的，但同一个位置上缺了活的 `pi-escape-guard.json`。
