@@ -13,7 +13,10 @@ import { isTextBlock, validContent, validMessage } from "./verdict.ts";
 const DEMOS = [
   { label: "该还原", text: "\\u4f60\\u53ef\\u4ee5\\u5e2e\\u6211" },
   { label: "不够数", text: "\\u4f60" },
-  { label: "代码里", text: "\u0060\u0060\u0060\nconst re = /[\\u4e00-\\u9fff]/;\n\u0060\u0060\u0060" },
+  // 第三个样例：围栏里的正则字符类，不该被动。
+  // 写法说明（2026-11-25）：原来用 \u0060 写反引号——那是拿 unicode 转义表示 ASCII 符号，
+  // 读的人要在脑内解码 0060=反引号。双引号字符串里反引号可以直接写，一层都不需要。
+  { label: "代码里", text: "```\nconst re = /[\\u4e00-\\u9fff]/;\n```" },
 ];
 
 export default async function installGuard(pi: any) {

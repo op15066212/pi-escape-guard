@@ -15,6 +15,7 @@
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
+import { fileURLToPath } from "node:url";
 import { settle } from "../src/scan.ts";
 
 const MAX = 20 * 1024 * 1024; // 单文件上限：377MB 那个会话不该进日常档
@@ -96,11 +97,19 @@ if (process.argv.includes("--selftest")) {
   process.exit(bad === 0 ? 0 : 1);
 }
 
-const R = path.join(process.env.USERPROFILE || "C:/Users/15066212pp", ".pi/agent/sessions");
-const th = Number(process.argv[2] || 3);
-const s = survey(R, Number.isFinite(th) ? th : 3);
-console.log(JSON.stringify(s));
-const rc = rcOf(s);
-if (rc === 2) console.error("一个文件都没读到：" + R);
-if (rc === 1) console.error("settle 判失败 " + s.failures + " 个文件（字节数对不上，真 bug）");
-process.exit(rc);
+// isMain 保护（2026-11-25）：本文件导出 survey() 与 rcOf()，设计上就是给别人复用的。
+// 没有保护时 import 会跑完整个扫描并 exit。
+const norm = (x) => String(x || "").replace(/\\/g, "/");
+const isMain = !!process.argv[1] && norm(fileURLToPath(import.meta.url)) === norm(process.argv[1]);
+if (!isMain) { /* 被 import：只导出函数 */ }
+else {
+  const R = path.join(process.env.USERPROFILE || "C:/Users/15066212pp", ".pi/agent/sessions");
+  const th = Number(process.argv[2] || 3);
+  const s = survey(R, Number.isFinite(th) ? th : 3);
+  console.log(JSON.stringify(s));
+  const rc = rcOf(s);
+  if (rc === 2) console.error("一个文件都没读到：" + R);
+  if (rc === 1) console.error("settle 判失败 " + s.failures + " 个文件（字节数对不上，真 bug）");
+  process.exit(rc);
+
+}
