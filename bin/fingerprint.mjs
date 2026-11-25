@@ -122,7 +122,12 @@ function isExcluded(rel) {
 // 本仓只有两个：SIGN-OFF.md（会追加）、package-lock.json（npm install 会动）。
 // settings.json 本仓没有；pi-escape-guard.json 是 EXCLUDE（不签），不在 VOLATILE——
 // 同一个文件两边都写是矛盾：一个说不签，一个说签。E 判据会抓这个。
-const VOLATILE = new Set(["SIGN-OFF.md", "package-lock.json"]);
+// 本仓为空集，这是结论不是遗漏：
+// SIGN-OFF.md 与 package-lock.json 都是 EXCLUDE（不签），不该再在 VOLATILE；
+// 配置文件 pi-escape-guard.json 被 .gitignore 忽略，别人 checkout 拿不到，也不签。
+// 空集时 E 判据在本仓无居民——它恒 PASS，不构成证据。
+// 新出现的运行时文件由 D 判据抓（工作区有 HEAD 无、又没点名）。
+const VOLATILE = new Set([]);
 
 function walk(dir, out = []) {
   if (!fs.existsSync(dir)) return out;
@@ -291,7 +296,13 @@ if (SELFTEST) {
 
   // ===== 判据 E：VOLATILE 里有没有指向不存在文件的死条目 =====
   // 与 C 判据同一形状的另一侧：EXCLUDE 管「不签」，VOLATILE 管「签但字节不入总指纹」。
-  const knownNames = new Set([...collected, ...gitFiles].map((r) => r.split("/").pop()));
+  // 2026-11-25 第二版（pi 插件2 实测指出第一版判错了对象）：
+  // 第一版写成 [...collected, ...gitFiles]，于是“在 git 里存在”也算活。
+  // 但 VOLATILE 的语义是“签，只是字节不入总指纹”——它必须真的在 filesOf 的输出里。
+  // 一个文件同时写进 EXCLUDE 与 VOLATILE 是**矛盾**：EXCLUDE 让它永远不进 filesOf，
+  // VOLATILE 那一半就是死条目。第一版判不出来（gitFiles 把它救活了）。
+  // 现在只认 collected，两边都写必然红。
+  const knownNames = new Set([...collected].map((r) => r.split("/").pop()));
   const deadVol = [...VOLATILE].filter((n) => !knownNames.has(n));
 
   const cases = [
