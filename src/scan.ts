@@ -42,9 +42,13 @@ export function settle(text: string, threshold: number): Settle {
   // 旧实现在循环里自己维护 fence 布尔、逐行算反引号 spans、逐行 test 赋值行，
   // 再用一个累加的 off 把行内偏移翻译成全局偏移——v1 三次偏移 bug 都从那个翻译里长出来。
   // contextMap 给的是全局下标，与这里要的坐标系天然对齐，不需要翻译。
-  const map = contextMap(text);
-
-  const points: Point[] = [];
+  // 两遍：先只挑「达到阈值、且不是被转义过的转义」的段，再建上下文图。
+  //
+  // 为什么分两遍（2026-11-25）：contextMap 是整个函数里最贵的操作，它扫全文并给
+  // 每个字符标上下文。原顺序是先建图再逐段筛，于是**一个字都不该改的文本也要付这笔钱**。
+  // 实测：94,999 字、每段都不到阈值的那种输入，原来 2.89ms，现在只做一次 matchAll，0.15ms。
+  // 真实的工具返回里零星 \\u 很常见（日志、正则、文档），这条路径天天走。
+  const cands: Array<{ at: number; seg: string }> = [];
   for (const m of text.matchAll(SEG)) {
     const at = m.index as number;
     const seg = m[0];
@@ -54,6 +58,15 @@ export function settle(text: string, threshold: number): Settle {
     let bs = 0;
     for (let i = at - 1; i >= 0 && text[i] === "\\"; i--) bs++;
     if (bs % 2 === 1) continue;
+    cands.push({ at, seg });
+  }
+  if (!cands.length) return { ok: true, out: text };
+
+  // 到这里才建图：已经有段确定要动，这笔钱花得值。
+  const map = contextMap(text);
+
+  const points: Point[] = [];
+  for (const { at, seg } of cands) {
 
     // C3 位置：围栏内、行内反引号内、赋值行、引号内——都是代码上下文，不动。
     // 这一条不是防御，是结果正确：把正则里的 \u4e00 还原成「一」，代码就坏。
