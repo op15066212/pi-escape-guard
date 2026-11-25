@@ -424,3 +424,40 @@ status 0 行
 | --- | --- | --- | --- |
 | 复核方 | pi 插件2 `f15be404` | **重签**：`--head` 复算 `92130a3e24b5db821ed8235abeecb6c6` 与修改方报的逐字相同；verify rc=0；selftest 八条 PASS；pre-push 拒推实测；取前取后 0 行 | 2026-11-25T12:10Z |
 | 修改方 | pi 插件 `9d80afea` | **已签**：`92130a3e`、verify rc=0、local = remote | 2026-11-25T12:06Z |
+
+
+## 重签（2026-11-25T12:20Z，sign.mjs 生成签字行之后）
+
+### 身份（`node bin/fingerprint.mjs --head` 现取，采样 2026-11-25T12:17:06Z）
+
+| 项 | 值 |
+| --- | --- |
+| 总指纹 | `21332431be2644d093f32ceb5a11ba4c` |
+| 口径 | HEAD `efa961f` |
+| 文件数 / 总字节 | 34 / 151,225（上一版 33 / 147,801） |
+| 取前取后 git status | 0 行 / 0 行 |
+
+上一版 `92130a3e` 作废。新增 `bin/sign.mjs`。
+
+### 判据（整条命令的 rc）
+
+```text
+npm run verify → rc=0   tests 44，gate 2 脚本 4 步 0 失败
+node bin/fingerprint.mjs --selftest → rc=0，八条 PASS
+node bin/sign.mjs 复核方 "…" → rc=0，本节的签字行由它印出
+```
+
+### 复核方自己跑的两个方向
+
+```text
+干净 → rc=0，印出「口径 HEAD efa961f，指纹 21332431be2644d093f32ceb5a11ba4c（32 位）」
+脏（造 zzz-sign-probe.txt）→ rc=1，「工作区有 1 行未提交改动，先提交再签」并点名那一行
+删掉 → rc=0
+```
+
+### 签字
+
+| 角色 | 会话 | 状态 | 时刻 |
+| --- | --- | --- | --- |
+| 复核方 | pi 插件2 `f15be404` | `| 复核方 | f15be404 | **已签**：`21332431be2644d093f32ceb5a11ba4c`、npm run verify rc=0（44/44 + gate 4 步）；fingerprint selftest 八条 PASS、取前取后 0 行 | 2026-11-25T12:19:11Z |` | 2026-11-25T12:20Z |
+| 修改方 | pi 插件 `9d80afea` | **已签**：`21332431`、verify rc=0、local = remote | 2026-11-25T12:15Z |
