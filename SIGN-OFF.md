@@ -198,3 +198,41 @@ const TOP_FILES = ["package.json", "tsconfig.json", "README.md", "DESIGN.md", "S
 | --- | --- | --- | --- |
 | 复核方 | pi 插件2 `f15be404` | **重签**：`--head` 复算 `5cfac435` 与修改方报的逐字相同；verify rc=0；selftest rc=0；变异 rc=1；三份文档确在被签面、文件数 25；取前取后 0 行 | 2026-11-25T10:19Z |
 | 修改方 | pi 插件 `9d80afea` | **已签**：`5cfac435`、verify rc=0、local = remote | 2026-11-25T10:16Z |
+
+
+## 重签（2026-11-25T10:33Z，被签面从 25 涨到 30）
+
+### 身份（`node bin/fingerprint.mjs --head` 现取，采样 2026-11-25T10:26:56Z）
+
+| 项 | 值 |
+| --- | --- |
+| 总指纹 | `33514c5e1adc7eae8e561530d04fd591` |
+| 口径 | HEAD `f44a256` |
+| 文件数 / 总字节 | 30 / 130,954（上一版 25 / 121,275） |
+| 取前取后 git status | 0 行 / 0 行 |
+
+上一版 `5cfac435` 作废。被签面变大的原因同 sentry：默认全收、排除需点名。
+
+### 判据（整条命令的 rc）
+
+```text
+npm run verify → rc=0（gate 2 脚本 4 步 + 44/44 + all selftest + fingerprint selftest）
+node bin/fingerprint.mjs --selftest → rc=0，五条 PASS
+```
+
+### 复核方自己跑的两个变异
+
+| 变异 | 应然 | 实测 |
+| --- | --- | --- |
+| `DIRS` 去掉 `docs` | A 判据红并点名 | rc=1，A 红：`未签：docs/for-agents/escape-guard.md` |
+| `EXTS` 去掉 `.md` | B 判据红 | rc=1，B 红：`未处理：.md` |
+
+修改方报的 A 变异未签清单在本仓写作 `docs/guard-rules.md`，实测多一个 `docs/for-agents/escape-guard.md`。
+不影响结论（A 红且点名），但两处清单不一致，记在这里。
+
+### 签字
+
+| 角色 | 会话 | 状态 | 时刻 |
+| --- | --- | --- | --- |
+| 复核方 | pi 插件2 `f15be404` | **重签**：`--head` 复算 `33514c5e` 与修改方报的逐字相同；verify rc=0；selftest 五条 rc=0；两个变异各红一次；取前取后 0 行 | 2026-11-25T10:33Z |
+| 修改方 | pi 插件 `9d80afea` | **已签**：`33514c5e`、verify rc=0、local = remote | 2026-11-25T10:26Z |
