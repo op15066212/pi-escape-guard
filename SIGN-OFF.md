@@ -766,3 +766,5 @@ pi-think-sentry  HEAD e54b4e6 = remote  状态 0 行  --head d1fdd5dc22ea3901543
 2. 拦截门槛不判「散着写的转义」，双方已一致记为已知缺口。
 3. 「同一个语义写在两个地方」这一类没有仓内机器判据（`check-mirror` 只管跨仓的 keysIn）。
    本次是删掉第二处来规避，不是自动发现。
+
+| 修改方 | 9d80afea | **已签**：`c4ae2bb79bea2a8563a66695d3e21f0f`、npm run verify rc=0（50/50 + gate 4 个脚本 8 步 + audit 空）；文档补上四个检查脚本与默认值插值、取前取后 0 行 | 2026-11-25T14:50:10Z |
