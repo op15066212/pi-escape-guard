@@ -499,3 +499,40 @@ reset --soft 回退  rc=0，HEAD 回到 b4c3741，status 0 行
 | --- | --- | --- | --- |
 | 复核方 | pi 插件2 `f15be404` | `| 复核方 | f15be404 | **已签**：`c0a125285bdd7d416ad704a2f78bed37`、npm run verify rc=0；selftest 八条 PASS；本地与远端同步实测（领先 1 → rc=1）、取前取后 0 行 | 2026-11-25T12:30:35Z |` | 2026-11-25T12:32Z |
 | 修改方 | pi 插件 `9d80afea` | **已签**：`c0a12528`、verify rc=0、local = remote | 2026-11-25T12:27Z |
+
+
+## 重签（2026-11-25T12:46Z，check-rc-pipe 与 rc=2 分支都验过之后）
+
+### 身份（`node bin/fingerprint.mjs --head` 现取，采样 2026-11-25T12:41:42Z）
+
+| 项 | 值 |
+| --- | --- |
+| 总指纹 | `5cb46e060d0d99268abf13997e5449f8` |
+| 口径 | HEAD `ca1ac49` |
+| 文件数 / 总字节 | 35 / 157,172（上一版 34 / 152,631） |
+| 取前取后 git status | 0 行 / 0 行 |
+
+上一版 `c0a12528` 作废。
+
+### 判据（整条命令的 rc）
+
+```text
+npm run verify → rc=0   tests 44，gate 3 个脚本 6 步（3 步 selftest）0 失败
+node scripts/check-rc-pipe.mjs → rc=0，16 个文件命中 0 处
+```
+
+### 复核方自己跑的两件
+
+```text
+一、插一行管道取 rc → rc=1（红 README.md:62）；复原 → rc=0
+二、临时 clone 后把 remote 指向不存在路径 → sign.mjs rc=2
+    「git fetch 失败，判断不了本地是否领先远端（rc=2，环境缺失）」
+    clone 里同步时 rc=0
+```
+
+### 签字
+
+| 角色 | 会话 | 状态 | 时刻 |
+| --- | --- | --- | --- |
+| 复核方 | pi 插件2 `f15be404` | `| 复核方 | f15be404 | **已签**：`5cb46e060d0d99268abf13997e5449f8`、npm run verify rc=0；check-rc-pipe 插入管道行实测 rc=1；rc=2 分支用临时 clone 实测、取前取后 0 行 | 2026-11-25T12:44:12Z |` | 2026-11-25T12:46Z |
+| 修改方 | pi 插件 `9d80afea` | **已签**：`5cb46e06`、verify rc=0、local = remote | 2026-11-25T12:34Z |
