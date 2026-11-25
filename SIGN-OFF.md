@@ -536,3 +536,41 @@ node scripts/check-rc-pipe.mjs → rc=0，16 个文件命中 0 处
 | --- | --- | --- | --- |
 | 复核方 | pi 插件2 `f15be404` | `| 复核方 | f15be404 | **已签**：`5cb46e060d0d99268abf13997e5449f8`、npm run verify rc=0；check-rc-pipe 插入管道行实测 rc=1；rc=2 分支用临时 clone 实测、取前取后 0 行 | 2026-11-25T12:44:12Z |` | 2026-11-25T12:46Z |
 | 修改方 | pi 插件 `9d80afea` | **已签**：`5cb46e06`、verify rc=0、local = remote | 2026-11-25T12:34Z |
+
+
+## 重签（2026-11-25T13:01Z，check-rc-pipe 六种形状进自检之后）
+
+### 身份（`node bin/fingerprint.mjs --head` 现取，采样 2026-11-25T12:57:15Z）
+
+| 项 | 值 |
+| --- | --- |
+| 总指纹 | `13760238792b096e38abe66651e9ebc0` |
+| 口径 | HEAD `29adab3` |
+| 文件数 / 总字节 | 35 / 158,533（上一版 35 / 157,172） |
+| 取前取后 git status | 0 行 / 0 行 |
+
+上一版 `5cb46e06` 作废。
+
+### 判据（整条命令的 rc）
+
+```text
+npm run verify → rc=0   tests 44，gate 3 个脚本 6 步（3 步 selftest）0 失败
+node scripts/check-rc-pipe.mjs --selftest → rc=0，十条 PASS
+```
+
+### 复核方自己跑的两条变异
+
+```text
+任何竖线都算管道      → rc=1，FAIL「形状：逻辑或不是管道」
+去掉引号剥离          → rc=1，FAIL「形状：引号里的竖线不算」
+复原                  → rc=0，status 0 行
+```
+
+另两条防线未抽验。
+
+### 签字
+
+| 角色 | 会话 | 状态 | 时刻 |
+| --- | --- | --- | --- |
+| 复核方 | pi 插件2 `f15be404` | `| 复核方 | f15be404 | **已签**：`13760238792b096e38abe66651e9ebc0`、npm run verify rc=0；check-rc-pipe 六形状十条自检 PASS；变异 A/B 各红对应形状、取前取后 0 行 | 2026-11-25T12:59:32Z |` | 2026-11-25T13:01Z |
+| 修改方 | pi 插件 `9d80afea` | **已签**：`13760238`、verify rc=0、local = remote | 2026-11-25T12:56Z |
