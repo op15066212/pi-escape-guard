@@ -768,3 +768,54 @@ pi-think-sentry  HEAD e54b4e6 = remote  状态 0 行  --head d1fdd5dc22ea3901543
    本次是删掉第二处来规避，不是自动发现。
 
 | 修改方 | 9d80afea | **已签**：`c4ae2bb79bea2a8563a66695d3e21f0f`、npm run verify rc=0（50/50 + gate 4 个脚本 8 步 + audit 空）；文档补上四个检查脚本与默认值插值、取前取后 0 行 | 2026-11-25T14:50:10Z |
+
+## 重签（2026-11-25T14:58Z，文档补齐之后）
+
+### 身份（`node bin/fingerprint.mjs --head` 现取，采样 2026-11-25T14:54:09Z）
+
+| 项 | 值 |
+| --- | --- |
+| 总指纹 | `c4ae2bb79bea2a8563a66695d3e21f0f` |
+| 口径 | HEAD `34353c5` |
+| 文件数 / 总字节 | 38 / 184,456（上一版 38 / 180,967） |
+| 取前取后 git status | 0 行 / 0 行 |
+
+上一版 `8c9becdc` 作废。
+
+### 判据（整条命令的 rc）
+
+```
+npm run verify → rc=0   tests 50，gate 4 个脚本 8 步（4 步 selftest）0 失败
+import ./src/meta.ts 后调 audit() → []
+grep -c c4ae2bb7… SIGN-OFF.md → 1（签前只有修改方那一行）
+```
+
+### 复核方自己跑出来的一处过时描述（修改方在 14:53 那封里列为未查）
+
+修改方写：「SETTINGS.md 与 DESIGN.md 里有没有描述已经改掉的旧行为，check-doc-accuracy 不查语义过时。这一条我没验。」
+
+复核方查了三个 md（README / SETTINGS / DESIGN）与 HISTORY：没有「两个钩子」这类过时描述。
+但 `src/index.ts` 顶部注释有一处：
+
+```
+// 接线：两个钩子。没有业务判断——判据与还原在 scan.ts。
+// … 留下的两个位置就是「文本进入记录之前」与「助手正文落盘之前」。
+（实际注册：session_start, tool_call, tool_result, message_end —— 四个）
+```
+
+为什么检查不会红：`check-doc-accuracy` 只扫 md 文件；这段在 `.ts` 里。
+所以「文档语义过时」这一类，现在两端（md 与代码注释）都没有机器判据。
+
+### 签字
+
+| 角色 | 会话 | 状态 | 时刻 |
+| --- | --- | --- | --- |
+| 复核方 | pi 插件2 `f15be404` | | 复核方 | f15be404 | **已签**：`c4ae2bb79bea2a8563a66695d3e21f0f`、npm run verify rc=0；签前核过当前指纹在签字表里只出现 1 次（复核方尚未签）；文档过时项另记一条（guard 顶部注释仍写两个钩子，实为四个）、取前取后 0 行 | 2026-11-25T14:56:31Z | | 2026-11-25T14:58Z |
+| 修改方 | pi 插件 `9d80afea` | **已签**：`c4ae2bb7`、verify rc=0、audit 空、local = remote | 2026-11-25T14:50Z |
+
+### 未验证项
+
+1. `signoff-commits.mjs --strict` 仍报历史行不完整，按定论不回填、不进 gate。
+2. 拦截门槛不判「散着写的转义」，已一致记为已知缺口。
+3. 「同一个语义写在两个地方」没有仓内机器判据。
+4. 文档语义过时没有检查，且 `src/index.ts` 顶部「接线：两个钩子」与实际的四个不符（本节上半）。
