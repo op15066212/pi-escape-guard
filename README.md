@@ -125,6 +125,34 @@ cd ~/.pi/agent/extensions/pi-escape-guard && npm run status
 
 **C3 是四条里唯一会误伤真污染的**：它靠位置判，位置只是代理。实测代价写在 DESIGN §4。
 
+## 怎么验
+
+```bash
+npm run verify                  # 一条命令跑完下面全部
+node scripts/gate.mjs           # 总闸：glob 发现 check-*.mjs，不靠登记
+node --experimental-strip-types --test test/*.test.ts
+node bin/all.mjs --selftest     # 全量扫描器自己的 6 条坏样本
+```
+
+**总闸给每条判据跑两步**：先 `--selftest`（证明它会红），再正常模式（证明现在的盘面没红）。
+selftest 红了就不跑正常模式——判据本身坏了，它给的「0 处对不上」没有意义。
+
+反例：往 scripts/ 塞一个返回 1 的 check-zzz-canary.mjs（临时造的名字，验完就删，不落盘），
+gate.mjs 必须 rc=1 并点名。
+
+### 跨仓镜像：同一份判据在两个仓里必须同答案
+
+`scripts/check-doc-accuracy.mjs` 在本仓与 `pi-think-sentry` 各有一份，是抄的，不是共享的。
+
+真实事故：sentry 那份 11-24 修掉了「任何表格首格都当配置键」的误报，本仓那份没跟着改，
+于是同一份判据在两个仓上给出两个答案。两边各自自洽，所以两边都不会红。
+
+`scripts/check-mirror.mjs` 钉住这一条：喂同一批 5 条样本，两个 `keysIn`/`pathsIn`
+必须给出同一个答案。对端不在时 `rc=2`——跨仓判据，对端不在就说不出口径。
+
+反例：去掉 sentry 那份的小节限制 → `rc=1`，点名「keysIn 不一致 … 本仓=[] 对端=[uniqRatio]」。
+只加注释改文本 → `rc=0`，比的是行为不是文本。
+
 ## 开关
 
 配置文件 `pi-escape-guard.json`（首次运行自动生成）。只有两个键：
