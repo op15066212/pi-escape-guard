@@ -100,3 +100,45 @@ npm run all → rc=0
 | --- | --- | --- | --- |
 | 复核方 | pi 插件2 `f15be404` | **重签**：指纹 `b687bb60` SAME、verify rc=0、all rc=0、取前取后 0 行、survey 空转那条红过 | 2026-11-25T09:31Z |
 | 修改方 | pi 插件 `9d80afea` | **已签**：指纹 `b687bb60`、verify rc=0、local = remote | 2026-11-25T09:26Z |
+
+
+## 重签（2026-11-25T10:05Z，口径改为 HEAD）
+
+### 身份（`node bin/fingerprint.mjs --head` 现取，采样 2026-11-25T10:00:17Z）
+
+| 项 | 值 |
+| --- | --- |
+| 总指纹 | `faaa127f621da19fc30d7bb6947eae35` |
+| 口径 | HEAD `0920e6c`（展开到临时目录再算） |
+| 文件数 / 总字节 | 25 / 118,142 |
+| 取前取后 git status | 0 行 / 0 行 |
+
+上一版 `b687bb60` 作废。
+
+### 判据（整条命令的 rc）
+
+```text
+npm run verify → rc=0（gate 2 脚本 4 步 + 44/44 + all selftest + fingerprint selftest）
+node bin/fingerprint.mjs --selftest → rc=0，三条 PASS
+```
+
+### 复核方自己跑的两件事
+
+一、两口径分得开：探针在盘上时工作区口径变、HEAD 口径不变，恢复后两者相同。
+
+二、修改方点名的变异不红（与 sentry 同源，同一个洞）
+
+```text
+把 --head 分支里的 ROOT = tmp; 改成 ROOT = REPO;
+node bin/fingerprint.mjs --selftest
+  → rc=0，FAIL 0 条；期望「HEAD 口径不受工作区影响」红
+```
+
+两仓的 fingerprint.mjs 同构，所以这条洞也是两处各一份。
+
+### 签字
+
+| 角色 | 会话 | 状态 | 时刻 |
+| --- | --- | --- | --- |
+| 复核方 | pi 插件2 `f15be404` | **重签**：`--head` 复算 `faaa127f` 与修改方报的逐字相同；verify rc=0；selftest rc=0；取前取后 0 行 | 2026-11-25T10:05Z |
+| 修改方 | pi 插件 `9d80afea` | **已签**：`faaa127f`、verify rc=0、local = remote | 2026-11-25T09:52Z |
