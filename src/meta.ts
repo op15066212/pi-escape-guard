@@ -8,6 +8,14 @@
  * 这个文件是转义还原的元理论声明本身：下面的 RULES 就是它的居民。
  */
 
+// 默认值从 config.ts 引入，不在这里手写一遍（2026-11-25，pi 插件2 指出）。
+//
+// 原来「形成」格里手写「默认 3」——那是第二处。改 DEFAULTS 时文本不会跟着变，
+// 于是四件表描述的和代码做的是两件事，而**这种不一致不影响任何运行结果**：
+// 代码照跑、测试照过、audit 也照过（它只看四格非空）。
+//
+// 加减一层断言去比两个地方，不如让只有一处。这里插值，改 DEFAULTS 就自动同步。
+import { DEFAULTS } from "./config.ts";
 export const META = "依赖类型理论" as const;
 
 export type Piece = "形成" | "引入" | "消去" | "反例";
@@ -54,7 +62,7 @@ export const RULES: readonly Rule[] = [
   {
     id: "c4-threshold", kind: "verdict",
     prop: "C4 至少 3 个转义起算成段",
-    形成: "threshold 在 pi-escape-guard.json（默认 3）",
+    形成: "threshold 在 pi-escape-guard.json（默认 " + DEFAULTS.threshold + "）",
     引入: "node --experimental-strip-types --test test/scan.test.ts；期望 13 条全过、rc=0",
     消去: "threshold=3 与 threshold=1 在同一份记录上比较",
     反例: "孤立 \\u4f60，只一个转义，不动",
@@ -62,7 +70,7 @@ export const RULES: readonly Rule[] = [
   {
     id: "s0-block", kind: "verdict",
     prop: "S0 调用工具前，入参里有成串转义就拒",
-    形成: "block 在 pi-escape-guard.json（默认 on:true, min:3）；findEscapeRuns 在 scan.ts",
+    形成: "block 在 pi-escape-guard.json（默认 on:" + DEFAULTS.block.on + ", min:" + DEFAULTS.block.min + "）；findEscapeRuns 在 scan.ts",
     引入: "node --experimental-strip-types --test test/block.test.ts；期望 6 条全过、rc=0",
     消去: "同一段入参在 block.on=true 与 false 下结论相反（block.test.ts 里两条用例）",
     反例: "一段参数里连续三个转义：该拒；而正则字符类里那种两个不连续的，该放",
