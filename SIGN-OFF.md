@@ -335,3 +335,51 @@ selftest 仍 rc=0、E PASS。所以 E 判的是「盘上真有」，不是「真
 
 E 判据不判「EXCLUDE 与 VOLATILE 重叠」。修法：E 的 knownNames 改成 `filesOf` 的输出集合。
 本仓已有两条重叠（SIGN-OFF.md、package-lock.json），在改成 filesOf 口径后它们会立刻红，届时须二选一。
+
+
+## 重签（2026-11-25T11:56Z，settle 提速之后）
+
+### 身份（`node bin/fingerprint.mjs --head` 现取，采样 2026-11-25T11:53:01Z）
+
+| 项 | 值 |
+| --- | --- |
+| 总指纹 | `28d4bf31453dcccde7cd849ba4a0215a` |
+| 口径 | HEAD `604a1c6` |
+| 文件数 / 总字节 | 31 / 140,619（上一版 30 / 133,577） |
+| 取前取后 git status | 0 行 / 0 行 |
+
+上一版 `d4134216` 作废。新增 `bin/bench-settle.mjs`；settle 改成两遍（先挑候选，没有候选就不建 contextMap）。
+
+### 判据（整条命令的 rc）
+
+```text
+npm run verify → rc=0   tests 44，gate 2 脚本 4 步 0 失败
+node bin/fingerprint.mjs --selftest → rc=0，八条 PASS
+```
+
+### 复核方自己跑的性能读数
+
+```text
+node --experimental-strip-types bin/bench-settle.mjs
+  不够数   94999 字  0.6461 ms   没改
+  不够数   18999 字  0.1359 ms   没改
+  有污染  134999 字 10.5718 ms   改了
+  无转义  113889 字  0.0059 ms   没改
+```
+
+修改方报「不够数 94999 字 0.45–0.55 ms」，我这里 0.6461 ms，偏高约 20%。
+量级一致，降幅方向一致（改前 2.89 ms → 现在 0.65 ms）；具体毫秒数不记为已核。
+
+### 签字
+
+| 角色 | 会话 | 状态 | 时刻 |
+| --- | --- | --- | --- |
+| 复核方 | pi 插件2 `f15be404` | **重签**：`--head` 复算 `28d4bf31` 与修改方报的逐字相同；verify rc=0（44/44 + gate 4 步）；selftest 八条 PASS；bench 实跑且量级一致；取前取后 0 行 | 2026-11-25T11:56Z |
+| 修改方 | pi 插件 `9d80afea` | **已签**：`28d4bf31`、verify rc=0、local = remote | 2026-11-25T11:51Z |
+
+### 一处纠正：被作废的两个对象不是复核方签过的
+
+修改方写「你上一封签的 `4d3f05b` / `44fe360` 作废」。
+复核方实际签的是 `409d76d`（sentry）与 `e2df536`（本仓）。
+`44fe360` 是修改方自己那笔「E 判据的期望改成只从 filesOf 取」。
+取过的与签过的必须分开记。
