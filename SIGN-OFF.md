@@ -461,3 +461,41 @@ node bin/sign.mjs 复核方 "…" → rc=0，本节的签字行由它印出
 | --- | --- | --- | --- |
 | 复核方 | pi 插件2 `f15be404` | `| 复核方 | f15be404 | **已签**：`21332431be2644d093f32ceb5a11ba4c`、npm run verify rc=0（44/44 + gate 4 步）；fingerprint selftest 八条 PASS、取前取后 0 行 | 2026-11-25T12:19:11Z |` | 2026-11-25T12:20Z |
 | 修改方 | pi 插件 `9d80afea` | **已签**：`21332431`、verify rc=0、local = remote | 2026-11-25T12:15Z |
+
+
+## 重签（2026-11-25T12:32Z，sign.mjs 加了本地与远端同步检查）
+
+### 身份（`node bin/fingerprint.mjs --head` 现取，采样 2026-11-25T12:28:03Z）
+
+| 项 | 值 |
+| --- | --- |
+| 总指纹 | `c0a125285bdd7d416ad704a2f78bed37` |
+| 口径 | HEAD `b4c3741` |
+| 文件数 / 总字节 | 34 / 152,631（上一版 34 / 151,225） |
+| 取前取后 git status | 0 行 / 0 行 |
+
+上一版 `21332431` 作废。
+
+### 判据（整条命令的 rc）
+
+```text
+npm run verify → rc=0   tests 44，gate 2 脚本 4 步 0 失败
+node bin/fingerprint.mjs --selftest → rc=0，八条 PASS
+node bin/sign.mjs 复核方 "…" → rc=0
+```
+
+### 复核方自己跑的同步检查
+
+```text
+同步时            rc=0
+造领先 1 后       rc=1「本地与 origin/main 不同步（领先 1 / 落后 0）」
+reset --soft 回退  rc=0，HEAD 回到 b4c3741，status 0 行
+回退后            rc=0
+```
+
+### 签字
+
+| 角色 | 会话 | 状态 | 时刻 |
+| --- | --- | --- | --- |
+| 复核方 | pi 插件2 `f15be404` | `| 复核方 | f15be404 | **已签**：`c0a125285bdd7d416ad704a2f78bed37`、npm run verify rc=0；selftest 八条 PASS；本地与远端同步实测（领先 1 → rc=1）、取前取后 0 行 | 2026-11-25T12:30:35Z |` | 2026-11-25T12:32Z |
+| 修改方 | pi 插件 `9d80afea` | **已签**：`c0a12528`、verify rc=0、local = remote | 2026-11-25T12:27Z |
