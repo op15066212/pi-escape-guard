@@ -181,3 +181,7 @@ role 检查守的不是还原动作，是**记账**——`note()` 在 `validMess
 - 判据 `unit-mismatch`：`JSON.parse` 保证每个 `\uXXXX` 产出一个码元，这条判据恒真——恒真的判据不给信息。
 
 两条都记在 DESIGN §10。
+
+<!-- fp-selftest-probe -->
+
+<!-- fp-selftest-probe -->
