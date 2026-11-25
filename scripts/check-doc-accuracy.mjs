@@ -44,22 +44,32 @@ for (const f of ["config.ts", "defaults.ts"]) {
   }
 }
 
-/** 文档里声明的配置键。两种形状：表格首格 | 键 |，JSON 块里的 "键": */
+/** 文档里声明的配置键。只认配置小节里的两种形状：表格首格 | 键 |，或 JSON 块里的 "键": */
 export function keysIn(text) {
   const keys = new Set();
   const T = String.fromCharCode(96);
+  // 2026-11-25：与 pi-think-sentry 同步。原来「任何表格首格」都算配置键，
+  // 于是 README 里 /escape-guard json 的输出示例（demos / ok / label / saved）
+  // 全被报成「配置键不存在」——判据恒假红，红久了就没人看。
+  // 现在只在配置小节（标题含 配置/设置/键）里取，因为输出示例的形状与配置一模一样，
+  // 靠键名本身分不开，只能靠小节划界。
+  let inCfg = false;
   for (const line of text.split(/\r?\n/)) {
-    // 表格首格：| `key` | ...
-    if (line.startsWith("|")) {
+    if (/^#{1,6}\s/.test(line)) {
+      inCfg = /配置|设置|键/.test(line);
+      continue;
+    }
+    if (inCfg && line.startsWith("|")) {
       const cell = line.slice(1).split("|")[0].trim();
       if (cell.length > 2 && cell.startsWith(T) && cell.endsWith(T)) {
         const k = cell.slice(1, -1).trim();
         if (/^[a-z][a-zA-Z0-9_.]*$/.test(k)) keys.add(k);
       }
     }
-    // JSON 块：  "key":
-    const j = line.match(/^\s*"([a-z][a-zA-Z0-9_]*)"\s*:/);
-    if (j) keys.add(j[1]);
+    if (inCfg) {
+      const j = line.match(/^\s*"([a-z][a-zA-Z0-9_]*)"\s*:/);
+      if (j) keys.add(j[1]);
+    }
   }
   return keys;
 }
@@ -93,13 +103,19 @@ if (process.argv.includes("--selftest")) {
   const tmp = fs.mkdtempSync(path.join(process.env.TEMP || "/tmp", "docacc-"));
   const bad = path.join(tmp, "bad.md");
   const good = path.join(tmp, "good.md");
-  fs.writeFileSync(bad, "| " + TICK + "strict" + TICK + " | true | 已删的键 |\n有用：`config.ts`\n", "utf8");
-  fs.writeFileSync(good, "| " + TICK + "on" + TICK + " | true |\n| " + TICK + "threshold" + TICK + " | 3 |\n", "utf8");
+  // 非配置小节里的输出示例：demos / ok 是 /escape-guard json 的返回字段，不是配置键。
+  // 这条挡的是本仓真实红过的形状（README 那段输出示例，4 处误报里的 2 处）。
+  const sample = path.join(tmp, "sample.md");
+  fs.writeFileSync(bad, "## 配置\n\n| " + TICK + "strict" + TICK + " | true | 已删的键 |\n有用：" + TICK + "config.ts" + TICK + "\n", "utf8");
+  fs.writeFileSync(good, "## 配置\n\n| " + TICK + "on" + TICK + " | true |\n| " + TICK + "threshold" + TICK + " | 3 |\n", "utf8");
+  fs.writeFileSync(sample, "## 不进 pi 也能查\n\n" + TICK.repeat(3) + "json\n{\n  \"demos\": [\n    { \"ok\": true }\n  ]\n}\n" + TICK.repeat(3) + "\n", "utf8");
   const badProblems = check([bad], tmp);
   const goodProblems = check([good], tmp);
+  const sampleProblems = check([sample], tmp);
   const checks = [
-    ["文档写了已删的键 strict → 必须红", badProblems.length > 0, true],
-    ["文档只写真实键 → 必须绿", goodProblems.length === 0, true],
+    ["配置小节里写了已删的键 strict → 必须红", badProblems.length > 0, true],
+    ["配置小节里只写真实键 → 必须绿", goodProblems.length === 0, true],
+    ["非配置小节里的输出示例字段 → 必须绿", sampleProblems.length === 0, true],
   ];
   let n = 0;
   for (const c of checks) { const ok = c[1] === c[2]; if (!ok) n++; console.log((ok ? "PASS" : "FAIL") + "  " + c[0] + "（得 " + c[1] + "）"); }
