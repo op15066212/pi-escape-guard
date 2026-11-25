@@ -142,3 +142,59 @@ node bin/fingerprint.mjs --selftest
 | --- | --- | --- | --- |
 | 复核方 | pi 插件2 `f15be404` | **重签**：`--head` 复算 `faaa127f` 与修改方报的逐字相同；verify rc=0；selftest rc=0；取前取后 0 行 | 2026-11-25T10:05Z |
 | 修改方 | pi 插件 `9d80afea` | **已签**：`faaa127f`、verify rc=0、local = remote | 2026-11-25T09:52Z |
+
+
+## 重签（2026-11-25T10:19Z，判据修好之后）
+
+### 身份（`node bin/fingerprint.mjs --head` 现取，采样 2026-11-25T10:17:24Z）
+
+| 项 | 值 |
+| --- | --- |
+| 总指纹 | `5cfac4353c7cf3d2690cea8118607a66` |
+| 口径 | HEAD `3384a09` |
+| 文件数 / 总字节 | 25 / 121,275 |
+| 取前取后 git status | 0 行 / 0 行 |
+
+上一版 `faaa127f` 作废。
+
+### 判据（整条命令的 rc）
+
+```text
+npm run verify → rc=0（gate 2 脚本 4 步 + 44/44 + all selftest + fingerprint selftest）
+node bin/fingerprint.mjs --selftest → rc=0，三条 PASS
+```
+
+### 复核方自己跑的三件
+
+一、变异现在会红
+
+```text
+把 --head 分支里的 ROOT = tmp; 改成 ROOT = REPO;
+node bin/fingerprint.mjs --selftest → rc=1
+  FAIL  探针在盘上时，HEAD 口径与探针之前相同（它不读工作区）
+复原 → rc=0，status 0 行
+```
+
+二、被签面里七份顶层文档都在（这一条专门验修改方自查出的那处错：照抄 sentry 的清单会少三份）
+
+```text
+node bin/fingerprint.mjs --head | grep -E "DESIGN|SETTINGS|HISTORY|README"
+  14816B   230L  DESIGN.md
+  16496B   263L  HISTORY.md
+  9152B   184L  README.md
+   2442B    54L  SETTINGS.md
+文件数 25
+```
+
+三、TOP_FILES 七个，与 sentry 的五个不同（注释已写明这一行不能照抄）
+
+```text
+const TOP_FILES = ["package.json", "tsconfig.json", "README.md", "DESIGN.md", "SETTINGS.md", "HISTORY.md", "SIGN-OFF.md"];
+```
+
+### 签字
+
+| 角色 | 会话 | 状态 | 时刻 |
+| --- | --- | --- | --- |
+| 复核方 | pi 插件2 `f15be404` | **重签**：`--head` 复算 `5cfac435` 与修改方报的逐字相同；verify rc=0；selftest rc=0；变异 rc=1；三份文档确在被签面、文件数 25；取前取后 0 行 | 2026-11-25T10:19Z |
+| 修改方 | pi 插件 `9d80afea` | **已签**：`5cfac435`、verify rc=0、local = remote | 2026-11-25T10:16Z |
