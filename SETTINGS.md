@@ -1,14 +1,20 @@
 # 设置
 
-配置文件：插件目录下的 `pi-escape-guard.json`（首次启动写入默认值）。用 `ESC_GUARD_CONFIG` 指向别处；`ESC_GUARD_STATE` 指定标签存档（默认 `state.json`）。改完不用重启 pi：每次 `session_start` 重读一次。
+配置文件：插件目录下的 `pi-escape-guard.json`，首次启动写入默认值。
+用 `ESC_GUARD_CONFIG` 指向别处。改完下一次 `session_start` 重读一次，不用重启 pi。
 
 ## 全文
 
 ```json
-{ "on": true, "threshold": 3 }
+{
+  "on": true,
+  "threshold": 3,
+  "block": { "on": true, "min": 3 }
+}
 ```
 
-`src/config.ts` 的 `Cfg` 就是这两个字段。别的键写了不读，也不报错。
+这份全文取自 `src/config.ts` 的 `DEFAULTS`，两者不一致时以代码为准。
+别的键写了不读，也不报错——`Cfg` 类型里只有这四个字段。
 
 ## 逐个解释
 
@@ -17,37 +23,62 @@
 | 项 | 内容 |
 | --- | --- |
 | 默认 | `true` |
-| 什么时候改 | 想整体停掉还原、只看原样时设 `false` |
-| 不改会怎样 | 一直在还原 |
+| 什么时候改 | 想整体停手、只看原样时设 `false` |
+| 反例 | 关掉了还在还原，用户以为关了 |
 
-关掉后一律不动手：`settle()` 直接返回原文本，`content`、`texts` 都不变。
+关掉后一律不动手：`settle()` 直接返回原文本，`content` 与 `texts` 都不变，`tool_call` 也不拦。
 
 ### `threshold`
 
 | 项 | 内容 |
 | --- | --- |
 | 默认 | `3` |
-| 什么时候改 | 出现「该还原的没还原」时先看它——是不是这一段不到 3 个转义 |
+| 什么时候改 | 出现「该还原的没还原」时先看它：这一段是不是不到 3 个转义 |
 | 取值范围 | ≥ 1 的整数；写 0、负数、非数字会被 `src/config.ts` 拒并回落到 3 |
+| 反例 | 写 `0` 以为等于「全都还原」，实际回落成 3 |
 
-一段里至少这么多个 `\uXXXX` 才算「成段」。单个转义不碰，因为孤立的 `\u4f60` 更可能是数据而不是污染。
+一段里至少这么多个转义才算「成段」。单个转义不碰——孤立的 `\u4f60` 更可能是数据而不是污染。
+
+### `block.on`
+
+| 项 | 内容 |
+| --- | --- |
+| 默认 | `true` |
+| 什么时候改 | 想保留拦截之外的还原、先看一段时间再开拦截时设 `false` |
+| 反例 | 旧配置文件里没有这个字段，被当成「关掉」——升级后静默失去拦截 |
+
+旧配置没有 `block` 字段时按默认值算（开），不按关算。当成关会让升级后静默失去拦截，
+那正是「配好了 ≠ 生效了」的另一种形状。
+
+### `block.min`
+
+| 项 | 内容 |
+| --- | --- |
+| 默认 | `3` |
+| 什么时候改 | 误拦了必要写法时调高；漏拦时调低 |
+| 反例 | 设成 1：孤立一个 `\u` 也拦，正则与文档片段全被拒 |
+
+入参里**连续**几个转义才拦。正则字符类 `[\u4e00-\u9fff]` 是两个且不连续，那是必要写法，不该拦。
 
 ## 判据
 
 | # | 命题 | 引入（命令 → 期望） | 消去（第二入口） | 反例 |
 | --- | --- | --- | --- | --- |
-| S1 | 已删的键不再被读 | `grep -cE '^\s+(strict\|ratio\|skipFixtures\|toolResult\|assistant\|provider\|report)\??:' src/config.ts` → `0` | 填 `strict` 后行为不变、也不报错 | 照旧文档填 9 个键：7 个不读，最难发现 |
-| S2 | `on=false` 后一律不动手 | 设 `false` → `npm test` 的「改配置看行为」用例 → rc=0 | 同一份输入在 `on=true` 下被还原、`false` 下原样 | 关掉了还还原，用户以为关了 |
-| S3 | `threshold` 写 0 会回落 | 设 `threshold=0` → 读回是 `3` | 与 `npm test` 的阈值用例同结论 | 以为设 0 等于「全还原」 |
+| S1 | 已删的键不再被读 | `grep -cE '^\s+(strict|ratio|skipFixtures|toolResult|assistant|provider|report)\??:' src/config.ts` → `0` | 填 `strict` 后行为不变、也不报错 | 照旧文档填 9 个键：7 个不读，最难发现 |
+| S2 | `on=false` 后一律不动手 | 设 `false` → `npm test` 的「改配置看行为」用例 → rc=0 | 同一份输入在 `on=true` 下被还原、`false` 下原样 | 关掉了还还原 |
+| S3 | `threshold` 写 0 会回落 3 | 设 `threshold=0` → 读回是 `3` | 与 `npm test` 的阈值用例同结论 | 以为设 0 等于「全还原」 |
+| S4 | 旧配置缺 `block` 时按开算 | 写一份只有 `on` 与 `threshold` 的配置 → `/escape-guard` 报「拦截开」 | 读 `readConfig` 的 `block.on !== false` | 升级后静默失去拦截 |
 
 ```bash
-npm test                        # rc=0
-node bin/mutate.mjs --unique    # 3 条唯一防线全部被抓住
-node verify-dtt.mjs             # 元理论节齐、四件齐、反例逐行有
+npm test
+node bin/all.mjs --selftest
 ```
 
 ## 发现不对时先看哪里
 
-- **该还原的没还原** → 先看 `threshold`。
-- **代码被改了** → 那是 C3（代码上下文）的洞：一行里有两个真汉字时判据会误判。把那段放进 `test/fixtures/`，或关掉 `on` 做对比。
-- **`failFiles` 红** → 那是交还清单，不是配置问题。看 `node bin/all.mjs` 输出的 `why`。
+| 症状 | 先看 |
+| --- | --- |
+| 该还原的没还原 | `threshold` |
+| 代码被改了 | C3 的洞：一行里有两个真汉字时判据会误判。把那段放进 `test/fixtures/`，或关掉 `on` 做对比 |
+| 该拦的没拦 | `block.on` 是不是关着；`block.min` 是不是调高了；入参里的转义是不是不连续 |
+| `failFiles` 红 | 那是交还清单，不是配置问题。看 `node bin/all.mjs` 输出的 `why` |
