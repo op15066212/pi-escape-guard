@@ -5,16 +5,15 @@
  * 四件缺一不算规则：形成（词落到盘上可查的东西）· 引入（命令 + 期望 rc）·
  * 消去（换第二个入口算一遍，得同一个答案）· 反例（一个具体输入，喂进去就为假）。
  *
- * 这个文件是转义还原的元理论声明本身：下面的 RULES 就是它的居民。
+ * 2026-11-26：RULES 从 5 条减到 1 条。C1–C4 判的是「这段该不该还原」，
+ * 而还原这条路径（settle / context.ts / verdict.ts）已按使用者要求删除。
+ * 留下来的只有 S0：调用工具前，入参里有成串转义就拒 —— 这个插件唯一的动作。
  */
 
 // 默认值从 config.ts 引入，不在这里手写一遍（2026-11-25，pi 插件2 指出）。
-//
-// 原来「形成」格里手写「默认 3」——那是第二处。改 DEFAULTS 时文本不会跟着变，
-// 于是四件表描述的和代码做的是两件事，而**这种不一致不影响任何运行结果**：
-// 代码照跑、测试照过、audit 也照过（它只看四格非空）。
-//
-// 加减一层断言去比两个地方，不如让只有一处。这里插值，改 DEFAULTS 就自动同步。
+// 原来「形成」格里手写「默认 3」——那是第二处，改 DEFAULTS 时文本不会跟着变，
+// 于是四件表描述的和代码做的是两件事，而这种不一致不影响任何运行结果。
+// 这里插值，改 DEFAULTS 就自动同步。
 import { DEFAULTS } from "./config.ts";
 export const META = "依赖类型理论" as const;
 
@@ -36,43 +35,11 @@ export interface Rule {
 
 export const RULES: readonly Rule[] = [
   {
-    id: "c1-unescape", kind: "verdict",
-    prop: "C1 解出来不含字面转义",
-    形成: "scan.ts 的 unescape 与 detect 判据",
-    引入: "node --experimental-strip-types --test test/scan.test.ts；期望 13 条全过、rc=0",
-    消去: "bin/mutate.mjs 的变异必须被 C1 抓住",
-    反例: "\\u005c\\u0075\\u0034\\u0066\\u0036\\u0030 解出 \\u4f60",
-  },
-  {
-    id: "c2-cjk", kind: "verdict",
-    prop: "C2 解出来全是 CJK（含空白、全角标点）",
-    形成: "strict 与 ratio 开关在 pi-escape-guard.json",
-    引入: "node --experimental-strip-types --test test/scan.test.ts；期望 13 条全过、rc=0",
-    消去: "同一段在 strict=true 与 ratio=0.6 下的判决要对得上",
-    反例: "\\u0024\\u0024\\u0024 解出 $$$",
-  },
-  {
-    id: "c3-position", kind: "verdict",
-    prop: "C3 不在代码上下文",
-    形成: "围栏、行内 code、赋值行、紧邻引号的位置表",
-    引入: "node --experimental-strip-types --test test/scan.test.ts；期望 13 条全过、rc=0",
-    消去: "test/fixtures 里同一段放进围栏与放进正文，判决应相反",
-    反例: "const s = \"…\" 里的一串转义",
-  },
-  {
-    id: "c4-threshold", kind: "verdict",
-    prop: "C4 至少 3 个转义起算成段",
-    形成: "threshold 在 pi-escape-guard.json（默认 " + DEFAULTS.threshold + "）",
-    引入: "node --experimental-strip-types --test test/scan.test.ts；期望 13 条全过、rc=0",
-    消去: "threshold=3 与 threshold=1 在同一份记录上比较",
-    反例: "孤立 \\u4f60，只一个转义，不动",
-  },
-  {
-    id: "s0-block", kind: "verdict",
+    id: "s0-block", kind: "verdict", module: "scan.ts",
     prop: "S0 调用工具前，入参里有成串转义就拒",
     形成: "block 在 pi-escape-guard.json（默认 on:" + DEFAULTS.block.on + ", min:" + DEFAULTS.block.min + "）；findEscapeRuns 在 scan.ts",
-    引入: "node --experimental-strip-types --test test/block.test.ts；期望 6 条全过、rc=0",
-    消去: "同一段入参在 block.on=true 与 false 下结论相反（block.test.ts 里两条用例）",
+    引入: "node --experimental-strip-types --test test/block.test.ts；期望全过、rc=0",
+    消去: "同一段入参在 block.on=true 与 false 下结论相反（block.test.ts 的两条用例）",
     反例: "一段参数里连续三个转义：该拒；而正则字符类里那种两个不连续的，该放",
   },
 ];

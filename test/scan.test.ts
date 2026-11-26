@@ -1,93 +1,58 @@
-// 判据与还原。每一条都说得出「改回去会红」。
-import { test } from "node:test";
+import test from "node:test";
 import assert from "node:assert/strict";
-import { settle } from "../src/scan.ts";
+import { findEscapeRuns } from "../src/scan.ts";
 
-const S = (t: string, th = 3) => settle(t, th);
+// 2026-11-26：这一套随还原一起重写。原来 15 条测的是 settle（该不该还原、位置、
+// 偏移、幂等），那条路径已按使用者要求删除。现在只钉一件事：
+// **调用工具前，什么样的入参算「成串转义」**。
+//
+// 转义一律用 String.fromCharCode(92) 拼，不写进字符串字面量：
+// 这个插件治的就是「多层转义把判据挡住」，测试自己先别踩；而且写出来会被它自己拦。
 
-test("成段的 CJK 转义被还原", () => {
-  const r = S("\\u4f60\\u597d\\u4e16");
-  assert.equal(r.ok, true);
-  assert.equal(r.out, "你好世");
+const BS = String.fromCharCode(92);
+const esc = (hex: string) => BS + "u" + hex;
+const THREE = esc("4f60") + esc("597d") + esc("4e16");
+const TWO = esc("4e00") + esc("9fff");
+const FOUR = esc("4f60") + esc("597d") + esc("4e16") + esc("754c");
+const BSLASH_ESC = esc("005c");
+
+test("三个连续转义算成段", () => {
+  const runs = findEscapeRuns("x " + THREE + " y", 3);
+  assert.equal(runs.length, 1);
+  assert.equal(runs[0].count, 3);
+  assert.equal(runs[0].at, 2);
 });
 
-test("单个或两个转义不动（正则里的 \\u4e00-\\u9fff 是两个）", () => {
-  assert.equal(S("\\u4e00").out, "\\u4e00");
-  assert.equal(S("\\u4e00-\\u9fff").out, "\\u4e00-\\u9fff");
+test("两个连续转义不到门槛（正则字符类必须放行）", () => {
+  assert.deepEqual(findEscapeRuns("[" + TWO + "]", 3), []);
 });
 
-test("解出来是英文的转义不动：那多半是数据不是污染", () => {
-  // \u0048\u0065\u006c = "Hel"
-  assert.equal(S("\\u0048\\u0065\\u006c").out, "\\u0048\\u0065\\u006c");
+test("同一段门槛降到 2 就拦——门槛真的接在判据上", () => {
+  const runs = findEscapeRuns(TWO, 2);
+  assert.equal(runs.length, 1);
+  assert.equal(runs[0].count, 2);
 });
 
-test("围栏内的不动（代码上下文，还原会破坏它）", () => {
-  const t = ["```", "\\u4f60\\u597d\\u4e16", "```"].join("\n");
-  assert.equal(S(t).out, t);
+test("四个连续算一段，不是两段", () => {
+  const runs = findEscapeRuns(FOUR, 3);
+  assert.equal(runs.length, 1);
+  assert.equal(runs[0].count, 4);
 });
 
-test("行内反引号内的不动", () => {
-  const t = "见 `\\u4f60\\u597d\\u4e16` 这一行";
-  assert.equal(S(t).out, t);
+test("中间夹一个转义反斜杠也算同一段：整串超过门槛就该拦", () => {
+  // 三 + 一个转义反斜杠 + 三 → 匹配是贪婪的，整串算一段，count 累加到 7。
+  // 这不是缺陷：这种写法正是「多层转义」的形状——用转义去表示反斜杠，
+  // 再在它后面继续写转义，本可以直接写中文。插件存在的理由之一就是拦它。
+  const text = THREE + BSLASH_ESC + THREE;
+  const runs = findEscapeRuns(text, 3);
+  assert.equal(runs.length, 1, "整串是一段");
+  assert.equal(runs[0].count, 7, "3 + 1 + 3");
 });
 
-test("赋值行不动", () => {
-  const t = 'const s = "\\u4f60\\u597d\\u4e16";';
-  assert.equal(S(t).out, t);
+test("普通中文不命中", () => {
+  assert.deepEqual(findEscapeRuns("普通中文，一个转义也没有", 3), []);
 });
 
-test("紧邻引号且本行没有正文的，不动", () => {
-  assert.equal(S('"\\u4f60\\u597d\\u4e16"').out, '"\\u4f60\\u597d\\u4e16"');
-});
-
-test("紧邻引号但本行另有汉字，按正文还原", () => {
-  const t = '意思是 "\\u4f60\\u597d\\u4e16" 这三个字';
-  assert.equal(S(t).out.includes("你好世"), true);
-});
-
-test("双重转义的不动：它本身是被转义过的转义，是数据不是污染", () => {
-  // 源码里是 \\u4f60（两个反斜杠 + u4f60），表示「这个转义本身还被转义着」。
-  const t = String.raw`\\u4f60\\u597d\\u4e16`;
-  assert.equal(S(t).out, t, "实际输出：" + JSON.stringify(S(t).out));
-});
-
-test("同一行多个段，位置不许错开（v1 的 ratio 1.45 就是这个错）", () => {
-  const t = "前面 \\u4f60\\u597d\\u4e16 后面 \\u518d\\u89c1\\u4e86";
-  assert.equal(S(t).out, "前面 你好世 后面 再见了");
-});
-
-test("多行：每行各自错开也算对", () => {
-  const t = ["第一行 \\u4f60\\u597d\\u4e16", "第二行 \\u518d\\u89c1\\u4e86"].join("\n");
-  assert.equal(S(t).out, ["第一行 你好世", "第二行 再见了"].join("\n"));
-});
-
-test("畸形数据不动，且不抛", () => {
-  assert.doesNotThrow(() => S("\\uZZZZ\\u4f60\\u597d"));
-  assert.equal(S("\\uZZZZ\\u4f60\\u597d").out, "\\uZZZZ\\u4f60\\u597d");
-});
-
-test("不含 \\u 的文本原样返回", () => {
-  assert.equal(S("普通一行中文").out, "普通一行中文");
-});
-
-// 幂等（2026-11-25，与 pi-think-sentry 的 idempotence.test.ts 同一件事）：
-// 两个插件里每个改内容的地方，第二遍必须不再改。
-// 不靠「显然」——settle 的输出里不该再有转义段是推理，判据是拿输出再喂一遍逐字节比。
-test("幂等：还原过的文本再还原一次，一个字都不再改", () => {
-  const once = S("\\u4f60\\u597d\\u4e16");
-  assert.equal(once.ok, true);
-  const twice = S(once.out);
-  assert.equal(twice.ok, true);
-  assert.equal(twice.out, once.out);
-});
-
-test("幂等：混合文本（该还原的与不该还原的都有）第二遍不再改", () => {
-  const t = "说明：\\u4f60\\u597d\\u4e16 后面是代码 \u0060\\u4e00-\\u9fff\u0060";
-  const a = S(t);
-  assert.equal(a.ok, true);
-  // 第一遍必须真的改了东西，否则这条测的是空转。
-  assert.ok(a.out !== t, "第一遍没有改动，这条判据就白测了");
-  const b = S(a.out);
-  assert.equal(b.ok, true);
-  assert.equal(b.out, a.out);
+test("空串不命中，也不抛", () => {
+  assert.deepEqual(findEscapeRuns("", 3), []);
 });

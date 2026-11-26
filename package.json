@@ -6,12 +6,8 @@
   "description": "pi 扩展：把落进会话记录的字面 \\uXXXX 转义还原成它代表的字，只在两个源头槽位动手，代码上下文一律不碰。",
   "scripts": {
     "test": "node --experimental-strip-types --test test/*.test.ts",
-    "verify": "node scripts/gate.mjs && node --experimental-strip-types --test test/*.test.ts && node bin/all.mjs --selftest && node bin/fingerprint.mjs --selftest",
-    "all": "node bin/all.mjs --selftest && node bin/all.mjs",
-    "mutate": "node bin/mutate.mjs",
-    "mutate:unique": "node bin/mutate.mjs --unique",
-    "check:docs": "node scripts/check-doc-accuracy.mjs",
-    "status": "node bin/status.mjs"
+    "verify": "node scripts/gate.mjs && node --experimental-strip-types --test test/*.test.ts && node bin/fingerprint.mjs --selftest",
+    "check:docs": "node scripts/check-doc-accuracy.mjs"
   },
   "pi": {
     "extensions": [

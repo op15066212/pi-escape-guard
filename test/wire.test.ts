@@ -1,83 +1,68 @@
-// 接线：两个钩子各自只在「真的改了」的时候返回补丁。
+// 接线判据：这个插件**只注册一个钩子**，且配置是每次调用现读的。
+//
+// 2026-11-26 使用者定的范围：只保留 tool_call 与「拒绝执行」。
+// 原来的 session_start（读配置缓存）、tool_result、message_end（还原）、
+// /escape-guard 命令全部删除，所以这里要钉的就是「删干净了」——
+// 留着一条没人要的钩子，等于给以后的人一个「这里还该有逻辑」的暗示。
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
 
+const BS = String.fromCharCode(92);
+const SEG3 = BS + "u4f60" + BS + "u597d" + BS + "u4e16";
+
 async function setup(cfgObj: any = {}) {
-  const CFG = path.join(os.tmpdir(), "esc-" + process.pid + "-" + Math.random().toString(36).slice(2) + ".json");
+  const CFG = path.join(os.tmpdir(), "esc-wire-" + process.pid + "-" + Math.random().toString(36).slice(2) + ".json");
   fs.writeFileSync(CFG, JSON.stringify(cfgObj));
   process.env.ESC_GUARD_CONFIG = CFG;
-  const prevLog = console.log; console.log = () => {};
+  const prevLog = console.log;
+  console.log = () => {};
   try {
     const install = (await import("../src/index.ts")).default;
+    const hooks: string[] = [];
     const h: Record<string, any> = {};
     const cmds: Record<string, any> = {};
-    // 命令也要收进来：只有接线测试抓不到「命令根本没注册」。
-    await install({ on(e: string, f: any) { h[e] = f; }, registerCommand(n: string, spec: any) { cmds[n] = spec; } });
-    return { h, cmds, CFG };
-  } finally { console.log = prevLog; }
+    await install({
+      on(e: string, f: any) { hooks.push(e); h[e] = f; },
+      registerCommand(n: string, spec: any) { cmds[n] = spec; },
+    });
+    return { hooks, h, cmds, CFG };
+  } finally {
+    console.log = prevLog;
+  }
 }
 
-// 命令是观察面：三种样例各自动作对不对，决定「我现在这条门槛」说得清说不清。
-// 长度也断言：PiDeck 弹窗约 400px，超了会被裁掉、没有复制按钮。
-test("命令：三种样例各自动作对，且不溢出", async () => {
+test("只注册 tool_call 一个钩子", async () => {
+  const { hooks, CFG } = await setup();
+  try {
+    assert.deepEqual(hooks, ["tool_call"], "注册的钩子必须只有 tool_call，实际：" + JSON.stringify(hooks));
+  } finally {
+    fs.rmSync(CFG, { force: true });
+  }
+});
+
+test("不再注册任何命令（还原与观察面都已删）", async () => {
   const { cmds, CFG } = await setup();
   try {
-    assert.ok(cmds["escape-guard"], "命令应当注册");
-    const out = String(await cmds["escape-guard"].handler());
-    const rows = out.split("\n");
-    assert.ok(rows.length <= 6, "行数 ≤ 6，实际 " + rows.length);
-    for (const l of rows) assert.ok(l.length <= 44, "每行 ≤ 44，实际 " + l.length + "：" + l);
-    assert.ok(/该还原\s+还原/.test(out), "成段转义要还原，实际：" + out);
-    assert.ok(/不够数\s+不动/.test(out), "单个转义不够门槛，实际：" + out);
-    assert.ok(/代码里\s+不动/.test(out), "围栏内不动，实际：" + out);
-  } finally { fs.rmSync(CFG, { force: true }); }
+    assert.deepEqual(Object.keys(cmds), [], "不该注册命令，实际：" + JSON.stringify(Object.keys(cmds)));
+  } finally {
+    fs.rmSync(CFG, { force: true });
+  }
 });
 
-test("tool_result：文本块里的成段转义被还原", async () => {
+test("配置每次调用现读：改完文件下一次调用就生效，不用重装也不用重开会话", async () => {
   const { h, CFG } = await setup();
   try {
-    const r = await h.tool_result({ content: [{ type: "text", text: "\\u4f60\\u597d\\u4e16" }] });
-    assert.equal(r.content[0].text, "你好世");
-  } finally { fs.rmSync(CFG, { force: true }); }
-});
+    const first = await h["tool_call"]({ input: { content: SEG3 } });
+    assert.equal(first?.block, true, "前提：默认配置下应当拦");
 
-test("tool_result：没有可还原的就返回 undefined，不制造空补丁", async () => {
-  const { h, CFG } = await setup();
-  try {
-    assert.equal(await h.tool_result({ content: [{ type: "text", text: "普通文本" }] }), undefined);
-  } finally { fs.rmSync(CFG, { force: true }); }
-});
-
-test("message_end：助手正文被还原，role 不变", async () => {
-  const { h, CFG } = await setup();
-  try {
-    const r = await h.message_end({ message: { role: "assistant", content: [{ type: "text", text: "\\u4f60\\u597d\\u4e16" }] } });
-    assert.equal(r.message.role, "assistant");
-    assert.equal(r.message.content[0].text, "你好世");
-  } finally { fs.rmSync(CFG, { force: true }); }
-});
-
-test("message_end：非助手消息不碰", async () => {
-  const { h, CFG } = await setup();
-  try {
-    assert.equal(await h.message_end({ message: { role: "user", content: [{ type: "text", text: "\\u4f60\\u597d\\u4e16" }] } }), undefined);
-  } finally { fs.rmSync(CFG, { force: true }); }
-});
-
-test("改配置看行为：on=false 时不改任何东西", async () => {
-  const { h, CFG } = await setup({ on: false });
-  try {
-    assert.equal(await h.tool_result({ content: [{ type: "text", text: "\\u4f60\\u597d\\u4e16" }] }), undefined);
-  } finally { fs.rmSync(CFG, { force: true }); }
-});
-
-test("改配置看行为：threshold=1 时单个转义也还原", async () => {
-  const { h, CFG } = await setup({ threshold: 1 });
-  try {
-    const r = await h.tool_result({ content: [{ type: "text", text: "\\u4f60" }] });
-    assert.equal(r.content[0].text, "你");
-  } finally { fs.rmSync(CFG, { force: true }); }
+    // 只改盘上的配置，不重新 install、不碰任何缓存
+    fs.writeFileSync(CFG, JSON.stringify({ block: { on: false } }));
+    const second = await h["tool_call"]({ input: { content: SEG3 } });
+    assert.equal(second, undefined, "关掉之后下一次调用就该放行，实际：" + JSON.stringify(second));
+  } finally {
+    fs.rmSync(CFG, { force: true });
+  }
 });

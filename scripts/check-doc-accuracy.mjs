@@ -109,7 +109,7 @@ if (process.argv[1] && pathToFileURL(process.argv[1]).href === import.meta.url &
   // 这条挡的是本仓真实红过的形状（README 那段输出示例，4 处误报里的 2 处）。
   const sample = path.join(tmp, "sample.md");
   fs.writeFileSync(bad, "## 配置\n\n| " + TICK + "strict" + TICK + " | true | 已删的键 |\n有用：" + TICK + "config.ts" + TICK + "\n", "utf8");
-  fs.writeFileSync(good, "## 配置\n\n| " + TICK + "on" + TICK + " | true |\n| " + TICK + "threshold" + TICK + " | 3 |\n", "utf8");
+  fs.writeFileSync(good, "## 配置\n\n| " + TICK + "on" + TICK + " | true |\n| " + TICK + "block" + TICK + " | { on: true, min: 3 } |\n", "utf8");
   fs.writeFileSync(sample, "## 不进 pi 也能查\n\n" + TICK.repeat(3) + "json\n{\n  \"demos\": [\n    { \"ok\": true }\n  ]\n}\n" + TICK.repeat(3) + "\n", "utf8");
   const badProblems = check([bad], tmp);
   const goodProblems = check([good], tmp);

@@ -194,7 +194,6 @@ pi-escape-guard/
   src/index.ts      只做事件分发：事件 → 槽位，调用 scan.settle
   src/config.ts     配置读写（只有两个键：on / threshold）
   src/scan.ts       §2 的 C1–C4：一段文本进，解出的文本或原样出
-  src/verdict.ts    输出形状校验（validContent / validMessage / isTextBlock）
   src/meta.ts       元理论：RULES 四条 + audit()
   bin/mutate.mjs    消去：变异巡检（唯一防线 / 冗余防线分开报）
   bin/all.mjs       全量汇总
@@ -206,9 +205,7 @@ C1–C4 全在 `scan.ts` 一个文件里。判据只有四条，把「一段字�
 
 | 风险 | 怎么发现 |
 | --- | --- |
-| 改坏工具返回结构：content 与 structuredContent 不一致 | 替换 content 必须同时丢 structuredContent（pi 文档明写）。判据：`test/verdict.test.ts` 的 `validContent` 用例，断言 text 块的 text 必须是字符串 |
-| **判据洗掉自己的坏样本**：`test/` 里放的转义样本被 S1 还原，导致「应当还原」的测试恒绿 | 判据：`test/fixtures/` 下的样本文件在 CI 里断言 `git diff --exit-code`；样本一律用 C3a 的围栏包住，或写在 `.escaped` 后缀的文件里（C3 不认识后缀，所以另加一条 `skipFixtures` 开关） |
-| 缓存与可复现性：`message_end` 改正文会让上一轮上下文缓存失效 | 已知代价。判据：`stats` 输出 `changedTurns / turns`，> 0.3 说明治不住源头 |
+| ~~改坏工具返回结构~~ / ~~判据洗掉自己的坏样本~~ / ~~缓存失效~~ | 2026-11-26 随还原路径一起消失：插件不再改任何返回内容，也不再重写正文。剩下的唯一动作是「拒」，拒绝不产生副作用 |
 | 记账标签 firstSeen/repeat 的「更早」在会话被 fork/compaction 后失效 | 判据：`seen` 按 sessionKey 分键，fork 后新会话从空集开始（宁可漏判复制，不可误判） |
 
 **已不存在：离线验收器**（2026-11-21 记录的第⑦条）。当时有一个 bin/measure.mjs（离线验收脚本，已删）扫会话记录的内容层，它不知道一段文本来自哪个路径，所以不跳 test/fixtures/，与运行时的 toolResult 模块（已删）不一致。R12 重构把它连同统计一起删了——它只观测、不改变动作。现在判据只有两条入口：`npm test`（构造样本）与 `npm run status`（当前配置下的三种样例）。
