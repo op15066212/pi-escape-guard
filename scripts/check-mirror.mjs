@@ -73,7 +73,7 @@ if (process.argv.includes("--selftest")) {
   process.exit(n === 0 ? 0 : 1);
 }
 
-const isMain = process.argv[1] && pathToFileURL(process.argv[1]).href === import.meta.url;
+const isMain = import.meta.main;
 if (isMain) {
   const r = await check();
   if (r.rc === 2) { console.error("check-mirror: " + r.why); process.exit(2); }
