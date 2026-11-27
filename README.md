@@ -67,6 +67,8 @@ npm run verify                  # 一条命令跑完下面全部
 node scripts/gate.mjs           # 总闸：glob 发现 check-*.mjs，不靠登记
 npm test                        # 单元测试
 node verify-dtt.mjs             # 元理论判据：四件齐、引入可跑
+
+node --experimental-strip-types --test test/scan.test.ts  # 转义段边界；单次字符计数
 ```
 
 总闸给每条判据跑两步：先 `--selftest`（证明它会红），再正常模式（证明现在的盘面没红）。
