@@ -133,7 +133,7 @@ if (process.argv[1] && pathToFileURL(process.argv[1]).href === import.meta.url &
 // 只在被直接执行时跑主流程（2026-11-25）。此前 import 这个文件会直接跑完 check() 并 process.exit，
 // 于是别的脚本想复用它里面的 keysIn/pathsIn 就做不到。
 // 结果就是同一份逻辑在两个仓里各抄一遍，抄到两边行为不一致。
-const isMain = process.argv[1] && pathToFileURL(process.argv[1]).href === import.meta.url;
+const isMain = import.meta.main;
 if (isMain) {
   const problems = check();
   for (const p of problems) console.log("红  " + p);
