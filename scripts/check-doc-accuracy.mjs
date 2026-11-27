@@ -10,7 +10,7 @@
 // rc: 0 全对得上｜1 有对不上的｜2 文档目录缺失
 import fs from "node:fs";
 import path from "node:path";
-import { fileURLToPath, pathToFileURL } from "node:url";
+import { fileURLToPath } from "node:url";
 
 const here = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const TICK = String.fromCharCode(96);
@@ -46,17 +46,6 @@ const DOCS = ["README.md", "SETTINGS.md", "docs/for-agents/escape-guard.md"]
   .filter((f) => fs.existsSync(f));
 if (DOCS.length === 0) { console.log("缺文档"); process.exit(2); }
 
-function read(dir, out = []) {
-  for (const e of fs.readdirSync(dir, { withFileTypes: true })) {
-    if (e.name === "node_modules" || e.name.startsWith(".")) continue;
-    const full = path.join(dir, e.name);
-    if (e.isDirectory()) read(full, out);
-    else out.push(full);
-  }
-  return out;
-}
-const srcFiles = read(path.join(here, "src"));
-const srcText = srcFiles.filter((f) => /\.(ts|mjs|js)$/.test(f)).map((f) => fs.readFileSync(f, "utf8")).join("\n");
 // 只数「声明的字段」，不数注释里提到的名字：
 // config.ts 的注释里写着「删掉的是 strict / ratio / ...」，用 includes 判会让这些键看着还存在。
 const cfgKeys = new Set();
@@ -109,6 +98,56 @@ export function pathsIn(text) {
   return out;
 }
 
+/** 代码里声明的默认值：从 src/config.ts 的 `DEFAULTS: Cfg = {...}` 求值。
+ *  不用 import：本仓判据都跑在不剥类型的入口下，import .ts 会失败。
+ *  Function 求值的是本仓自己的对象字面量，不是外部数据。 */
+export function defaultsOf(root) {
+  const f = path.join(root, "src", "config.ts");
+  if (!fs.existsSync(f)) return null;
+  const m = fs.readFileSync(f, "utf8").match(/DEFAULTS\s*:\s*Cfg\s*=\s*(\{[\s\S]*?\});/);
+  if (!m) return null;
+  // 不执行任何代码：把对象字面量的裸键加引号，变成合法 JSON 再解析。
+  // 代价是只认 JSON 兼容的值（true/false/数字/字符串/数组/对象）——DEFAULTS 就是这种形状。
+  // 这样也顺带守住一条：谁把函数或表达式写进 DEFAULTS，这条判据会红，而不是跟着执行它。
+  const jsonish = m[1].replace(/([{,]\s*)(\w+)\s*:/g, '$1"$2":');
+  try { return JSON.parse(jsonish); } catch { return null; }
+}
+
+/** 嵌套对象拍平成 "block.min" → 值。 */
+export function flatten(o, prefix = "") {
+  const out = {};
+  for (const [k, v] of Object.entries(o || {})) {
+    const key = prefix ? prefix + "." + k : k;
+    if (v && typeof v === "object" && !Array.isArray(v)) Object.assign(out, flatten(v, key));
+    else out[key] = v;
+  }
+  return out;
+}
+
+/** 文档里那段 JSON 全文 与 代码默认值 逐键对拍。
+ *  挡的事故（组 2 2026-11-27 指出，本仓同样存在）：文档写 min: 3、代码是 4，
+ *  而原判据只查「键存在」不查「值一致」——同一件真值两处写，改一处不会红。
+ *  这是唯一真值原则在文档层的现形。 */
+export function defaultsProblems(text, defaults) {
+  // 行尾先归一化：仓里的 .md 是 CRLF，正则写 \n 一个都匹配不到，
+  // 于是「文档与代码默认值一致」这条判据在 CRLF 文件上永远返回空——恒绿。
+  // 它第一次跑就犯了这个错（2026-11-27），所以归一化写在最前面。
+  const norm = String(text).replace(/\r\n/g, "\n");
+  const m = norm.match(/```json\n([\s\S]*?)```/);
+  if (!m) return [];
+  let doc;
+  try { doc = JSON.parse(m[1]); } catch { return ["JSON 代码块解析失败"]; }
+  const a = flatten(doc), b = flatten(defaults);
+  const out = [];
+  for (const k of new Set([...Object.keys(a), ...Object.keys(b)])) {
+    if (!(k in a)) out.push("文档没写 " + k + " 的默认值（代码里是 " + JSON.stringify(b[k]) + "）");
+    else if (!(k in b)) out.push("文档写了代码里没有的键 " + k);
+    else if (JSON.stringify(a[k]) !== JSON.stringify(b[k]))
+      out.push("默认值不一致 " + k + "：文档 " + JSON.stringify(a[k]) + "，代码 " + JSON.stringify(b[k]));
+  }
+  return out;
+}
+
 export function check(docs = DOCS, root = here) {
   // 这条约束只对仓库根成立：selftest 拿临时目录当 root 时那里没有 .gitignore，
   // 名字是否被忽略是仓库级的事实，不是每个被扫目录各自的事实。
@@ -126,6 +165,9 @@ export function check(docs = DOCS, root = here) {
       const cands = [path.join(root, p), path.join(root, "src", p), path.join(root, "scripts", p), path.join(root, "test", p), path.join(root, "bin", p)];
       if (!cands.some((c) => fs.existsSync(c))) problems.push(rel + "：路径不存在 " + p);
     }
+    const defs = defaultsOf(root);
+    if (defs) for (const m of defaultsProblems(text, defs)) problems.push(rel + "：" + m);
+    else if (fs.existsSync(path.join(root, "src", "config.ts"))) problems.push(rel + "：读不出 src/config.ts 的 DEFAULTS，默认值判据无法成立");
   }
   return problems.concat(gProblems);
 }
@@ -151,6 +193,8 @@ if (import.meta.main && process.argv.includes("--selftest")) {
     ["非配置小节里的输出示例字段 → 必须绿", sampleProblems.length === 0, true],
     ["GENERATED 里的名字都在 .gitignore → 必须绿", generatedProblems(new Set(["pi-escape-guard.json", "state.json"]), here).length === 0, true],
     ["GENERATED 里塞一个 .gitignore 没有的名字 → 必须红", generatedProblems(new Set(["bogus.json"]), here).length > 0, true],
+    ["文档 JSON 全文与代码 DEFAULTS 一致 → 必须绿", defaultsProblems(TICK.repeat(3) + "json\n{\"on\":true,\"block\":{\"on\":true,\"min\":3}}\n" + TICK.repeat(3), { on: true, block: { on: true, min: 3 } }).length === 0, true],
+    ["文档 JSON 全文与代码 DEFAULTS 一致 → 必须红", defaultsProblems(TICK.repeat(3) + "json\n{\"on\":true,\"block\":{\"on\":true,\"min\":4}}\n" + TICK.repeat(3), { on: true, block: { on: true, min: 3 } }).length > 0, true],
   ];
   let n = 0;
   for (const c of checks) { const ok = c[1] === c[2]; if (!ok) n++; console.log((ok ? "PASS" : "FAIL") + "  " + c[0] + "（得 " + c[1] + "）"); }
