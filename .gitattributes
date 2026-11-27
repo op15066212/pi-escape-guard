@@ -1,0 +1,4 @@
+# 被签对象钉成 LF：指纹对字节敏感，checkout 时改行尾会让同一个 commit 算出两个指纹。
+# 代码里已经做归一化（verify-dtt.mjs 的 fingerprint），这里是第二层，让别的工具读到的也一致。
+README.md text eol=lf
+verify-dtt.mjs text eol=lf

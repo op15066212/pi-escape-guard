@@ -61,8 +61,16 @@ export function check(text) {
 }
 
 export function fingerprint() {
+  // 行尾先归一化再算：git 在 Windows 上 checkout 时会把 LF 转成 CRLF（core.autocrlf），
+  // 于是同一个 commit 在两台机器上、甚至同一个仓的两个克隆里算出两个指纹，
+  // 而「指纹一致」这条判据就变成「你用什么 autocrlf」的判据。
+  // 事故（2026-11-27）：worktree 里算 2807cc6e…，主克隆里算 95edc40b…，
+  // 同一份提交，verify 一处绿一处红。
+  // 归一化之后指纹与行尾无关；.gitattributes 再把两个被签文件钉成 eol=lf，两层都有。
   const h = crypto.createHash("sha256");
-  for (const f of [DOC, fileURLToPath(import.meta.url)]) h.update(fs.readFileSync(f));
+  for (const f of [DOC, fileURLToPath(import.meta.url)]) {
+    h.update(fs.readFileSync(f, "utf8").replace(/\r\n/g, "\n"), "utf8");
+  }
   return h.digest("hex");
 }
 
