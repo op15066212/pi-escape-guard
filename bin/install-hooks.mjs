@@ -32,9 +32,15 @@ const logRel = path.relative(REPO, path.resolve(REPO, gitPath("pre-push-verify.l
 const HOOK = `#!/bin/sh
 # pre-push —— rc=1 不许推。由 bin/install-hooks.mjs 装。
 # 判据只看退出码，不看文本：npm run verify 的 rc 非 0 就 exit 1。
-# 日志路径在安装时由 git 自己给出（worktree 与普通克隆不同，不能自己拼）。
+#
+# 钩子里每一处路径都在**运行时**问 git，不在安装时算死。
+# 事故（2026-11-27，本文件自己撞的）：上一版把日志路径在安装时算成绝对路径
+# ../pi-escape-guard/.git/worktrees/<名>/pre-push-verify.log，后来那个 worktree 被删，
+# 于是在主克隆里 push 也被拒——重定向失败让 rc=1，而 verify 本身是绿的。
+# 判据：在主克隆与 worktree 里各 push 一次，日志都落在自己那个 git 目录下。
 cd "$(git rev-parse --show-toplevel)" || exit 1
-LOG="${logRel}"
+LOG="$(git rev-parse --git-path pre-push-verify.log)"
+mkdir -p "$(dirname "$LOG")" 2>/dev/null
 npm run verify >"$LOG" 2>&1
 rc=$?
 if [ $rc -ne 0 ]; then
@@ -44,7 +50,6 @@ if [ $rc -ne 0 ]; then
 fi
 exit 0
 `;
-
 // ① git 自己说钩子该装在哪
 const dir = path.resolve(REPO, gitPath("hooks"));
 fs.mkdirSync(dir, { recursive: true });
