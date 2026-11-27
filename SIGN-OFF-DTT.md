@@ -9,7 +9,7 @@
 | 判据 | `node verify-dtt.mjs` → 期望 rc=0 |
 | 坏样本 | `node verify-dtt.mjs --selftest` → 期望 5/5 全红 |
 | 指纹一致 | `node scripts/check-dtt-fingerprint.mjs` → 期望 rc=0；本表那行与现值不同就红 |
-| 指纹 | `a1303ab118f8776ab298500f23666d102d781b05d8344650a785b3e4f290f5e2` |
+| 指纹 | `2807cc6e65a40ad1011f32af424c2252d6b7aa21d70a972672a6bed329d72f82` |
 | 既有测试 | `npm test` |
 | sorry | 无 |
 
@@ -17,7 +17,8 @@
 
 | 项 | 内容 |
 | --- | --- |
-| 改了什么 | README 与 SETTINGS 按当前代码重写；新增 `scripts/check-dtt-fingerprint.mjs`，让本表指纹过期会红 |
+| 改了什么 | README 按当前代码重写：删掉四处讲已删机制的段（bin/all.mjs 不存在、性能段讲已删的 contextMap/settle、排错段写 threshold 与 C3、check-main-guard 反例仍写 isMain）。改 README 就改指纹，所以重签一次。 |
+| 上一次的改了什么 | README 与 SETTINGS 按当前代码重写；新增 `scripts/check-dtt-fingerprint.mjs`，让本表指纹过期会红 |
 | 判据 | `npm run verify` → rc=0（签字行里记这一次的实跑结果） |
 | 指纹取法 | `node verify-dtt.mjs --fingerprint`：`README.md` 与 `verify-dtt.mjs` 两个文件的 sha256 |
 | 宣布不了收敛 | 下表空着等甲方 |
