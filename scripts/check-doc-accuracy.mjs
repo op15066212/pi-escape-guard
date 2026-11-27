@@ -17,6 +17,30 @@ const TICK = String.fromCharCode(96);
 /** 由代码按需生成的运行态文件：新克隆上本来就没有，不能要求它存在。
  *  判据不是「它存在」，而是「文档说得出它是生成的」。 */
 const GENERATED = new Set(["pi-escape-guard.json", "state.json"]);
+
+/** .gitignore 里点名忽略的名字。
+ *  这是 GENERATED 的外部约束：一个名字只要进了 GENERATED，就跳过了路径存在性检查。
+ *  没有约束时，往名单里塞一个「既不生成、也没被忽略」的名字，没人会红——
+ *  判据就退化成人自己记得住的白名单。约束把它钉到另一处可查的事实上。
+ *  合并方向来自组 2（2026-11-27）：它给的坏样本是往名单里加 bogus.json。 */
+function ignoredNames(root) {
+  const f = path.join(root, ".gitignore");
+  if (!fs.existsSync(f)) return new Set();
+  return new Set(
+    fs.readFileSync(f, "utf8").split(/\r?\n/)
+      .map((s) => s.trim())
+      .filter((s) => s && !s.startsWith("#"))
+      .map((s) => (s.endsWith("/") ? s.slice(0, -1) : s))
+  );
+}
+
+/** GENERATED 里没被 .gitignore 点名的名字，每条是一个问题。 */
+export function generatedProblems(generated, root) {
+  const ign = ignoredNames(root);
+  return [...generated]
+    .filter((n) => !ign.has(n))
+    .map((n) => "GENERATED 名单里的 " + n + " 不在 .gitignore：它既不会被生成，也没被忽略");
+}
 const DOCS = ["README.md", "SETTINGS.md", "docs/for-agents/escape-guard.md"]
   .map((f) => path.join(here, f))
   .filter((f) => fs.existsSync(f));
@@ -86,6 +110,9 @@ export function pathsIn(text) {
 }
 
 export function check(docs = DOCS, root = here) {
+  // 这条约束只对仓库根成立：selftest 拿临时目录当 root 时那里没有 .gitignore，
+  // 名字是否被忽略是仓库级的事实，不是每个被扫目录各自的事实。
+  const gProblems = root === here ? generatedProblems(GENERATED, root) : [];
   const problems = [];
   for (const doc of docs) {
     const rel = path.isAbsolute(doc) ? path.relative(root, doc) : doc;
@@ -100,12 +127,12 @@ export function check(docs = DOCS, root = here) {
       if (!cands.some((c) => fs.existsSync(c))) problems.push(rel + "：路径不存在 " + p);
     }
   }
-  return problems;
+  return problems.concat(gProblems);
 }
 
 // selftest 分支也受 isMain 保护（2026-11-25）：别的脚本带 --selftest 去 import 它时，
 // 跑的是它的自检并直接 exit，外层那个脚本的自检根本没执行。
-if (process.argv[1] && pathToFileURL(process.argv[1]).href === import.meta.url && process.argv.includes("--selftest")) {
+if (import.meta.main && process.argv.includes("--selftest")) {
   const tmp = fs.mkdtempSync(path.join(process.env.TEMP || "/tmp", "docacc-"));
   const bad = path.join(tmp, "bad.md");
   const good = path.join(tmp, "good.md");
@@ -122,6 +149,8 @@ if (process.argv[1] && pathToFileURL(process.argv[1]).href === import.meta.url &
     ["配置小节里写了已删的键 strict → 必须红", badProblems.length > 0, true],
     ["配置小节里只写真实键 → 必须绿", goodProblems.length === 0, true],
     ["非配置小节里的输出示例字段 → 必须绿", sampleProblems.length === 0, true],
+    ["GENERATED 里的名字都在 .gitignore → 必须绿", generatedProblems(new Set(["pi-escape-guard.json", "state.json"]), here).length === 0, true],
+    ["GENERATED 里塞一个 .gitignore 没有的名字 → 必须红", generatedProblems(new Set(["bogus.json"]), here).length > 0, true],
   ];
   let n = 0;
   for (const c of checks) { const ok = c[1] === c[2]; if (!ok) n++; console.log((ok ? "PASS" : "FAIL") + "  " + c[0] + "（得 " + c[1] + "）"); }
