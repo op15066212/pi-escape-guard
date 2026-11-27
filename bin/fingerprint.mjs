@@ -102,8 +102,8 @@ const EXCLUDE = new Map([
   // 目录以斜杠结尾。下面两个不进被签面，理由写在这里。
   ["state.json", "运行时状态（计数与水位）。插件跑一轮写一次，不是人写的，不该进被签面。"],
   ["pi-escape-guard.json", "本仓的用户配置（.gitignore 忽略）。用户改一个开关它就变，与 sentry 的 settings.json 同一个角色。"],
-  [".doc-bridge/", "doc-bridge 工具自动生成的知识索引。它随工具重扫而变，不是人写的。"],
-  ["reviews/", "只追加的审查记录。验它该读 git log 的历史，不是读一个应当稳定的数；改了旧记录，git 也会显示。"],
+  // 2026-11-27：.doc-bridge/ 与 reviews/ 两个目录已从仓里删除，条目随目录一起删——
+  // 留着就是它上面那条注释说的那种东西：在 EXCLUDE 里留一条不生效的，读代码的人会以为它起了作用。
 ]);
 
 /** 一个相对路径是否被 EXCLUDE 点名。目录以斜杠结尾按前缀匹配，其余按文件名匹配。 */
@@ -150,6 +150,9 @@ function filesOf(root) {
   // 顶层：除 node_modules / 点开头的目录之外，全部收。
   // 也包括 .gitignore 这类点开头的文件（它决定哪些东西进 git，是有语义的）。
   for (const e of fs.readdirSync(root, { withFileTypes: true })) {
+    // 工作区顶层那个 .git 条目必须跳过：普通克隆里它是目录，
+    // 而 git worktree 里它是指向 gitdir 的文件，会被当成「没人处理的新文件」报红。
+    if (e.name === ".git") continue;
     if (e.isDirectory()) continue;
     if (isExcluded(e.name)) continue;
     out.push(path.join(root, e.name));
@@ -284,7 +287,19 @@ if (SELFTEST) {
   // 这比「缩面」更难发现：缩面至少文件数会掉，死配置连数都不动，A 判据也照样绿。
   // 2026-11-25，pi 插件2 实测 "src" 与 "src/index.ts" 两种写法后给的出现形状。
   const topNames = new Set(fs.readdirSync(REPO, { withFileTypes: true }).map((e) => e.name));
-  const deadExcl = [...EXCLUDE.keys()].filter((k) => !topNames.has(k.endsWith("/") ? k.slice(0, -1) : k));
+  // 口径：一条 EXCLUDE 算「生效」，只要这个名字进得了被签面就有意义——
+  // ① 现在盘上有它；或 ② .gitignore 点名了它（运行态文件，跑起来才生成，但一旦生成必被签）。
+  // 原口径只看 ①，于是 state.json / pi-escape-guard.json 这两个运行态文件恒被报成死条目，
+  // 而它们恰恰是这条判据该保护的形状：不签它，工作区口径的指纹每轮都变。
+  const ign = new Set(
+    (fs.existsSync(path.join(REPO, ".gitignore")) ? fs.readFileSync(path.join(REPO, ".gitignore"), "utf8") : "")
+      .split(/\r?\n/).map((s) => s.trim()).filter((s) => s && !s.startsWith("#"))
+      .map((s) => (s.endsWith("/") ? s.slice(0, -1) : s))
+  );
+  const deadExcl = [...EXCLUDE.keys()].filter((k) => {
+    const name = k.endsWith("/") ? k.slice(0, -1) : k;
+    return !topNames.has(name) && !ign.has(name);
+  });
 
   // ===== 判据 D：工作区有、HEAD 没有的文件，必须点名 =====
   // 运行时写出的文件（state.json、配置文件）默认会进工作区口径的被签面，

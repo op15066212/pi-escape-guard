@@ -14,7 +14,10 @@ import { fileURLToPath, pathToFileURL } from "node:url";
 
 const here = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const TICK = String.fromCharCode(96);
-const DOCS = ["README.md", "SETTINGS.md", "DESIGN.md", "docs/guard-rules.md"]
+/** 由代码按需生成的运行态文件：新克隆上本来就没有，不能要求它存在。
+ *  判据不是「它存在」，而是「文档说得出它是生成的」。 */
+const GENERATED = new Set(["pi-escape-guard.json", "state.json"]);
+const DOCS = ["README.md", "SETTINGS.md", "docs/for-agents/escape-guard.md"]
   .map((f) => path.join(here, f))
   .filter((f) => fs.existsSync(f));
 if (DOCS.length === 0) { console.log("缺文档"); process.exit(2); }
@@ -92,6 +95,7 @@ export function check(docs = DOCS, root = here) {
       if (!cfgKeys.has(leaf)) problems.push(rel + "：配置键 " + k + " 在 config.ts / defaults.ts 里不存在");
     }
     for (const p of pathsIn(text)) {
+      if (GENERATED.has(p)) continue;
       const cands = [path.join(root, p), path.join(root, "src", p), path.join(root, "scripts", p), path.join(root, "test", p), path.join(root, "bin", p)];
       if (!cands.some((c) => fs.existsSync(c))) problems.push(rel + "：路径不存在 " + p);
     }
