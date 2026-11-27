@@ -9,7 +9,7 @@
 | 判据 | `node verify-dtt.mjs` → 期望 rc=0 |
 | 坏样本 | `node verify-dtt.mjs --selftest` → 期望 5/5 全红 |
 | 指纹一致 | `node scripts/check-dtt-fingerprint.mjs` → 期望 rc=0；本表那行与现值不同就红 |
-| 指纹 | `4c4e4dcca12321aac8678d9df0a8444167e0dccc2e19f288f716fd44e16bf31e` |
+| 指纹 | `e1911445c3f4a8b3b46e722ed7ea49691fc9077cc0e04b980e18fde4d1a8b3f6` |
 | 既有测试 | `npm test` |
 | sorry | 无 |
 
@@ -17,7 +17,7 @@
 
 | 项 | 内容 |
 | --- | --- |
-| 改了什么 | README 按当前代码重写：删掉四处讲已删机制的段（bin/all.mjs 不存在、性能段讲已删的 contextMap/settle、排错段写 threshold 与 C3、check-main-guard 反例仍写 isMain）。改 README 就改指纹，所以重签一次。 |
+| 改了什么 | README 元理论压缩并点名直觉主义、依赖类型理论、莫比乌斯反演、布尔格上的莫比乌斯反演；覆盖反演明确为未实现 |
 | 上一次的改了什么 | README 与 SETTINGS 按当前代码重写；新增 `scripts/check-dtt-fingerprint.mjs`，让本表指纹过期会红 |
 | 判据 | `npm run verify` → rc=0（签字行里记这一次的实跑结果） |
 | 指纹取法 | `node verify-dtt.mjs --fingerprint`：`README.md` 与 `verify-dtt.mjs` 两个文件的 sha256 |
