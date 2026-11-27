@@ -19,7 +19,7 @@
 // 能做的是：**说之前先跑这个**。工具把签字表读成一列指纹，读的人对着它说。
 //
 // 跑法：node bin/signoff-commits.mjs [签字表路径]
-//   不带参数：读 SIGN-OFF.md（当前有效）+ SIGN-OFF-LOG.md（历次），存在几份读几份
+//   不带参数：读 SIGN-OFF.md（当前有效的一张表）
 // rc: 0 读到｜2 文件不在
 import fs from "node:fs";
 import path from "node:path";
@@ -31,13 +31,12 @@ const REPO = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 // 于是 --strict 被当成文件路径（第一次跑就撞上这个）。
 const arg = process.argv.slice(2).find((a) => !a.startsWith("--"));
 
-// 2026-11-25 拆表：SIGN-OFF.md 只留当前有效的一版，历次签字搬到 SIGN-OFF-LOG.md。
-// 默认两份都读——「谁签过什么」是跨时间的，只读当前那份等于把历史扔掉，
-// 于是「你签过 X」这个问题就又变回靠记忆回答。
-const DEFAULT_FILES = ["SIGN-OFF.md", "SIGN-OFF-LOG.md"].map((n) => path.join(REPO, n));
+// 2026-11-27：SIGN-OFF-LOG.md 删除，历次签字只存在于 git 历史（git log -p -- SIGN-OFF.md）。
+// 不再维护第二份副本——两份必然分叉，分叉后没人知道哪份是真的。
+const DEFAULT_FILES = ["SIGN-OFF.md"].map((n) => path.join(REPO, n));
 const files = arg ? [arg] : DEFAULT_FILES.filter((f) => fs.existsSync(f));
 
-if (!files.length) { console.error("signoff-commits: 找不到 SIGN-OFF.md 或 SIGN-OFF-LOG.md（rc=2）"); process.exit(2); }
+if (!files.length) { console.error("signoff-commits: 找不到 SIGN-OFF.md（rc=2）"); process.exit(2); }
 for (const f of files) if (!fs.existsSync(f)) { console.error("signoff-commits: 找不到 " + f + "（rc=2）"); process.exit(2); }
 
 const rows = [];

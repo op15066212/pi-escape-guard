@@ -1,3 +1,4 @@
 pi-escape-guard.json
 state.json
 node_modules/
+.doc-bridge/
