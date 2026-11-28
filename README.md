@@ -1,65 +1,43 @@
 # pi-escape-guard
 
-在 `tool_call` 执行前检查工具入参中的连续 Unicode 转义；达到门槛就拒绝调用，并返回可读原因。
+在 `tool_call` 前检查参数中的连续 `\uXXXX` 转义段；段内 Unicode 转义数达到配置门槛时拒绝调用，并返回原因。
 
-## 当前行为
+## 行为
 
-| 位置 | 条件 | 动作 | 反例 |
-| --- | --- | --- | --- |
-| `tool_call` | 连续转义段数量 ≥ `block.min` 且 `block.on` 为真 | 拒绝工具调用 | 两个连续转义且门槛为三时放行 |
+| 条件 | 结果 | 反例 |
+| --- | --- | --- |
+| 总开关与 `block.on` 均开启，连续转义数 ≥ `block.min` | 拒绝工具调用 | 两个连续转义、门槛为三时放行 |
 
-扫描器只检查连续转义段，不按围栏、反引号或赋值位置区别处理；它只遍历正则命中的区间，未命中部分不逐字符扫描，每个命中保留原始偏移、文本和转义数。默认门槛是 3。
-正则字符类 `[\u4e00-\u9fff]` 含两个不连续转义；门槛为 3 时放行。门槛改为 2 时，它会被拦截，这是配置的直接结果。
+默认门槛为 `3`。例如正则字符类 `[\u4e00-\u9fff]` 含两个连续转义；默认门槛为 3 时放行，门槛设为 2 时会拦截。扫描按连续语法匹配，不区分代码围栏、反引号或赋值位置。
 
-## 配置
+## 扫描实现
 
-配置文件是插件目录下的 `pi-escape-guard.json`，也可以用 `ESC_GUARD_CONFIG` 指定路径。每次 `tool_call` 都重新读取配置。
+`src/scan.ts` 只遍历正则命中的片段；未命中区间不逐字符扫描。匹配片段按 Unicode 转义 token 步进计数，保留原始偏移、片段文本和转义数。可选的 `\n`、`\t` 后缀不另计为 Unicode 转义。
 
-完整配置见 `SETTINGS.md`。
+此判据不理解语义，也不推断转义出现的位置是否必要；它只执行连续转义数与门槛的比较。
 
-## 代码结构
+## 配置与入口
 
-- `src/scan.ts`：扫描连续转义段；
-- `src/config.ts`：读取和校验配置；
-- `src/index.ts`：注册 `tool_call` 钩子；
-- `src/meta.ts`：规则表和四构件检查。
+配置文件为插件目录下的 `pi-escape-guard.json`，也可用 `ESC_GUARD_CONFIG` 指定路径。每次 `tool_call` 重新读取配置，下一次调用即生效。完整字段与默认值见 [SETTINGS.md](SETTINGS.md)。
+
+- `src/scan.ts`：转义段扫描与计数。
+- `src/config.ts`：配置读取和校验。
+- `src/index.ts`：注册 `tool_call` 钩子。
+- `src/meta.ts`：规则元数据与覆盖入口。
 
 ## 元理论
+形成由 `src/meta.ts` 的 S0 声明，反例由连续转义输入给出；引入判据是 `npm run verify` 返回 0，坏样本由总闸测试。依赖类型理论要求规则有命题、证明项、反例和消去；直觉主义要求每个结论有可运行证据。累积覆盖需先指名偏序与 Möbius 函数；子集格的 μ 为 `(-1)^|S|`，即容斥。当前规则表在 `src/meta.ts`，坏样本覆盖由仓内总闸验证。
 
-### 规则模型
+规则与文档签核见 `SIGN-OFF-DTT.md` 和 `SIGN-OFF.md`；指纹不匹配时签核失效。
 
-依赖类型理论：规则是类型，命题、证明项、反例、消去缺一不可。直觉主义：成立必须给出居民，不能把未发现反例当成证明。莫比乌斯反演：累积覆盖恢复逐项贡献时，先指名偏序与 μ。布尔格上的莫比乌斯反演使用 `μ(S)=(-1)^|S|`，也就是容斥。
-
-| 构件 | 当前居民 | 反例 |
-| --- | --- | --- |
-| 形成 | `src/meta.ts` 中的 S0 | 规则名与实现不一致 |
-| 引入 | `npm run verify` 返回 0 | 只写“检查过” |
-| 反例 | 连续转义输入 | 没有坏样本 |
-| 消去 | `node verify-dtt.mjs` 返回 0 | 文档与代码给出不同结果 |
-
-`src/meta.ts` 的 `RULES` 只有 S0。检查数量不等于独立覆盖数量。
-
-## 检查
+## 验证
 
 ```bash
 npm ci
 npm test
 npm run verify
-node scripts/gate.mjs
-node verify-dtt.mjs
+node scripts/check-doc-accuracy.mjs
 node --experimental-strip-types --test test/scan.test.ts
 ```
 
-总闸通过 glob 发现 `scripts/check-*.mjs`；每条检查先运行坏样本自测，再检查当前代码。
-
-## 排错
-
-| 现象 | 检查 |
-| --- | --- |
-| 应拦未拦 | 检查 `block.on`、`block.min` 和转义是否连续 |
-| 正则字符类被拦 | 检查门槛；门槛为 2 时两个连续转义会被拦 |
-| 配置没有生效 | 检查 `ESC_GUARD_CONFIG` 指向的 JSON |
-
-## 文档入口
-
-配置见 `SETTINGS.md`；规则签字见 `SIGN-OFF-DTT.md` 和 `SIGN-OFF.md`。
+`npm run verify` 返回 `0` 表示总闸、测试、指纹与安装钩子自测均通过。

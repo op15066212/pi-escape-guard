@@ -49,6 +49,13 @@ test("中间夹一个转义反斜杠也算同一段：整串超过门槛就该�
   assert.equal(runs[0].count, 7, "3 + 1 + 3");
 });
 
+test("换行与制表转义后缀不增加 Unicode 转义计数", () => {
+  const text = esc("4e00") + BS + "n" + esc("9fff") + BS + "t" + esc("4f60");
+  const runs = findEscapeRuns(text, 3);
+  assert.equal(runs.length, 1);
+  assert.equal(runs[0].count, 3);
+});
+
 test("普通中文不命中", () => {
   assert.deepEqual(findEscapeRuns("普通中文，一个转义也没有", 3), []);
 });

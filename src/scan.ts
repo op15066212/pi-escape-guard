@@ -17,7 +17,11 @@ export function findEscapeRuns(text: string, min: number): Array<{ at: number; s
   for (const m of text.matchAll(SEG)) {
     const seg = m[0];
     let count = 0;
-    for (let i = 1; i < seg.length; i++) if (seg[i] === "u") count++;
+    for (let i = 0; i < seg.length;) {
+      count++;
+      i += 6;
+      if (seg[i] === "\\" && (seg[i + 1] === "n" || seg[i + 1] === "t")) i += 2;
+    }
     if (count >= min) out.push({ at: m.index as number, seg, count });
   }
   return out;
