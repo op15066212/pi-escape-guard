@@ -9,7 +9,7 @@
 | 判据 | `node verify-dtt.mjs` → 期望 rc=0 |
 | 坏样本 | `node verify-dtt.mjs --selftest` → 期望 5/5 全红 |
 | 指纹一致 | `node scripts/check-dtt-fingerprint.mjs` → 期望 rc=0；本表那行与现值不同就红 |
-| 指纹 | `fa72b8ac2186f2d7c0bd4cb9ac2fe97b0bcd9e6d97bbb9ee4735a661a2bbdad6` |
+| 指纹 | `6b8086611646e7721cbd7535271e5b71d1949021d4feb5e11a54696dd70b2b02` |
 | 既有测试 | `npm test` |
 | sorry | 无 |
 
@@ -17,7 +17,7 @@
 
 | 项 | 内容 |
 | --- | --- |
-| 改了什么 | `src/scan.ts` 将转义段计数改为单次字符扫描；README 同步说明四理论与边界测试。 |
+| 改了什么 | `src/scan.ts` 以 token 步进统计 Unicode 转义，新增 `\n`/`\t` 后缀边界测试；README 同步当前扫描与配置边界。 |
 | 上一次的改了什么 | README 与 SETTINGS 按当前代码重写；新增 `scripts/check-dtt-fingerprint.mjs`，让本表指纹过期会红 |
 | 判据 | `npm run verify` → rc=0（签字行里记这一次的实跑结果） |
 | 指纹取法 | `node verify-dtt.mjs --fingerprint`：`README.md` 与 `verify-dtt.mjs` 两个文件的 sha256 |
