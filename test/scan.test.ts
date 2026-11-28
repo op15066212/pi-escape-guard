@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { findEscapeRuns } from "../src/scan.ts";
+import { findEscapeRuns, forEachEscapeRun } from "../src/scan.ts";
 
 // 2026-11-26：这一套随还原一起重写。原来 15 条测的是 settle（该不该还原、位置、
 // 偏移、幂等），那条路径已按使用者要求删除。现在只钉一件事：
@@ -62,4 +62,13 @@ test("普通中文不命中", () => {
 
 test("空串不命中，也不抛", () => {
   assert.deepEqual(findEscapeRuns("", 3), []);
+});
+
+test("回调扫描与数组接口逐项一致", () => {
+  const input = "a \\u4f60\\u597d\n + \\u4e16\\u754c";
+  const expected = findEscapeRuns(input, 2);
+  const seen: Array<{ at: number; seg: string; count: number }> = [];
+  const count = forEachEscapeRun(input, 2, (at, seg, tokenCount) => seen.push({ at, seg, count: tokenCount }));
+  assert.equal(count, expected.length);
+  assert.deepEqual(seen, expected);
 });

@@ -12,8 +12,9 @@
 
 const SEG = /(?:\\u[0-9a-fA-F]{4}(?:\\[nt])?)+/g;
 
-export function findEscapeRuns(text: string, min: number): Array<{ at: number; seg: string; count: number }> {
-  const out: Array<{ at: number; seg: string; count: number }> = [];
+/** Visit matching runs without retaining an array of every run. Returns the number visited. */
+export function forEachEscapeRun(text: string, min: number, visit: (at: number, seg: string, count: number) => void): number {
+  let found = 0;
   for (const m of text.matchAll(SEG)) {
     const seg = m[0];
     let count = 0;
@@ -22,7 +23,16 @@ export function findEscapeRuns(text: string, min: number): Array<{ at: number; s
       i += 6;
       if (seg[i] === "\\" && (seg[i + 1] === "n" || seg[i + 1] === "t")) i += 2;
     }
-    if (count >= min) out.push({ at: m.index as number, seg, count });
+    if (count >= min) {
+      found++;
+      visit(m.index as number, seg, count);
+    }
   }
+  return found;
+}
+
+export function findEscapeRuns(text: string, min: number): Array<{ at: number; seg: string; count: number }> {
+  const out: Array<{ at: number; seg: string; count: number }> = [];
+  forEachEscapeRun(text, min, (at, seg, count) => out.push({ at, seg, count }));
   return out;
 }

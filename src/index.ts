@@ -8,7 +8,7 @@
 // tool_call 每轮只来几次，读一个 200 字节的 JSON 约 0.1ms；换来的是改完配置下一次调用
 // 就生效，不用等下一个会话。少一个钩子，也少一处「配好了 ≠ 生效了」。
 import { ensureConfig, readConfig } from "./config.ts";
-import { findEscapeRuns } from "./scan.ts";
+import { forEachEscapeRun } from "./scan.ts";
 
 export default async function installGuard(pi: any) {
   // 首次启动把配置文件写出来，之后不再覆盖（使用者要能自己改）。
@@ -26,28 +26,34 @@ export default async function installGuard(pi: any) {
     // stringify 会把一个反斜杠写成两个（\\），于是 \u4f60 到了 payload 里变成 \\u4f60，匹配不到 ——
     // 我加的那一层把判据挡住了。多包一层不是「更保险」，是判据整个失效，而且不报错。
     // （可复现：同一段文本直接匹配命中 1 处；先 stringify 再匹配命中 0 处。）
-    const texts: string[] = [];
-    const walk = (v: any, depth: number) => {
+
+    let runCount = 0;
+    let total = 0;
+    let firstSeg: string | null = null;
+    const scanText = (text: string) => {
+      forEachEscapeRun(text, cfg.block.min, (_at, seg, count) => {
+        runCount++;
+        total += count;
+        if (firstSeg === null) firstSeg = seg;
+      });
+    };
+    const walk = (v: any, depth: number): void => {
       if (depth > 20) return; // 防御：极深的嵌套不追
-      if (typeof v === "string") texts.push(v);
+      if (typeof v === "string") scanText(v);
       else if (Array.isArray(v)) for (const x of v) walk(x, depth + 1);
       else if (v && typeof v === "object") for (const x of Object.values(v)) walk(x, depth + 1);
     };
     walk(event?.input ?? null, 0);
-
-    const runs: Array<{ seg: string; count: number }> = [];
-    for (const t of texts) runs.push(...findEscapeRuns(t, cfg.block.min));
-    if (!runs.length) return undefined;
+    if (runCount === 0) return undefined;
 
     // 把第一段解出来给他看：模型看到「这一段应该是：你好世」就知道怎么改。
     // 只说「不许转义」他可能不知道指的是哪几个字。
     let sample = "";
-    try { sample = JSON.parse('"' + runs[0].seg + '"'); } catch { sample = ""; }
-    const total = runs.reduce((n, r) => n + r.count, 0);
+    try { sample = JSON.parse('"' + firstSeg + '"'); } catch { sample = ""; }
     return {
       block: true,
       reason:
-        "这段工具参数里有 " + runs.length + " 处成串的转义，共 " + total + " 个"
+        "这段工具参数里有 " + runCount + " 处成串的转义，共 " + total + " 个"
         + (sample ? "。其中一段应该是：" + sample : "")
         + "。直接写它代表的字，不要写转义序列。"
         + "（正则字符类这类必要写法，写成可读形式或加注释说明。）",
